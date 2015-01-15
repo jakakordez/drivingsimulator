@@ -1,0 +1,10 @@
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\bin\Debug\Map editor.exe.config
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\bin\Debug\Map editor.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\bin\Debug\Map editor.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\obj\Debug\Map editor.csprojResolveAssemblyReference.cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\obj\Debug\Map_editor.Form1.resources
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\obj\Debug\Map_editor.Properties.Resources.resources
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\obj\Debug\Map editor.csproj.GenerateResource.Cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\obj\Debug\Map editor.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\obj\Debug\Map editor.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Map editor\obj\Debug\Map_editor.ReferencePoint.resources
