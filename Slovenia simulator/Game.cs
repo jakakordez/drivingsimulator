@@ -19,7 +19,6 @@ namespace Slovenia_simulator
         Physics p;
         TextRenderer renderer;
         MeshCollector MeshCollection;
-        Road[] roads;
         Font serif = new Font(FontFamily.GenericSerif, 24);
         Maps.Map currentMap;
         public Game()
@@ -68,8 +67,8 @@ namespace Slovenia_simulator
             p.Update((float)e.Time, Keyboard);
                 
             if (Keyboard[OpenTK.Input.Key.Escape] || Keyboard[OpenTK.Input.Key.Q]) Exit();
-            base.OnUpdateFrame(e);
             ups++;
+            base.OnUpdateFrame(e);
         }
         
         OpenTK.Vector3 position = new Vector3(5, 8, 10);
@@ -91,8 +90,7 @@ namespace Slovenia_simulator
             Matrix4 lookat = camera.GenerateLookAt((Vehicle)p.Player);
             GL.MatrixMode(MatrixMode.Modelview);
             if (this.Focused) camera.Update(Mouse, Height / 2, Width / 2);
-            Matrix4 modelLookAt = lookat;
-            GL.LoadMatrix(ref modelLookAt);
+            GL.LoadMatrix(ref lookat);
             GL.Begin(PrimitiveType.Quads);
             GL.Color4(Color.Green);
             GL.Vertex3(new Vector3(-500f, 0, -500f));
@@ -100,7 +98,7 @@ namespace Slovenia_simulator
             GL.Vertex3(new Vector3(500f, 0, 500f));
             GL.Vertex3(new Vector3(500f, 0, -500f));
             GL.End();
-            currentMap.Draw(ref MeshCollection, modelLookAt);
+            currentMap.Draw(ref MeshCollection, lookat);
           
             p.Player.Draw(lookat, ref MeshCollection);
             for (int i = 0; i < p.Vehicles.Length; i++)

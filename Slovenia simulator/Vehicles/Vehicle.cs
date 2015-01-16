@@ -34,7 +34,6 @@ namespace Slovenia_simulator
 
         public void Init() { }
 
-        public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k) { }
         public static Vector3 ParseVector(string value)
         {
             string[] values = value.Split(',');
@@ -49,6 +48,8 @@ namespace Slovenia_simulator
         }
 
         public virtual void Draw(Matrix4 LookAt, ref MeshCollector Meshes) { }
+
+        public virtual void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k) { }
     }
     
 }

@@ -41,7 +41,6 @@ namespace Slovenia_simulator
         {
             GL.Color4(Color4.Black);
             
-            
             for (int i = 0; i < Lanes.Length; i++)
             {
                 GL.Begin(PrimitiveType.TriangleStrip);

@@ -43,13 +43,12 @@ namespace Slovenia_simulator
 
         public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
         {
-            Player.raycastVehicle.UpdateAction(World, elaspedTime);
-            (Player as Vehicles.Car).Update(elaspedTime, k);
+            World.StepSimulation(elaspedTime);
+            Player.Update(elaspedTime, k);
             for (int i = 0; i < Vehicles.Length; i++)
             {
                 Vehicles[i].Update(elaspedTime, null);
             }
-            World.StepSimulation(elaspedTime);
         }
 
         public void addCar(string path, Matrix4 startTransform, bool player, ref MeshCollector meshCollection)
@@ -74,9 +73,7 @@ namespace Slovenia_simulator
 
             RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
             RigidBody body = new RigidBody(rbInfo);
-
             World.AddRigidBody(body);
-            //World.AddCollisionObject(body);
             return body;
         }
         public void ExitPhysics()

@@ -126,7 +126,8 @@ namespace Slovenia_simulator.Vehicles
         public override void Draw(Matrix4 LookAt, ref MeshCollector Meshes)
         {
             base.Draw(LookAt, ref Meshes);
-            Matrix4 modelLookAt = body.MotionState.WorldTransform * LookAt;
+
+            Matrix4 modelLookAt = raycastVehicle.ChassisWorldTransform * LookAt;
             GL.LoadMatrix(ref modelLookAt);
             switch (viewMode)
             {
@@ -161,11 +162,10 @@ namespace Slovenia_simulator.Vehicles
             
         }
 
-        new public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
+        public override void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
         {
             if(k != null) manageKeyboard(k);
 
-            engineForce *= (1.0f - FrameDelta);
             raycastVehicle.ApplyEngineForce(engineForce*gear, 2);
             raycastVehicle.SetBrake(brakeForce, 2);
             raycastVehicle.ApplyEngineForce(engineForce*gear, 3);
@@ -173,24 +173,25 @@ namespace Slovenia_simulator.Vehicles
 
             raycastVehicle.SetSteeringValue(steeringValue, 0);
             raycastVehicle.SetSteeringValue(steeringValue, 1);
-            
         }
 
         private void manageKeyboard(OpenTK.Input.KeyboardDevice k)
         {
+            float maxSteering = steeringClamp*(1-(raycastVehicle.CurrentSpeedKmHour/180));
+            if (k[OpenTK.Input.Key.Delete]) System.Diagnostics.Debugger.Break();
             if (!k[OpenTK.Input.Key.A]&&!k[OpenTK.Input.Key.D]&&steeringValue > -steeringIncrement * 2 && steeringValue < steeringIncrement * 2) steeringValue = 0;
             if (k[OpenTK.Input.Key.A])
             {
                 steeringValue += steeringIncrement;
-                if (steeringValue > steeringClamp) steeringValue = steeringClamp;
+                if (steeringValue > maxSteering) steeringValue = maxSteering;
             }
             else if (steeringValue > 3 * steeringIncrement) steeringValue -= 3 * steeringIncrement;
 
             if (k[OpenTK.Input.Key.D])
             {
                 steeringValue -= steeringIncrement;
-                if (steeringValue < -steeringClamp)
-                    steeringValue = -steeringClamp;
+                if (steeringValue < -maxSteering)
+                    steeringValue = -maxSteering;
             }
             else if (steeringValue < 3 * -steeringIncrement) steeringValue += 3 * steeringIncrement;
 

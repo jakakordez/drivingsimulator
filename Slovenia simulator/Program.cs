@@ -12,7 +12,7 @@ namespace Slovenia_simulator
         {
             
             Game g = new Game();
-            g.Run(120);
+            g.Run();
         }
     }
 }
