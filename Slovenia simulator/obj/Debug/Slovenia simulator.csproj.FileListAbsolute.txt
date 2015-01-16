@@ -1,0 +1,14 @@
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Debug\Driving simulator.exe.config
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Debug\Driving simulator.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Debug\Driving simulator.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Debug\OpenTK.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Debug\OpenTK.xml
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\obj\Debug\Slovenia simulator.csprojResolveAssemblyReference.cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\obj\Debug\Driving simulator.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\obj\Debug\Driving simulator.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\Slovenia simulator.exe.config
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\Slovenia simulator.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\Slovenia simulator.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\obj\Debug\Slovenia simulator.csprojResolveAssemblyReference.cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\obj\Debug\Slovenia simulator.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\obj\Debug\Slovenia simulator.pdb
