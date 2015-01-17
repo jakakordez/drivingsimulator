@@ -3,7 +3,7 @@
 #Attributes
 
 - **Name** [*string*] - Road name
-- **RoadType** [*int*] (see Road types below)
+- **RoadType** [*int*] - See Road types below
 - **Segments** [*int*] - Number of road segments
 - **Traffic** [*bool*] - Populate road with traffic
 - **Limit** [*int*] - Speed limit

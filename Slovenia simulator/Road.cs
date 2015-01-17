@@ -20,19 +20,7 @@ namespace Slovenia_simulator
         public float LaneWidth = 3, SidewalkWidth = 1, LaneHeight = 0.02f, SidewalkHeight = 0.1f, SplitWidth = 1;
         public void FromFile(string path, ref MeshCollector meshes)
         {
-            /*Lines = new ObjectLine[0];
-            string[] components = line.Split(';');
-            float Width = Misc.toFloat(components[1]);
-            float Height = Misc.toFloat(components[2]);
-            int Segments = Misc.toInt(components[4]);
-            RoadType = Misc.toInt(components[5]);
-            Vector2[] pointCollection = new Vector2[components.Length - 8];
-            for (int i = 8; i < components.Length; i++)
-            {
-                string[] l = components[i].Split(':');
-                pointCollection[i - 8] = new Vector2(Misc.toFloat(l[0]), Misc.toFloat(l[1]));
-            }
-            if (components[6] != "") Misc.Push<ObjectLine>(new ObjectLine(meshes.LoadMesh("./data/maps/Mapa/models/" + components[6] + "/body.obj"), pointCollection, Segments, Width + 0.3f), ref Lines);*/
+            //if (components[6] != "") Misc.Push<ObjectLine>(new ObjectLine(meshes.LoadMesh("./data/maps/Mapa/models/" + components[6] + "/body.obj"), pointCollection, Segments, Width + 0.3f), ref Lines);*/
             string[] file = System.IO.File.ReadAllLines(path);
             DataParser.ParseData(file, this);
             auxiliaryLanes = new Lane[0];

@@ -73,7 +73,6 @@ namespace Map_editor
             file[11] = "Line = "+Points;
             string filename = Name.Replace(' ', '_').Replace(".", "") + ".dat";
             if (!Directory.Exists(folderPath + "/roads/")) Directory.CreateDirectory(folderPath + "/roads");
-            //if (!File.Exists(filename)) File.Create(filename);
             File.WriteAllLines(folderPath + "/roads/" +filename, file);
         }
     }

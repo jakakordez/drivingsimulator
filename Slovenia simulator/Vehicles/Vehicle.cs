@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK;
 using BulletSharp;
+using Slovenia_simulator.Vehicles;
 
 namespace Slovenia_simulator
 {
@@ -13,13 +14,13 @@ namespace Slovenia_simulator
     {
         public PlayerView viewMode = PlayerView.Exterior;
         public Vector3 DebugLocation;
-        public float Mass, maxEngineForce, maxBrakeForce, width, height, length, maxSpeed;
+        public float Mass, MaxEngineForce, MaxBrakeForce, MaximumSpeed;
         public float engineForce, brakeForce, steeringValue;
         public CollisionShape collisionShape;
         public RigidBody body;
         public int bodyMesh, cabinMesh;
-        public Vector3 driverEye, exteriorEye;
-        public Vector2 driverAngle;
+        public Vector3 Dimensions, DriverEyeLocation, ExteriorEyeLocation;
+        public Vector2 DriverViewAngle;
 
         public const int rightIndex = 0;
         public const int upIndex = 1;
@@ -29,7 +30,7 @@ namespace Slovenia_simulator
 
         public float FrameDelta = 0;
 
-        public float steeringIncrement, steeringClamp;
+        public float SteeringIncrement, SteeringClamp;
 
         public RaycastVehicle raycastVehicle;
 

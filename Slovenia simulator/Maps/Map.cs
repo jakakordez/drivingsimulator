@@ -20,9 +20,6 @@ namespace Slovenia_simulator.Maps
             {
                 Roads[i] = new Road();
                 Roads[i].FromFile(roadsFile[i], ref meshes);
-               /* Road r = new Road();
-                r.FromString(roadsFile[i], ref meshes);
-                Misc.Push<Road>(r, ref Roads);*/
             }
         }
 

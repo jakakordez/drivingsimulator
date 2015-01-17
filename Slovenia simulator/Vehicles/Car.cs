@@ -14,63 +14,21 @@ namespace Slovenia_simulator.Vehicles
 {
     class Car:Vehicle
     {
-        
-        float wheelRadius, wheelWidth, wheelFriction, suspensionStiffness, suspensionDamping, suspensionCompression, rollInfluence, connectionHeight;
+
+        public float WheelRadius, WheelWidth, WheelFriction, SuspensionStiffness, SuspensionDamping, SuspensionCompression, RollInfluence, SuspensionHeight, SuspensionRestLength;
         float gear = 1;
         Color4[] colors;
-        float suspensionRestLength;
-        Vector3 steeringWheelOrigin, frontWheel, rearWheel, needleOrigin, needleAngle;
-        Vector2 steeringWheelAngle;
+        public Vector3 SteeringWheelLocation, NeedleLocation, NeedleAngle;
+        public Vector2 SteeringWheelAngle, FrontWheelLocation, RearWheelLocation;
         int wheelMesh, steeringWheelMesh, needleMesh;
-        public Car(string path, int color, ref MeshCollector meshCollection):base()
+
+        public Car(string path, int color, ref MeshCollector meshCollection)
         {
-            driverEye = new Vector3();
-            exteriorEye = new Vector3();
+            DriverEyeLocation = new Vector3();
+            ExteriorEyeLocation = new Vector3();
             string[] file = File.ReadAllLines("data/vehicles/car/" + path + "/data.conf");
-            for (int i = 0; i < file.Length; i++)
-            {
-                if(file[i] != "" && file[i][0] != '#' && file[i].Contains('=')){
-                    string[] line = file[i].Replace(" ", "").Split('=');
-                    switch (line[0])
-                    {
-                        case "Mass": Misc.parseFloat(line[1], out Mass); break;
-                        case "length": Misc.parseFloat(line[1], out length); break;
-                        case "height": Misc.parseFloat(line[1], out height); break;
-                        case "width": Misc.parseFloat(line[1], out width); break;
-                        case "steeringIncrement": Misc.parseFloat(line[1], out steeringIncrement); break;
-                        case "steeringClamp": Misc.parseFloat(line[1], out steeringClamp); break;
-                        case "maxEngineForce": Misc.parseFloat(line[1], out maxEngineForce); break;
-                        case "maxBrakeForce": Misc.parseFloat(line[1], out maxBrakeForce); break;
-                        case "maxSpeed": maxSpeed = Misc.toFloat(line[1]); break;
-                        case "frontWheel": frontWheel = Vehicle.ParseVector(line[1]); break;
-                        case "rearWheel": rearWheel = Vehicle.ParseVector(line[1]); break;
-                        case "driver": driverEye = Vehicle.ParseVector(line[1]); break;
-                        case "exterior": exteriorEye = Vehicle.ParseVector(line[1]); break;
-                        case "driverAngle": driverAngle = Vehicle.ParseVector(line[1]).Xz; break;
-                        case "steeringWheel": steeringWheelOrigin = Vehicle.ParseVector(line[1]); break;
-                        case "steeringWheelAngle": steeringWheelAngle = Vehicle.ParseVector(line[1]).Xz; break;
-                        case "needleOrigin": needleOrigin = Vehicle.ParseVector(line[1]); break;
-                        case "needleAngle": needleAngle = Vehicle.ParseVector(line[1]); break;
-                        case "wheelRadius": Misc.parseFloat(line[1], out wheelRadius); break;
-                        case "wheelWidth": Misc.parseFloat(line[1], out wheelWidth ); break;
-                        case "wheelFriction": Misc.parseFloat(line[1], out wheelFriction); break;
-                        case "suspensionStiffness": Misc.parseFloat(line[1], out suspensionStiffness); break;
-                        case "suspensionDamping": Misc.parseFloat(line[1], out suspensionDamping); break;
-                        case "suspensionCompression": Misc.parseFloat(line[1], out suspensionCompression); break;
-                        case "rollInfluence": Misc.parseFloat(line[1], out rollInfluence); break;
-                        case "suspensionRestLength": Misc.parseFloat(line[1], out suspensionRestLength); break;
-                        case "connectionHeight": Misc.parseFloat(line[1], out connectionHeight); break;
-                        case "color":
-                            string[] colorValues = line[1].Split(',');
-                            colors = new Color4[colorValues.Length];
-                            for (int j = 0; j < colorValues.Length; j++)
-                            {
-                                colors[j] = new Color4(System.Drawing.ColorTranslator.FromHtml(colorValues[j].Split(':')[1]));
-                            }
-                            break;
-                    }
-                }
-            }
+            DataParser.ParseData(file, this);
+           
             bodyMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/body.obj");
             wheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/wheel.obj");
             cabinMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/cabin.obj");
@@ -84,7 +42,7 @@ namespace Slovenia_simulator.Vehicles
             {
                 if (cabinMesh.materials[i].Name == "bodyColor") cabinMesh.materials[i].Brush = colors[color];
             }*/
-            CollisionShape chassisShape = new BoxShape(width / 2, height / 2, length / 2);
+            CollisionShape chassisShape = new BoxShape(Dimensions.Y / 2, Dimensions.Z / 2, Dimensions.X / 2);
             collisionShape = new CompoundShape();
 
             //localTrans effectively shifts the center of mass with respect to the chassis
@@ -102,31 +60,31 @@ namespace Slovenia_simulator.Vehicles
 
            
             bool isFrontWheel = true;
-            float CUBE_HALF_EXTENTS = width/2;
+            float CUBE_HALF_EXTENTS = Dimensions.Y/2;
             // choose coordinate system
             raycastVehicle.SetCoordinateSystem(rightIndex, upIndex, forwardIndex);
 
-            Vector3 connectionPointCS0 = new Vector3(frontWheel.Z, connectionHeight, frontWheel.X);
-            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
+            Vector3 connectionPointCS0 = new Vector3(FrontWheelLocation.Y, SuspensionHeight, FrontWheelLocation.X);
+            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, SuspensionRestLength, WheelRadius, tuning, isFrontWheel);
 
-            connectionPointCS0 = new Vector3(-frontWheel.Z, connectionHeight, frontWheel.X);
-            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
+            connectionPointCS0 = new Vector3(-FrontWheelLocation.Y, SuspensionHeight, FrontWheelLocation.X);
+            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, SuspensionRestLength, WheelRadius, tuning, isFrontWheel);
 
             isFrontWheel = false;
-            connectionPointCS0 = new Vector3(-rearWheel.Z, connectionHeight, -rearWheel.X);
-            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
+            connectionPointCS0 = new Vector3(-RearWheelLocation.Y, SuspensionHeight, -RearWheelLocation.X);
+            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, SuspensionRestLength, WheelRadius, tuning, isFrontWheel);
 
-            connectionPointCS0 = new Vector3(rearWheel.Z, connectionHeight, -rearWheel.X);
-            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
+            connectionPointCS0 = new Vector3(RearWheelLocation.Y, SuspensionHeight, -RearWheelLocation.X);
+            raycastVehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, SuspensionRestLength, WheelRadius, tuning, isFrontWheel);
 
             for (int i = 0; i < raycastVehicle.NumWheels; i++)
             {
                 WheelInfo wheel = raycastVehicle.GetWheelInfo(i);
-                wheel.SuspensionStiffness = suspensionStiffness;
-                wheel.WheelsDampingRelaxation = suspensionDamping;
-                wheel.WheelsDampingCompression = suspensionCompression;
-                wheel.FrictionSlip = wheelFriction;
-                wheel.RollInfluence = rollInfluence;
+                wheel.SuspensionStiffness = SuspensionStiffness;
+                wheel.WheelsDampingRelaxation = SuspensionDamping;
+                wheel.WheelsDampingCompression = SuspensionCompression;
+                wheel.FrictionSlip = WheelFriction;
+                wheel.RollInfluence = RollInfluence;
             }
         }
         public override void Draw(Matrix4 LookAt, ref MeshCollector Meshes)
@@ -159,10 +117,10 @@ namespace Slovenia_simulator.Vehicles
                 case PlayerView.Debug:
                 case PlayerView.Cabin:
                     Meshes.DrawMesh(cabinMesh);
-                    Matrix4 steering =  Matrix4.CreateRotationZ(steeringWheelAngle.X*steeringValue)*Matrix4.CreateRotationX(steeringWheelAngle.Y) * Matrix4.CreateTranslation(steeringWheelOrigin) * modelLookAt;
+                    Matrix4 steering = Matrix4.CreateRotationZ(SteeringWheelAngle.X * steeringValue) * Matrix4.CreateRotationX(SteeringWheelAngle.Y) * Matrix4.CreateTranslation(SteeringWheelLocation) * modelLookAt;
                     GL.LoadMatrix(ref steering);
                     Meshes.DrawMesh(steeringWheelMesh);
-                    steering =  Matrix4.CreateRotationZ(needleAngle.X+(raycastVehicle.CurrentSpeedKmHour/needleAngle.Y))*Matrix4.CreateRotationX(needleAngle.Z) * Matrix4.CreateTranslation(needleOrigin) * modelLookAt;
+                    steering = Matrix4.CreateRotationZ(NeedleAngle.X + (raycastVehicle.CurrentSpeedKmHour / NeedleAngle.Y)) * Matrix4.CreateRotationX(NeedleAngle.Z) * Matrix4.CreateTranslation(NeedleLocation) * modelLookAt;
                     GL.LoadMatrix(ref steering);
                     Meshes.DrawMesh(needleMesh);
                     break;
@@ -187,16 +145,16 @@ namespace Slovenia_simulator.Vehicles
 
         private void manageKeyboard(OpenTK.Input.KeyboardDevice k)
         {
-            float maxSteering = steeringClamp*(1-(raycastVehicle.CurrentSpeedKmHour/maxSpeed));
-            float incSteering = steeringIncrement * (1-(raycastVehicle.CurrentSpeedKmHour / maxSpeed));
+            float maxSteering = SteeringClamp * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
+            float incSteering = SteeringIncrement * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
             if (k[OpenTK.Input.Key.Pause]) System.Diagnostics.Debugger.Break();
-            if (!k[OpenTK.Input.Key.A]&&!k[OpenTK.Input.Key.D]&&steeringValue > -steeringIncrement * 3 && steeringValue < steeringIncrement * 3) steeringValue = 0;
+            if (!k[OpenTK.Input.Key.A] && !k[OpenTK.Input.Key.D] && steeringValue > -SteeringIncrement * 3 && steeringValue < SteeringIncrement * 3) steeringValue = 0;
             if (k[OpenTK.Input.Key.A])
             {
                 steeringValue += incSteering;
                 if (steeringValue > maxSteering) steeringValue = maxSteering;
             }
-            else if (steeringValue > 3 * steeringIncrement) steeringValue -= 3 * steeringIncrement;
+            else if (steeringValue > 3 * SteeringIncrement) steeringValue -= 3 * SteeringIncrement;
 
             if (k[OpenTK.Input.Key.D])
             {
@@ -204,12 +162,12 @@ namespace Slovenia_simulator.Vehicles
                 if (steeringValue < -maxSteering)
                     steeringValue = -maxSteering;
             }
-            else if (steeringValue < 3 * -steeringIncrement) steeringValue += 3 * steeringIncrement;
+            else if (steeringValue < 3 * -SteeringIncrement) steeringValue += 3 * SteeringIncrement;
 
-            if (k[OpenTK.Input.Key.W] && engineForce < maxEngineForce) engineForce += 50f;
+            if (k[OpenTK.Input.Key.W] && engineForce < MaxEngineForce) engineForce += 50f;
             else if (engineForce > 0) engineForce -= 25f;
 
-            if (k[OpenTK.Input.Key.S] && brakeForce < maxBrakeForce)
+            if (k[OpenTK.Input.Key.S] && brakeForce < MaxBrakeForce)
             {
                 if (engineForce > 0) engineForce -= 50;
                 brakeForce += 200f;

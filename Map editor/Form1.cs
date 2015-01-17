@@ -23,7 +23,6 @@ namespace Map_editor
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyDocuments;
             folderBrowserDialog1.SelectedPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Visual Studio 2013\\Projects\\Slovenia simulator\\Slovenia simulator\\bin\\Debug\\data\\maps";
             cmbType.SelectedIndex = 0;
             newPointOnMap = new ReferencePointAdded(PointAdded);
@@ -205,33 +204,6 @@ namespace Map_editor
             if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 MapPath = folderBrowserDialog1.SelectedPath;
-                /*string[] roads = File.ReadAllLines(MapPath + "/roads.dat");
-                for (int i = 0; i < roads.Length; i++)
-                {
-                    string[] line = roads[i].Split(';');
-                    TreeNode n = new TreeNode(line[0], 1, 0);
-                    Road r = new Road(n);
-                    r.Name = line[0];
-                    r.LaneWidth = toFloat(line[1]);
-                    r.LaneHeight = toFloat(line[2]);
-                    r.Limit = toInt(line[3]);
-                    r.RoadType = (RoadTypes)toInt(line[5]);
-                    r.Segments = toInt(line[4]);
-                    r.LeftObject = line[6];
-                    r.RightObject = line[7];
-                    n.Tag = r;
-                    treeView1.Nodes[0].Nodes.Add(n);
-                    for (int j = 8; j < line.Length; j++)
-                    {
-                        TreeNode tr = new TreeNode("Point", 4, 0);
-                        string[] tocka = line[j].Split(':');
-                        ReferencePoint point = new ReferencePoint(new Point((int)(toFloat(tocka[0]) * 5), (int)(toFloat(tocka[1]) * 5)));
-                        tr.Tag = point;
-                        point.MouseUp += r_MouseUp;
-                        Map.Controls.Add(point);
-                        n.Nodes.Add(tr);
-                    }
-                }*/
                 foreach (string f in Directory.GetFiles(MapPath + "/roads/"))
 	            {
                     TreeNode n = new TreeNode("", 1, 0);
@@ -320,17 +292,8 @@ namespace Map_editor
                 List<string> roads = new List<string>();
                 foreach (TreeNode t in treeView1.Nodes[0].Nodes)
                 {
-                    //Road r = t.Tag as Road;
-                    //string points = "";
-                    //foreach (TreeNode tr in t.Nodes)
-                    //{
-                    //    ReferencePoint refe = tr.Tag as ReferencePoint;
-                    //    points += ";" + (refe.X / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + (refe.Y / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture);
-                    //}
-                    //roads.Add(r.Name+";"+toString(r.LaneWidth)+";"+toString(r.Height)+";"+r.Limit+";"+r.Segments+";"+(int)r.Type+";"+r.LeftObject+";"+r.RightObject+points);
                     (t.Tag as Road).ExportToFile(MapPath);
                 }
-                //File.WriteAllLines(MapPath + "/roads.dat", roads);
             }
         }
 

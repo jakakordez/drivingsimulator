@@ -15,34 +15,48 @@ namespace Slovenia_simulator
             {
                 if (file[i] != "" && file[i][0] != '#' && file[i].Contains('='))
                 {
-                    try
+                    string[] line = file[i].Replace(" ", "").Split('=');
+                    if (obj.GetType().GetField(line[0]) != null)
                     {
-                        string[] line = file[i].Replace(" ", "").Split('=');
                         Type t = obj.GetType().GetField(line[0]).FieldType;
-                        object value = null;
-                        if (t == typeof(string)) value = line[1];
-                        else if (t == typeof(int)) value = Misc.toInt(line[1]);
-                        else if (t == typeof(float)) value = Misc.toFloat(line[1]);
-                        else if (t == typeof(bool)) value = Convert.ToBoolean(line[1]);
-                        else if (t == typeof(Vector2[]))
-                        {
-                            string[] points = line[1].Split(';');
-                            Vector2[] r = new Vector2[0];
-                            for (int j = 0; j < points.Length; j++)
-                            {
-                                if (points[j].Contains(':'))
-                                {
-                                    string[] tocka = points[j].Split(':');
-                                    Misc.Push<Vector2>(new Vector2(Misc.toFloat(tocka[0]), Misc.toFloat(tocka[1])), ref r);
-                                }
-                            }
-                            value = r;
-                        }
-                        obj.GetType().GetField(line[0]).SetValue(obj, value);
+                        obj.GetType().GetField(line[0]).SetValue(obj, parseValue(line[1], t));
                     }
-                    catch { }
                 }
             }
+        }
+
+        private static object parseValue(string v, Type t)
+        {
+            object value = null;
+            if (t == typeof(string)) value = v;
+            else if (t == typeof(int)) value = Misc.toInt(v);
+            else if (t == typeof(float)) value = Misc.toFloat(v);
+            else if (t == typeof(bool)) value = Convert.ToBoolean(v);
+            else if (t == typeof(Vector2))
+            {
+                string[] p = v.Split(',');
+                value = new Vector2(Misc.toFloat(p[0]), Misc.toFloat(p[1]));
+            }
+            else if (t == typeof(Vector3))
+            {
+                string[] p = v.Split(',');
+                value = new Vector3(Misc.toFloat(p[0]), Misc.toFloat(p[1]), Misc.toFloat(p[2]));
+            }
+            else if (t == typeof(Vector2[]))
+            {
+                string[] points = v.Split(';');
+                Vector2[] r = new Vector2[0];
+                for (int j = 0; j < points.Length; j++)
+                {
+                    if (points[j].Contains(':'))
+                    {
+                        string[] tocka = points[j].Split(':');
+                        Misc.Push<Vector2>(new Vector2(Misc.toFloat(tocka[0]), Misc.toFloat(tocka[1])), ref r);
+                    }
+                }
+                value = r;
+            }
+            return value;
         }
     }
 }

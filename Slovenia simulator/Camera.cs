@@ -28,11 +28,11 @@ namespace Slovenia_simulator
             switch (vehicle.viewMode)
             {
                 case PlayerView.Cabin:
-                    e = Matrix4.CreateTranslation(vehicle.driverEye);
-                    t = Matrix4.CreateTranslation(vehicle.driverEye + new Vector3(0, 0, 2)) * Matrix4.CreateRotationX((y*vehicle.driverAngle.X)-(vehicle.driverAngle.X/2)) * Matrix4.CreateRotationY((-x*vehicle.driverAngle.Y)+(vehicle.driverAngle.Y/2));
+                    e = Matrix4.CreateTranslation(vehicle.DriverEyeLocation);
+                    t = Matrix4.CreateTranslation(vehicle.DriverEyeLocation + new Vector3(0, 0, 2)) * Matrix4.CreateRotationX((y * vehicle.DriverViewAngle.X) - (vehicle.DriverViewAngle.X / 2)) * Matrix4.CreateRotationY((-x * vehicle.DriverViewAngle.Y) + (vehicle.DriverViewAngle.Y / 2));
                     break;
                 case PlayerView.Exterior:
-                    e = Matrix4.CreateTranslation(vehicle.exteriorEye);
+                    e = Matrix4.CreateTranslation(vehicle.ExteriorEyeLocation);
                     t = Matrix4.CreateTranslation(new Vector3(0, 1.2f, -2));
                     break;
                 case PlayerView.Camera:
