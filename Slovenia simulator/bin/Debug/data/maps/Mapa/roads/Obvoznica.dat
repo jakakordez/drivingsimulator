@@ -1,0 +1,12 @@
+Name = Obvoznica
+RoadType = 3
+Segments = 10
+Traffic = False
+Limit = 50
+LaneWidth = 3.5
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 302.2:0.6;347.6:63.2;428.6:179.6;

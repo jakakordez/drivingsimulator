@@ -23,6 +23,8 @@ namespace Map_editor
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyDocuments;
+            folderBrowserDialog1.SelectedPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Visual Studio 2013\\Projects\\Slovenia simulator\\Slovenia simulator\\bin\\Debug\\data\\maps";
             cmbType.SelectedIndex = 0;
             newPointOnMap = new ReferencePointAdded(PointAdded);
         }
@@ -203,7 +205,7 @@ namespace Map_editor
             if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 MapPath = folderBrowserDialog1.SelectedPath;
-                string[] roads = File.ReadAllLines(MapPath + "/roads.dat");
+                /*string[] roads = File.ReadAllLines(MapPath + "/roads.dat");
                 for (int i = 0; i < roads.Length; i++)
                 {
                     string[] line = roads[i].Split(';');
@@ -211,9 +213,9 @@ namespace Map_editor
                     Road r = new Road(n);
                     r.Name = line[0];
                     r.LaneWidth = toFloat(line[1]);
-                    r.Height = toFloat(line[2]);
+                    r.LaneHeight = toFloat(line[2]);
                     r.Limit = toInt(line[3]);
-                    r.Type = (RoadTypes)toInt(line[5]);
+                    r.RoadType = (RoadTypes)toInt(line[5]);
                     r.Segments = toInt(line[4]);
                     r.LeftObject = line[6];
                     r.RightObject = line[7];
@@ -229,7 +231,51 @@ namespace Map_editor
                         Map.Controls.Add(point);
                         n.Nodes.Add(tr);
                     }
-                }
+                }*/
+                foreach (string f in Directory.GetFiles(MapPath + "/roads/"))
+	            {
+                    TreeNode n = new TreeNode("", 1, 0);
+                    Road r = new Road(n);
+                    n.Tag = r;
+                    string[] file = File.ReadAllLines(f);
+                    for (int i = 0; i < file.Length; i++)
+                    {
+                        if (file[i] != "" && file[i][0] != '#' && file[i].Contains('='))
+                        {
+                            string[] line = file[i].Replace(" ", "").Split('=');
+                            switch (line[0])
+                            {
+                                case "Name": r.Name = line[1]; break;
+                                case "RoadType": r.RoadType = (RoadTypes)toInt(line[1]); break;
+                                case "Segments": r.Segments = toInt(line[1]); break;
+                                case "Traffic": r.Traffic = toBool(line[1]); break;
+                                case "Limit": r.Limit = toInt(line[1]); break;
+                                case "LaneWidth": r.LaneWidth = toFloat(line[1]); break;
+                                case "SidewalkWidth": r.SidewalkWidth = toFloat(line[1]); break;
+                                case "LaneHeight": r.LaneHeight = toFloat(line[1]); break;
+                                case "SidewalkHeight": r.SidewalkHeight = toFloat(line[1]); break;
+                                case "SplitWidth": r.SplitWidth = toFloat(line[1]); break;
+                                case "Line":
+                                    string[] points = line[1].Split(';');
+                                    for (int j = 0; j < points.Length; j++)
+                                    {
+                                        if (points[j].Contains(':'))
+                                        {
+                                            TreeNode tr = new TreeNode("Point", 4, 0);
+                                            string[] tocka = points[j].Split(':');
+                                            ReferencePoint point = new ReferencePoint(new Point((int)(toFloat(tocka[0]) * 5), (int)(toFloat(tocka[1]) * 5)));
+                                            tr.Tag = point;
+                                            point.MouseUp += r_MouseUp;
+                                            Map.Controls.Add(point);
+                                            n.Nodes.Add(tr);
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    treeView1.Nodes[0].Nodes.Add(n);
+	            }
                 Draw();
             }
         }
@@ -274,16 +320,17 @@ namespace Map_editor
                 List<string> roads = new List<string>();
                 foreach (TreeNode t in treeView1.Nodes[0].Nodes)
                 {
-                    Road r = t.Tag as Road;
-                    string points = "";
-                    foreach (TreeNode tr in t.Nodes)
-                    {
-                        ReferencePoint refe = tr.Tag as ReferencePoint;
-                        points += ";" + (refe.X / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + (refe.Y / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture);
-                    }
-                    roads.Add(r.Name+";"+toString(r.LaneWidth)+";"+toString(r.Height)+";"+r.Limit+";"+r.Segments+";"+(int)r.Type+";"+r.LeftObject+";"+r.RightObject+points);
+                    //Road r = t.Tag as Road;
+                    //string points = "";
+                    //foreach (TreeNode tr in t.Nodes)
+                    //{
+                    //    ReferencePoint refe = tr.Tag as ReferencePoint;
+                    //    points += ";" + (refe.X / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + (refe.Y / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    //}
+                    //roads.Add(r.Name+";"+toString(r.LaneWidth)+";"+toString(r.Height)+";"+r.Limit+";"+r.Segments+";"+(int)r.Type+";"+r.LeftObject+";"+r.RightObject+points);
+                    (t.Tag as Road).ExportToFile(MapPath);
                 }
-                File.WriteAllLines(MapPath + "/roads.dat", roads);
+                //File.WriteAllLines(MapPath + "/roads.dat", roads);
             }
         }
 
@@ -304,6 +351,11 @@ namespace Map_editor
             int result = 0;
             int.TryParse(data, out result);
             return result;
+        }
+
+        public static bool toBool(string data)
+        {
+            return Convert.ToBoolean(data);
         }
 
         private void button2_Click_1(object sender, EventArgs e)

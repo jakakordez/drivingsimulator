@@ -1,0 +1,12 @@
+Name = Kosovelova
+RoadType = 1
+Segments = 10
+Traffic = False
+Limit = 50
+LaneWidth = 8
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 183:174;180.6:149;192:144;203:133;218:116;

@@ -1,0 +1,12 @@
+Name = Ljubljanska
+RoadType = 6
+Segments = 30
+Traffic = False
+Limit = 50
+LaneWidth = 3
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 61.4:136;80:143.6;91:161.6;122.4:181;147:193;134.8:232.8;150:249;174:188;188:204.8;196:242;215:248;

@@ -1,0 +1,12 @@
+Name = Kopališka1
+RoadType = 5
+Segments = 10
+Traffic = False
+Limit = 50
+LaneWidth = 3
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 93:4.4;90.8:49.4;106:125;99.4:111.4;68.8:139;

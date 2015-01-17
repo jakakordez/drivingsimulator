@@ -1,0 +1,12 @@
+Name = Cankarjeva2
+RoadType = 5
+Segments = 10
+Traffic = False
+Limit = 50
+LaneWidth = 3
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 79.4:207;55.4:211;48.2:225;36.4:227.8;24.2:202.6;0.2:159;

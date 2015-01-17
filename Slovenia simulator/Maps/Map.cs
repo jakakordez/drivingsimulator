@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System.IO;
 
 namespace Slovenia_simulator.Maps
 {
@@ -13,13 +14,15 @@ namespace Slovenia_simulator.Maps
         Road[] Roads;
         public Map(string mapName, ref MeshCollector meshes)
         {
-            string[] roadsFile = System.IO.File.ReadAllLines("data/maps/"+mapName+"/roads.dat");
-            Roads = new Road[0];
+            string[] roadsFile = Directory.GetFiles("data/maps/"+mapName+"/roads/");
+            Roads = new Road[roadsFile.Length];
             for (int i = 0; i < roadsFile.Length; i++)
             {
-                Road r = new Road();
+                Roads[i] = new Road();
+                Roads[i].FromFile(roadsFile[i], ref meshes);
+               /* Road r = new Road();
                 r.FromString(roadsFile[i], ref meshes);
-                Misc.Push<Road>(r, ref Roads);
+                Misc.Push<Road>(r, ref Roads);*/
             }
         }
 

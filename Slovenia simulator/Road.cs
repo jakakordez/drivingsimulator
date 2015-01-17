@@ -11,12 +11,16 @@ namespace Slovenia_simulator
 {
     class Road
     {
-        Lane[] Lanes;
+        Lane[] drivingLanes, auxiliaryLanes;
+        public Vector2[] Line;
         ObjectLine[] Lines;
-        int RoadType = 1;
-        public void FromString(string line, ref MeshCollector meshes)
+        public string Name;
+        public int RoadType = 3, Segments = 5;
+        public bool Traffic = false;
+        public float LaneWidth = 3, SidewalkWidth = 1, LaneHeight = 0.02f, SidewalkHeight = 0.1f, SplitWidth = 1;
+        public void FromFile(string path, ref MeshCollector meshes)
         {
-            Lines = new ObjectLine[0];
+            /*Lines = new ObjectLine[0];
             string[] components = line.Split(';');
             float Width = Misc.toFloat(components[1]);
             float Height = Misc.toFloat(components[2]);
@@ -28,27 +32,90 @@ namespace Slovenia_simulator
                 string[] l = components[i].Split(':');
                 pointCollection[i - 8] = new Vector2(Misc.toFloat(l[0]), Misc.toFloat(l[1]));
             }
-            if (components[6] != "") Misc.Push<ObjectLine>(new ObjectLine(meshes.LoadMesh("./data/maps/Mapa/models/" + components[6] + "/body.obj"), pointCollection, Segments, Width + 0.3f), ref Lines);
-            Lanes = new Lane[] { new Lane(), new Lane(), new Lane()};
-            Lanes[0].GenerateRoad(pointCollection, Segments, 0, Width * 2, Height);
-            Lanes[1].GenerateRoad(pointCollection, Segments, Width+0.75f, 1.5f, 0.2f);
-            Lanes[2].GenerateRoad(pointCollection, Segments, -Width - 0.75f, 1.5f, 0.2f);
-            Array.Reverse(pointCollection);
-            if (components[7] != "") Misc.Push<ObjectLine>(new ObjectLine(meshes.LoadMesh("./data/maps/Mapa/models/" + components[7] + "/body.obj"), pointCollection, Segments, -Width - 0.3f), ref Lines);
+            if (components[6] != "") Misc.Push<ObjectLine>(new ObjectLine(meshes.LoadMesh("./data/maps/Mapa/models/" + components[6] + "/body.obj"), pointCollection, Segments, Width + 0.3f), ref Lines);*/
+            string[] file = System.IO.File.ReadAllLines(path);
+            DataParser.ParseData(file, this);
+            auxiliaryLanes = new Lane[0];
+            Lines = new ObjectLine[0];
+            switch (RoadType)
+            {
+                case 1: //one lane, one way
+                    drivingLanes = new Lane[]{new Lane()};
+                    drivingLanes[0].GenerateLane(Line, Segments, 0, LaneWidth, LaneHeight);
+                    break;
+                case 2: //two lanes
+                case 3: //two lanes, one way
+                    drivingLanes = new Lane[]{new Lane()};
+                    drivingLanes[0].GenerateLane(Line, Segments, 0, LaneWidth * 2, LaneHeight);
+                    break;
+                case 4: //two lanes, one way with sidewalk
+                case 5: //two lanes with sidewalk
+                    drivingLanes = new Lane[]{new Lane()};
+                    auxiliaryLanes = new Lane[] { new Lane(), new Lane() };
+                    drivingLanes[0].GenerateLane(Line, Segments, 0, LaneWidth * 2, LaneHeight);
+                    auxiliaryLanes[0].GenerateLane(Line, Segments, LaneWidth + (SidewalkWidth / 2), SidewalkWidth, SidewalkHeight);
+                    auxiliaryLanes[1].GenerateLane(Line, Segments, -LaneWidth - (SidewalkWidth / 2), SidewalkWidth, SidewalkHeight);
+                    break;
+                case 6: //two lanes with sidewalk on one side
+                    drivingLanes = new Lane[]{new Lane()};
+                    auxiliaryLanes = new Lane[] { new Lane() };
+                    drivingLanes[0].GenerateLane(Line, Segments, 0, LaneWidth * 2, LaneHeight);
+                    auxiliaryLanes[0].GenerateLane(Line, Segments, LaneWidth + (SidewalkWidth / 2), SidewalkWidth, SidewalkHeight);
+                    break;
+                case 7: //four lanes
+                    drivingLanes = new Lane[]{new Lane()};
+                    drivingLanes[0].GenerateLane(Line, Segments, 0, LaneWidth * 4, LaneHeight);
+                    break;
+                case 8: //four lanes with sidewalk
+                    drivingLanes = new Lane[]{new Lane()};
+                    auxiliaryLanes = new Lane[] { new Lane(), new Lane() };
+                    drivingLanes[0].GenerateLane(Line, Segments, 0, LaneWidth * 4, LaneHeight);
+                    auxiliaryLanes[0].GenerateLane(Line, Segments, (LaneWidth * 2) + (SidewalkWidth / 2), SidewalkWidth * 2, SidewalkHeight);
+                    auxiliaryLanes[1].GenerateLane(Line, Segments, -(LaneWidth * 2) - (SidewalkWidth / 2), SidewalkWidth * 2, SidewalkHeight);
+                    break;
+                case 9: //2X two lanes
+                    drivingLanes = new Lane[] { new Lane(), new Lane() };
+                    drivingLanes[0].GenerateLane(Line, Segments, (SplitWidth / 2) + LaneWidth, LaneWidth * 2, LaneHeight);
+                    drivingLanes[1].GenerateLane(Line, Segments, -(SplitWidth / 2) - LaneWidth, LaneWidth * 2, LaneHeight);
+                    break;
+                case 10: //2X two lanes with emergency lanes
+                case 11: //2X three lanes
+                    drivingLanes = new Lane[] { new Lane(), new Lane() };
+                    drivingLanes[0].GenerateLane(Line, Segments, (SplitWidth / 2) + (LaneWidth * 1.5f), LaneWidth * 3, LaneHeight);
+                    drivingLanes[1].GenerateLane(Line, Segments, -(SplitWidth / 2) - (LaneWidth * 1.5f), LaneWidth * 3, LaneHeight);
+                    break;
+                case 12: //2X three lanes with emergency lanes
+                case 13: //2X four lanes
+                    drivingLanes = new Lane[] { new Lane(), new Lane() };
+                    drivingLanes[0].GenerateLane(Line, Segments, (SplitWidth / 2) + (LaneWidth * 2), LaneWidth * 4, LaneHeight);
+                    drivingLanes[1].GenerateLane(Line, Segments, -(SplitWidth / 2) - (LaneWidth * 2), LaneWidth * 4, LaneHeight);
+                    break;
+            }
+            //if (components[7] != "") Misc.Push<ObjectLine>(new ObjectLine(meshes.LoadMesh("./data/maps/Mapa/models/" + components[7] + "/body.obj"), pointCollection, Segments, -Width - 0.3f), ref Lines);
         }
 
         public void Draw(Matrix4 world, ref MeshCollector meshes)
         {
             GL.Color4(Color4.Black);
             
-            for (int i = 0; i < Lanes.Length; i++)
+            for (int i = 0; i < drivingLanes.Length; i++)
             {
                 GL.Begin(PrimitiveType.TriangleStrip);
-                for (int j = 0; j < Lanes[i].Length; j++)
+                for (int j = 0; j < drivingLanes[i].Length; j++)
                 {
-                    GL.Vertex3(Lanes[i].Points[j]);
+                    GL.Vertex3(drivingLanes[i].Points[j]);
                 }
-                GL.Color4(Color4.Red);
+
+                GL.End();
+            }
+            GL.Color4(Color4.Red);
+            for (int i = 0; i < auxiliaryLanes.Length; i++)
+            {
+                GL.Begin(PrimitiveType.TriangleStrip);
+                for (int j = 0; j < auxiliaryLanes[i].Length; j++)
+                {
+                    GL.Vertex3(auxiliaryLanes[i].Points[j]);
+                }
                 GL.End();
             }
             
@@ -63,7 +130,7 @@ namespace Slovenia_simulator
         public long Length { get { return Points.Length; } }
         public Vector3[] Points;
 
-        public void GenerateRoad(Vector2[] roadLine, int Segments, float Offset, float Width, float Height)
+        public void GenerateLane(Vector2[] roadLine, int Segments, float Offset, float Width, float Height)
         {
             Vector2[] roadCurve = Misc.GetBezierApproximation(roadLine, Segments);
             Vector2[] pointsL = new Vector2[roadCurve.Length*2];

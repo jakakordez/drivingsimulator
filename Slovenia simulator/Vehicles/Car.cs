@@ -41,6 +41,7 @@ namespace Slovenia_simulator.Vehicles
                         case "steeringClamp": Misc.parseFloat(line[1], out steeringClamp); break;
                         case "maxEngineForce": Misc.parseFloat(line[1], out maxEngineForce); break;
                         case "maxBrakeForce": Misc.parseFloat(line[1], out maxBrakeForce); break;
+                        case "maxSpeed": maxSpeed = Misc.toFloat(line[1]); break;
                         case "frontWheel": frontWheel = Vehicle.ParseVector(line[1]); break;
                         case "rearWheel": rearWheel = Vehicle.ParseVector(line[1]); break;
                         case "driver": driverEye = Vehicle.ParseVector(line[1]); break;
@@ -91,7 +92,7 @@ namespace Slovenia_simulator.Vehicles
             ((CompoundShape)collisionShape).AddChildShape(localTrans, chassisShape);
         }
 
-        new public void Init(VehicleRaycaster vehicleRayCaster)
+        public void Init(VehicleRaycaster vehicleRayCaster)
         {
             // create vehicle
             RaycastVehicle.VehicleTuning tuning = new RaycastVehicle.VehicleTuning();
@@ -186,25 +187,24 @@ namespace Slovenia_simulator.Vehicles
 
         private void manageKeyboard(OpenTK.Input.KeyboardDevice k)
         {
-            float maxSteering = steeringClamp*(1-(raycastVehicle.CurrentSpeedKmHour/180));
-            if (k[OpenTK.Input.Key.Delete]) System.Diagnostics.Debugger.Break();
-            if (!k[OpenTK.Input.Key.A]&&!k[OpenTK.Input.Key.D]&&steeringValue > -steeringIncrement * 2 && steeringValue < steeringIncrement * 2) steeringValue = 0;
+            float maxSteering = steeringClamp*(1-(raycastVehicle.CurrentSpeedKmHour/maxSpeed));
+            float incSteering = steeringIncrement * (1-(raycastVehicle.CurrentSpeedKmHour / maxSpeed));
+            if (k[OpenTK.Input.Key.Pause]) System.Diagnostics.Debugger.Break();
+            if (!k[OpenTK.Input.Key.A]&&!k[OpenTK.Input.Key.D]&&steeringValue > -steeringIncrement * 3 && steeringValue < steeringIncrement * 3) steeringValue = 0;
             if (k[OpenTK.Input.Key.A])
             {
-                steeringValue += steeringIncrement;
+                steeringValue += incSteering;
                 if (steeringValue > maxSteering) steeringValue = maxSteering;
             }
             else if (steeringValue > 3 * steeringIncrement) steeringValue -= 3 * steeringIncrement;
 
             if (k[OpenTK.Input.Key.D])
             {
-                steeringValue -= steeringIncrement;
+                steeringValue -= incSteering;
                 if (steeringValue < -maxSteering)
                     steeringValue = -maxSteering;
             }
             else if (steeringValue < 3 * -steeringIncrement) steeringValue += 3 * steeringIncrement;
-
-            
 
             if (k[OpenTK.Input.Key.W] && engineForce < maxEngineForce) engineForce += 50f;
             else if (engineForce > 0) engineForce -= 25f;
@@ -221,13 +221,14 @@ namespace Slovenia_simulator.Vehicles
             if (k[OpenTK.Input.Key.Number1]) viewMode = PlayerView.Cabin;
             if (k[OpenTK.Input.Key.Number2]) viewMode = PlayerView.Exterior;
             if (k[OpenTK.Input.Key.Number3]) viewMode = PlayerView.Camera;
+            if (k[OpenTK.Input.Key.Number0]) viewMode = PlayerView.Debug;
 
-            if (k[OpenTK.Input.Key.Up]) DebugLocation.X += 0.4f;
-            if (k[OpenTK.Input.Key.Down]) DebugLocation.X -= 0.4f;
-            if (k[OpenTK.Input.Key.Left]) DebugLocation.Z += 0.4f;
-            if (k[OpenTK.Input.Key.Right]) DebugLocation.Z -= 0.4f;
-            if (k[OpenTK.Input.Key.PageUp]) DebugLocation.Y += 0.4f;
-            if (k[OpenTK.Input.Key.PageDown]) DebugLocation.Y -= 0.4f;
+            if (k[OpenTK.Input.Key.Up]) DebugLocation.Z += 0.01f;
+            if (k[OpenTK.Input.Key.Down]) DebugLocation.Z -= 0.01f;
+            if (k[OpenTK.Input.Key.Left]) DebugLocation.X += 0.01f;
+            if (k[OpenTK.Input.Key.Right]) DebugLocation.X -= 0.01f;
+            if (k[OpenTK.Input.Key.PageUp])DebugLocation.Y += 0.01f;
+            if (k[OpenTK.Input.Key.PageDown]) DebugLocation.Y -= 0.01f;
         }
     }
 }

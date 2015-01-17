@@ -26,7 +26,7 @@ namespace Slovenia_simulator
             World = new DiscreteDynamicsWorld(dispatcher, broadphase, null, collisionConf);
             World.Gravity = new Vector3(0, -10, 0);
 
-            LocalCreateRigidBody(0, Matrix4.CreateTranslation(-50*Vector3.UnitY), new BoxShape(500, 50, 500));
+            LocalCreateRigidBody(0, Matrix4.CreateTranslation(-50*Vector3.UnitY), new BoxShape(5000, 50, 5000));
             addCar("BMW/M3-E92", Matrix4.CreateTranslation(new Vector3(0, 1, 0)), true, ref meshCollection);//
             for (int i = 0; i < 5; i++)
             {

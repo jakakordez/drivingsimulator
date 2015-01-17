@@ -56,7 +56,7 @@ namespace Slovenia_simulator
             GL.Viewport(0, 0, Width, Height);
 
             float aspect_ratio = Width / (float)Height;
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90), aspect_ratio, 0.1f, 100);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(85), aspect_ratio, 0.1f, 100);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
             base.OnResize(e);
@@ -64,11 +64,22 @@ namespace Slovenia_simulator
         int ups;
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            DebugMove(Keyboard, ref p.Player.DebugLocation);
             p.Update((float)e.Time, Keyboard);
                 
             if (Keyboard[OpenTK.Input.Key.Escape] || Keyboard[OpenTK.Input.Key.Q]) Exit();
             ups++;
             base.OnUpdateFrame(e);
+        }
+
+        public void DebugMove(OpenTK.Input.KeyboardDevice k, ref Vector3 n)
+        {
+            if (k[OpenTK.Input.Key.Keypad8]) n.Z += 0.001f;
+            if (k[OpenTK.Input.Key.Keypad2]) n.Z -= 0.001f;
+            if (k[OpenTK.Input.Key.Keypad4]) n.X += 0.001f;
+            if (k[OpenTK.Input.Key.Keypad6]) n.X -= 0.001f;
+            if (k[OpenTK.Input.Key.Keypad7]) n.Y += 0.001f;
+            if (k[OpenTK.Input.Key.Keypad1]) n.Y -= 0.001f;
         }
         
         OpenTK.Vector3 position = new Vector3(5, 8, 10);
@@ -93,10 +104,10 @@ namespace Slovenia_simulator
             GL.LoadMatrix(ref lookat);
             GL.Begin(PrimitiveType.Quads);
             GL.Color4(Color.Green);
-            GL.Vertex3(new Vector3(-500f, 0, -500f));
-            GL.Vertex3(new Vector3(-500f, 0, 500f));
-            GL.Vertex3(new Vector3(500f, 0, 500f));
-            GL.Vertex3(new Vector3(500f, 0, -500f));
+            GL.Vertex3(new Vector3(-5000f, 0, -5000f));
+            GL.Vertex3(new Vector3(-5000f, 0, 5000f));
+            GL.Vertex3(new Vector3(5000f, 0, 5000f));
+            GL.Vertex3(new Vector3(5000f, 0, -5000f));
             GL.End();
             currentMap.Draw(ref MeshCollection, lookat);
           

@@ -1,0 +1,12 @@
+Name = Kranjska
+RoadType = 5
+Segments = 30
+Traffic = False
+Limit = 50
+LaneWidth = 3.5
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 79:209;113:247;130.8:249;151.8:183.8;174:164.8;259.6:145;243.6:111.4;252:85;239.6:38.4;308.2:41;311.2:13;324:0.2;

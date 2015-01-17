@@ -1,0 +1,12 @@
+Name = Gorenjska
+RoadType = 5
+Segments = 60
+Traffic = False
+Limit = 50
+LaneWidth = 3.5
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = -0.6:9.8;42.4:64;73:157.6;85.4:242.6;

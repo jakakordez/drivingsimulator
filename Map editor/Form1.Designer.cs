@@ -29,15 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Roads", 1, 1);
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Objects", 2, 2);
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Utilities", 3, 3);
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Roads", 1, 1);
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Objects", 2, 2);
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Utilities", 3, 3);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Map = new System.Windows.Forms.Panel();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button5 = new System.Windows.Forms.Button();
@@ -48,8 +50,6 @@
             this.btnDefault = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.Map = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -69,6 +69,18 @@
             this.panel1.Size = new System.Drawing.Size(429, 488);
             this.panel1.TabIndex = 0;
             // 
+            // Map
+            // 
+            this.Map.BackColor = System.Drawing.Color.Green;
+            this.Map.BackgroundImage = global::Map_editor.Properties.Resources.Untitled2;
+            this.Map.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Map.Location = new System.Drawing.Point(3, 3);
+            this.Map.Name = "Map";
+            this.Map.Size = new System.Drawing.Size(5000, 5000);
+            this.Map.TabIndex = 2;
+            this.Map.Click += new System.EventHandler(this.Map_Click);
+            this.Map.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Map_MouseUp);
+            // 
             // treeView1
             // 
             this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -77,22 +89,22 @@
             this.treeView1.ImageList = this.imageList1;
             this.treeView1.Location = new System.Drawing.Point(12, 87);
             this.treeView1.Name = "treeView1";
-            treeNode1.ImageIndex = 1;
-            treeNode1.Name = "Node0";
-            treeNode1.SelectedImageIndex = 1;
-            treeNode1.Text = "Roads";
-            treeNode2.ImageIndex = 2;
-            treeNode2.Name = "Node1";
-            treeNode2.SelectedImageIndex = 2;
-            treeNode2.Text = "Objects";
-            treeNode3.ImageIndex = 3;
-            treeNode3.Name = "Node2";
-            treeNode3.SelectedImageIndex = 3;
-            treeNode3.Text = "Utilities";
+            treeNode4.ImageIndex = 1;
+            treeNode4.Name = "Node0";
+            treeNode4.SelectedImageIndex = 1;
+            treeNode4.Text = "Roads";
+            treeNode5.ImageIndex = 2;
+            treeNode5.Name = "Node1";
+            treeNode5.SelectedImageIndex = 2;
+            treeNode5.Text = "Objects";
+            treeNode6.ImageIndex = 3;
+            treeNode6.Name = "Node2";
+            treeNode6.SelectedImageIndex = 3;
+            treeNode6.Text = "Utilities";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3});
+            treeNode4,
+            treeNode5,
+            treeNode6});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.Size = new System.Drawing.Size(155, 413);
             this.treeView1.TabIndex = 1;
@@ -130,6 +142,16 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Place";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(76, 46);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 4;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // cmbType
             // 
@@ -227,30 +249,7 @@
             // 
             // folderBrowserDialog1
             // 
-            this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Jaka\\Documents\\Visual Studio 2013\\Projects\\Driving simulator\\Driving sim" +
-    "ulator\\bin\\Debug\\data\\maps";
-            // 
-            // Map
-            // 
-            this.Map.BackColor = System.Drawing.Color.Green;
-            this.Map.BackgroundImage = global::Map_editor.Properties.Resources.Untitled2;
-            this.Map.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Map.Location = new System.Drawing.Point(3, 3);
-            this.Map.Name = "Map";
-            this.Map.Size = new System.Drawing.Size(5000, 5000);
-            this.Map.TabIndex = 2;
-            this.Map.Click += new System.EventHandler(this.Map_Click);
-            this.Map.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Map_MouseUp);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(76, 46);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            this.folderBrowserDialog1.SelectedPath = "..\\..\\..\\Slovenia simulator\\bin\\Debug\\data\\maps";
             // 
             // Form1
             // 

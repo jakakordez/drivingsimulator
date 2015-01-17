@@ -1,0 +1,12 @@
+Name = Šola
+RoadType = 1
+Segments = 4
+Traffic = False
+Limit = 50
+LaneWidth = 3
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 246:96.4;165.6:72.4;

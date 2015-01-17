@@ -1,0 +1,12 @@
+Name = Žale
+RoadType = 1
+Segments = 10
+Traffic = False
+Limit = 50
+LaneWidth = 4
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 266.2:178;246:179;236.8:218.6;216:190.6;204.6:197;

@@ -1,0 +1,12 @@
+Name = Bevkova1
+RoadType = 3
+Segments = 5
+Traffic = False
+Limit = 50
+LaneWidth = 3
+SidewalkWidth = 1
+LaneHeight = 0.02
+SidewalkHeight = 0.1
+SplitWidth = 1
+
+Line = 382:117.4;384:137.8;369:145;283.6:214;
