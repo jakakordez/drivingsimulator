@@ -19,8 +19,9 @@ namespace Slovenia_simulator.Vehicles
         float gear = 1;
         Color4[] colors;
         float suspensionRestLength;
-        Vector3 steeringWheelOrigin, frontWheel, rearWheel;
-        int wheelMesh, steeringWheelMesh;
+        Vector3 steeringWheelOrigin, frontWheel, rearWheel, needleOrigin, needleAngle;
+        Vector2 steeringWheelAngle;
+        int wheelMesh, steeringWheelMesh, needleMesh;
         public Car(string path, int color, ref MeshCollector meshCollection):base()
         {
             driverEye = new Vector3();
@@ -46,6 +47,9 @@ namespace Slovenia_simulator.Vehicles
                         case "exterior": exteriorEye = Vehicle.ParseVector(line[1]); break;
                         case "driverAngle": driverAngle = Vehicle.ParseVector(line[1]).Xz; break;
                         case "steeringWheel": steeringWheelOrigin = Vehicle.ParseVector(line[1]); break;
+                        case "steeringWheelAngle": steeringWheelAngle = Vehicle.ParseVector(line[1]).Xz; break;
+                        case "needleOrigin": needleOrigin = Vehicle.ParseVector(line[1]); break;
+                        case "needleAngle": needleAngle = Vehicle.ParseVector(line[1]); break;
                         case "wheelRadius": Misc.parseFloat(line[1], out wheelRadius); break;
                         case "wheelWidth": Misc.parseFloat(line[1], out wheelWidth ); break;
                         case "wheelFriction": Misc.parseFloat(line[1], out wheelFriction); break;
@@ -70,6 +74,7 @@ namespace Slovenia_simulator.Vehicles
             wheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/wheel.obj");
             cabinMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/cabin.obj");
             steeringWheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/steeringwheel.obj");
+            needleMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/needle.obj");
             /*for (int i = 0; i < bodyMesh.materials.Length; i++)
             {
               if (bodyMesh.materials[i].Name == "bodyColor") bodyMesh.materials[i].Brush = colors[color];
@@ -150,11 +155,15 @@ namespace Slovenia_simulator.Vehicles
                     GL.LoadMatrix(ref wheel);
                     Meshes.DrawMesh(wheelMesh);
                     break;
+                case PlayerView.Debug:
                 case PlayerView.Cabin:
                     Meshes.DrawMesh(cabinMesh);
-                    Matrix4 steering =  Matrix4.CreateRotationZ(-8*steeringValue)*Matrix4.CreateRotationX(0.4f) * Matrix4.CreateTranslation(steeringWheelOrigin) * modelLookAt;
+                    Matrix4 steering =  Matrix4.CreateRotationZ(steeringWheelAngle.X*steeringValue)*Matrix4.CreateRotationX(steeringWheelAngle.Y) * Matrix4.CreateTranslation(steeringWheelOrigin) * modelLookAt;
                     GL.LoadMatrix(ref steering);
                     Meshes.DrawMesh(steeringWheelMesh);
+                    steering =  Matrix4.CreateRotationZ(needleAngle.X+(raycastVehicle.CurrentSpeedKmHour/needleAngle.Y))*Matrix4.CreateRotationX(needleAngle.Z) * Matrix4.CreateTranslation(needleOrigin) * modelLookAt;
+                    GL.LoadMatrix(ref steering);
+                    Meshes.DrawMesh(needleMesh);
                     break;
                 default:
                     break;
@@ -212,6 +221,13 @@ namespace Slovenia_simulator.Vehicles
             if (k[OpenTK.Input.Key.Number1]) viewMode = PlayerView.Cabin;
             if (k[OpenTK.Input.Key.Number2]) viewMode = PlayerView.Exterior;
             if (k[OpenTK.Input.Key.Number3]) viewMode = PlayerView.Camera;
+
+            if (k[OpenTK.Input.Key.Up]) DebugLocation.X += 0.4f;
+            if (k[OpenTK.Input.Key.Down]) DebugLocation.X -= 0.4f;
+            if (k[OpenTK.Input.Key.Left]) DebugLocation.Z += 0.4f;
+            if (k[OpenTK.Input.Key.Right]) DebugLocation.Z -= 0.4f;
+            if (k[OpenTK.Input.Key.PageUp]) DebugLocation.Y += 0.4f;
+            if (k[OpenTK.Input.Key.PageDown]) DebugLocation.Y -= 0.4f;
         }
     }
 }

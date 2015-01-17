@@ -8,10 +8,11 @@ using BulletSharp;
 
 namespace Slovenia_simulator
 {
-    public enum PlayerView { Exterior, Cabin, Camera}
+    public enum PlayerView { Exterior, Cabin, Camera, Debug}
     class Vehicle
     {
-        public PlayerView viewMode = PlayerView.Exterior;
+        public PlayerView viewMode = PlayerView.Debug;
+        public Vector3 DebugLocation;
         public float Mass, maxEngineForce, maxBrakeForce, width, height, length;
         public float engineForce, brakeForce, steeringValue;
         public CollisionShape collisionShape;
