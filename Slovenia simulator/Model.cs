@@ -35,18 +35,20 @@ namespace Slovenia_simulator
             {
                 if (faces[i].mtl != m){
                     faceMaterial = materials[faces[i].mtl];
-                    if (faceMaterial.texture != 0)
+                    if (faceMaterial.Texture != 0)
                     {
                         GL.Color4(Color.White);
-                        GL.BindTexture(TextureTarget.Texture2D, faceMaterial.texture);
+                        GL.BindTexture(TextureTarget.Texture2D, faceMaterial.Texture);
+                        GL.TexCoord2(0, 0);
                         GL.Begin(PrimitiveType.Triangles);
+                        
                     }
                     else GL.Color4(faceMaterial.Brush);
-                    m = faces[i].mtl; 
-                    //GL.TexCoord2(0, 0);
+                    m = faces[i].mtl;
+                    
                 }
                 for (int j = 0; j < faces[i].vertices.Length; j++)GL.Vertex3(vertices[faces[i].vertices[j]]);
-                if (i < faces.Length-2 && faces[i+1].mtl != m && materials[faces[i+1].mtl].texture != 0) GL.End();
+                if (i < faces.Length-2 && faces[i+1].mtl != m && materials[faces[i+1].mtl].Texture != 0) GL.End();
             }
             GL.End();
         }
@@ -118,13 +120,13 @@ namespace Slovenia_simulator
                         }
                         break;
                     case "map_Kd":
-                       /* if(currentMaterial != null)
+                        if(currentMaterial != null)
                         {
                             string[] flnm = filename.Replace('\\', '/').Split('/');
                             string result = "";
                             for (int j = 0; j < flnm.Length - 1; j++) result += flnm[j] + "/";
-                            currentMaterial.texture = (int)Misc.LoadTexture(result + line[1], 8);
-                        }*/
+                            currentMaterial.Texture = (int)Misc.LoadTexture(result + line[1], 8);
+                        }
                         break;
                 }
             }
@@ -136,19 +138,20 @@ namespace Slovenia_simulator
     {
         public Color4 Brush;
         public string Name;
-        public int texture;
+        public int Texture;
         public Material(string name)
         {
             Name = name;
             Brush = new Color4();
             Brush.A = 255;
-            texture = 0;
+            Texture = 0;
         }
     }
 
     public class Face
     {
         public int[] vertices;
+        public int[] textureCoordinates;
         public int mtl;
         public Face(int[] v)
         {
@@ -157,6 +160,7 @@ namespace Slovenia_simulator
         public Face()
         {
             vertices = new int[0];
+            textureCoordinates = new int[0];
         }
     }
 }

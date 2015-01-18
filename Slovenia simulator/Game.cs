@@ -36,7 +36,7 @@ namespace Slovenia_simulator
             GL.ClearColor(Color.CornflowerBlue);
 
             GL.Enable(EnableCap.ColorMaterial);
-            //GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Light0);
             renderer = new TextRenderer(100, 50);
             //GL.Enable(EnableCap.Lighting);
@@ -56,7 +56,7 @@ namespace Slovenia_simulator
             GL.Viewport(0, 0, Width, Height);
 
             float aspect_ratio = Width / (float)Height;
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(85), aspect_ratio, 0.1f, 100);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(85), aspect_ratio, 0.01f, 100);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
             base.OnResize(e);
