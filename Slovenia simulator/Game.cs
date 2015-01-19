@@ -21,6 +21,7 @@ namespace Slovenia_simulator
         MeshCollector MeshCollection;
         Font serif = new Font(FontFamily.GenericSerif, 24);
         Maps.Map currentMap;
+        int grass;
         public Game()
             : base(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, new GraphicsMode(), "Driving simulator")
         {
@@ -46,7 +47,7 @@ namespace Slovenia_simulator
             camera = new Camera(this.Height, this.Width);
             currentMap = new Maps.Map("Mapa", ref MeshCollection);
             System.Diagnostics.Debugger.Log(1, "Timing", "\nMapa: " + stw.ElapsedMilliseconds);
-           
+            grass = Misc.LoadTexture("data/maps/Mapa/textures/grass.png", 1);
             p = new Physics(ref MeshCollection);
             System.Diagnostics.Debugger.Log(1, "Timing", "\nFizika: " + stw.ElapsedMilliseconds);
         }
@@ -101,21 +102,28 @@ namespace Slovenia_simulator
             Matrix4 lookat = camera.GenerateLookAt((Vehicle)p.Player);
             GL.MatrixMode(MatrixMode.Modelview);
             if (this.Focused) camera.Update(Mouse, Height / 2, Width / 2);
+            currentMap.Draw(ref MeshCollection, lookat);
             GL.LoadMatrix(ref lookat);
+            
+            GL.Color4(Color.White);
+            GL.BindTexture(TextureTarget.Texture2D, grass);
             GL.Begin(PrimitiveType.Quads);
-            GL.Color4(Color.Green);
+            GL.TexCoord2(new Vector2(0, 0));
             GL.Vertex3(new Vector3(-5000f, 0, -5000f));
+            GL.TexCoord2(new Vector2(0, 10000));
             GL.Vertex3(new Vector3(-5000f, 0, 5000f));
+            GL.TexCoord2(new Vector2(10000, 10000));
             GL.Vertex3(new Vector3(5000f, 0, 5000f));
+            GL.TexCoord2(new Vector2(10000, 0));
             GL.Vertex3(new Vector3(5000f, 0, -5000f));
             GL.End();
-            currentMap.Draw(ref MeshCollection, lookat);
+            
           
-            p.Player.Draw(lookat, ref MeshCollection);
+           /* p.Player.Draw(lookat, ref MeshCollection);
             for (int i = 0; i < p.Vehicles.Length; i++)
             {
                 p.Vehicles[i].Draw(lookat, ref MeshCollection);
-            }
+            }*/
 
             SwapBuffers();
         }

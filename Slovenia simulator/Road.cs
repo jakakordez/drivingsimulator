@@ -14,8 +14,8 @@ namespace Slovenia_simulator
         Lane[] drivingLanes, auxiliaryLanes;
         public Vector2[] Line;
         ObjectLine[] Lines;
-        public string Name;
-        public int RoadType = 3, Segments = 5;
+        public string Name, Texture;
+        public int RoadType = 3, Segments = 5, tekstura = 0;
         public bool Traffic = false;
         public float LaneWidth = 3, SidewalkWidth = 1, LaneHeight = 0.02f, SidewalkHeight = 0.1f, SplitWidth = 1;
         public void FromFile(string path, ref MeshCollector meshes)
@@ -25,6 +25,7 @@ namespace Slovenia_simulator
             DataParser.ParseData(file, this);
             auxiliaryLanes = new Lane[0];
             Lines = new ObjectLine[0];
+            if(Texture != null) tekstura = Misc.LoadTexture(Texture, 1);
             switch (RoadType)
             {
                 case 1: //one lane, one way
@@ -84,18 +85,38 @@ namespace Slovenia_simulator
 
         public void Draw(Matrix4 world, ref MeshCollector meshes)
         {
-            GL.Color4(Color4.Black);
             
+            if (tekstura != 0) { 
+                GL.BindTexture(TextureTarget.Texture2D, tekstura);
+                GL.Color4(Color4.White);
+            }
+            else
+            {
+                GL.Color4(Color4.Black);
+                GL.BindTexture(TextureTarget.Texture2D, 0);
+            }
             for (int i = 0; i < drivingLanes.Length; i++)
             {
-                GL.Begin(PrimitiveType.TriangleStrip);
-                for (int j = 0; j < drivingLanes[i].Length; j++)
+                GL.Begin(PrimitiveType.Triangles);
+                for (int j = 0; j < drivingLanes[i].Length; j+=6)
                 {
+                    GL.TexCoord2(new Vector2(0, 0));
                     GL.Vertex3(drivingLanes[i].Points[j]);
+                    GL.TexCoord2(new Vector2(1, 0));
+                    GL.Vertex3(drivingLanes[i].Points[j+1]);
+                    GL.TexCoord2(new Vector2(0, 1));
+                    GL.Vertex3(drivingLanes[i].Points[j+2]);
+                    GL.TexCoord2(new Vector2(0, 1));
+                    GL.Vertex3(drivingLanes[i].Points[j + 3]);
+                    GL.TexCoord2(new Vector2(1, 0));
+                    GL.Vertex3(drivingLanes[i].Points[j + 4]);
+                    GL.TexCoord2(new Vector2(1, 1));
+                    GL.Vertex3(drivingLanes[i].Points[j + 5]);
                 }
 
                 GL.End();
             }
+            GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.Color4(Color4.Red);
             for (int i = 0; i < auxiliaryLanes.Length; i++)
             {
@@ -147,12 +168,12 @@ namespace Slovenia_simulator
             for (int i = 0; i < roadCurve.Length-1; i++)
             {
                 Misc.Push<Vector3>(new Vector3[]{
-                    new Vector3(pointsL[i].X, Height, pointsL[i].Y),
-                    new Vector3(pointsR[i].X, Height, pointsR[i].Y),
-                    new Vector3(pointsL[i+1].X, Height, pointsL[i+1].Y),
-                    new Vector3(pointsL[i+1].X, Height, pointsL[i+1].Y),
-                    new Vector3(pointsR[i].X, Height, pointsR[i].Y),
-                    new Vector3(pointsR[i+1].X, Height, pointsR[i+1].Y)}, ref Points);
+                    new Vector3(pointsL[i].X, Height, pointsL[i].Y),//0 0
+                    new Vector3(pointsR[i].X, Height, pointsR[i].Y),//1 0
+                    new Vector3(pointsL[i+1].X, Height, pointsL[i+1].Y),//0 1
+                    new Vector3(pointsL[i+1].X, Height, pointsL[i+1].Y),//0 1
+                    new Vector3(pointsR[i].X, Height, pointsR[i].Y),//1 0
+                    new Vector3(pointsR[i+1].X, Height, pointsR[i+1].Y)}, ref Points);//1 1
             }
             for (int i = roadCurve.Length-1; i > 0 ; i--)
             {
