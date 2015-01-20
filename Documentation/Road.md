@@ -1,6 +1,6 @@
 #Roads
 
-#Attributes
+##Attributes
 
 - **Name** [*string*] - Road name
 - **RoadType** [*int*] - See Road types below
@@ -13,6 +13,8 @@
 - **SidewalkHeight** [*float*]
 - **SplitWidth** [*float*]
 - **Line** - Set of points used for road curve generation
+- **LaneTexturePath** [*string*] - Texture for driving lanes
+- **SidewalkTexturePath** [*string*] - Texture for sidewalk
 
 ##Road types
 

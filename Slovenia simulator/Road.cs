@@ -14,8 +14,9 @@ namespace Slovenia_simulator
         Lane[] drivingLanes, auxiliaryLanes;
         public Vector2[] Line;
         ObjectLine[] Lines;
-        public string Name, Texture;
-        public int RoadType = 3, Segments = 5, tekstura = 0;
+        public string Name, LaneTexturePath, SidewalkTexturePath;
+        public int RoadType = 3, Segments = 5;
+        private int LaneTexture, SidewalkTexture;
         public bool Traffic = false;
         public float LaneWidth = 3, SidewalkWidth = 1, LaneHeight = 0.02f, SidewalkHeight = 0.1f, SplitWidth = 1;
         public void FromFile(string path, ref MeshCollector meshes)
@@ -25,7 +26,8 @@ namespace Slovenia_simulator
             DataParser.ParseData(file, this);
             auxiliaryLanes = new Lane[0];
             Lines = new ObjectLine[0];
-            if(Texture != null) tekstura = Misc.LoadTexture(Texture, 1);
+            if (LaneTexturePath != null) LaneTexture = Misc.LoadTexture(LaneTexturePath, 1);
+            if (SidewalkTexturePath != null) SidewalkTexture = Misc.LoadTexture(SidewalkTexturePath, 1);
             switch (RoadType)
             {
                 case 1: //one lane, one way
@@ -86,19 +88,10 @@ namespace Slovenia_simulator
         public void Draw(Matrix4 world, ref MeshCollector meshes)
         {
             
-            if (tekstura != 0) { 
-                GL.BindTexture(TextureTarget.Texture2D, tekstura);
-                GL.Color4(Color4.White);
-            }
-            else
-            {
-                GL.Color4(Color4.Black);
-                GL.BindTexture(TextureTarget.Texture2D, 0);
-            }
             for (int i = 0; i < drivingLanes.Length; i++)
             {
-                GL.Begin(PrimitiveType.Triangles);
-                for (int j = 0; j < drivingLanes[i].Length; j+=6)
+                //GL.Begin(PrimitiveType.Triangles);
+                /*for (int j = 0; j < drivingLanes[i].Length; j+=6)
                 {
                     GL.TexCoord2(new Vector2(0, 0));
                     GL.Vertex3(drivingLanes[i].Points[j]);
@@ -112,20 +105,35 @@ namespace Slovenia_simulator
                     GL.Vertex3(drivingLanes[i].Points[j + 4]);
                     GL.TexCoord2(new Vector2(1, 1));
                     GL.Vertex3(drivingLanes[i].Points[j + 5]);
-                }
-
-                GL.End();
+                }*/
+                if (LaneTexture != 0) GL.BindTexture(TextureTarget.Texture2D, LaneTexture);
+                else GL.Color4(Color4.Black);
+                drivingLanes[i].Draw();
+                //GL.End();
             }
-            GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.Color4(Color4.Red);
+            
             for (int i = 0; i < auxiliaryLanes.Length; i++)
             {
-                GL.Begin(PrimitiveType.TriangleStrip);
-                for (int j = 0; j < auxiliaryLanes[i].Length; j++)
+                /*GL.Begin(PrimitiveType.Triangles);
+                for (int j = 0; j < auxiliaryLanes[i].Length; j+=6)
                 {
+                    GL.TexCoord2(new Vector2(0, 0));
                     GL.Vertex3(auxiliaryLanes[i].Points[j]);
+                    GL.TexCoord2(new Vector2(1, 0));
+                    GL.Vertex3(auxiliaryLanes[i].Points[j + 1]);
+                    GL.TexCoord2(new Vector2(0, 1));
+                    GL.Vertex3(auxiliaryLanes[i].Points[j + 2]);
+                    GL.TexCoord2(new Vector2(0, 1));
+                    GL.Vertex3(auxiliaryLanes[i].Points[j + 3]);
+                    GL.TexCoord2(new Vector2(1, 0));
+                    GL.Vertex3(auxiliaryLanes[i].Points[j + 4]);
+                    GL.TexCoord2(new Vector2(1, 1));
+                    GL.Vertex3(auxiliaryLanes[i].Points[j + 5]);
                 }
-                GL.End();
+                GL.End();*/
+                if (SidewalkTexture != 0) GL.BindTexture(TextureTarget.Texture2D, SidewalkTexture);
+                else GL.Color4(Color4.Black);
+                auxiliaryLanes[i].Draw();
             }
             
             for (int i = 0; i < Lines.Length; i++)
@@ -138,12 +146,15 @@ namespace Slovenia_simulator
     {
         public long Length { get { return Points.Length; } }
         public Vector3[] Points;
+        public int VertexBuffer, TextureCoordinateBuffer, ElementBuffer, ElementArraySize;
 
         public void GenerateLane(Vector2[] roadLine, int Segments, float Offset, float Width, float Height)
         {
             Vector2[] roadCurve = Misc.GetBezierApproximation(roadLine, Segments);
             Vector2[] pointsL = new Vector2[roadCurve.Length*2];
             Vector2[] pointsR = new Vector2[roadCurve.Length*2];
+            Vector2[] TextureCoordinates = new Vector2[0];
+            int[] ElementArray = new int[0];
             Points = new Vector3[0];
             float kot = 0;
             Width /= 2;
@@ -170,9 +181,9 @@ namespace Slovenia_simulator
                 Misc.Push<Vector3>(new Vector3[]{
                     new Vector3(pointsL[i].X, Height, pointsL[i].Y),//0 0
                     new Vector3(pointsR[i].X, Height, pointsR[i].Y),//1 0
+                    //new Vector3(pointsL[i+1].X, Height, pointsL[i+1].Y),//0 1
                     new Vector3(pointsL[i+1].X, Height, pointsL[i+1].Y),//0 1
-                    new Vector3(pointsL[i+1].X, Height, pointsL[i+1].Y),//0 1
-                    new Vector3(pointsR[i].X, Height, pointsR[i].Y),//1 0
+                    //new Vector3(pointsR[i].X, Height, pointsR[i].Y),//1 0
                     new Vector3(pointsR[i+1].X, Height, pointsR[i+1].Y)}, ref Points);//1 1
             }
             for (int i = roadCurve.Length-1; i > 0 ; i--)
@@ -180,9 +191,9 @@ namespace Slovenia_simulator
                 Misc.Push<Vector3>(new Vector3[]{
                     new Vector3(pointsL[i].X, Height, pointsL[i].Y),
                     new Vector3(pointsL[i].X, 0, pointsL[i].Y),
+                    //new Vector3(pointsL[i-1].X, Height, pointsL[i-1].Y),
                     new Vector3(pointsL[i-1].X, Height, pointsL[i-1].Y),
-                    new Vector3(pointsL[i-1].X, Height, pointsL[i-1].Y),
-                    new Vector3(pointsL[i].X, 0, pointsL[i].Y),
+                    //new Vector3(pointsL[i].X, 0, pointsL[i].Y),
                     new Vector3(pointsL[i-1].X, 0, pointsL[i-1].Y)}, ref Points);
             }
             for (int i = 0; i < roadCurve.Length-1; i++)
@@ -190,11 +201,93 @@ namespace Slovenia_simulator
                 Misc.Push<Vector3>(new Vector3[]{
                     new Vector3(pointsR[i].X, Height, pointsR[i].Y),
                     new Vector3(pointsR[i].X, 0, pointsR[i].Y),
+                    //new Vector3(pointsR[i+1].X, Height, pointsR[i+1].Y),
                     new Vector3(pointsR[i+1].X, Height, pointsR[i+1].Y),
-                    new Vector3(pointsR[i+1].X, Height, pointsR[i+1].Y),
-                    new Vector3(pointsR[i].X, 0, pointsR[i].Y),
+                    //new Vector3(pointsR[i].X, 0, pointsR[i].Y),
                     new Vector3(pointsR[i+1].X, 0, pointsR[i+1].Y)}, ref Points);
             }
+            for (int i = 0; i < (roadCurve.Length-1)*3; i++)
+            {
+                Misc.Push<Vector2>(new Vector2[]{new Vector2(0, 0),
+                    new Vector2(1, 0),
+                    new Vector2(0, 1),
+                    new Vector2(1, 1),
+                    /*new Vector2(0, 1)/*,
+                    new Vector2(1, 1)*/}, ref TextureCoordinates);
+            }
+            for (int i = 0; i < (roadCurve.Length-1)*3; i++)
+            {
+                int off = i * 4;
+                Misc.Push<int>(new int[] { off+0, off+1, off+2,
+                                            off+2, off+1, off+3}, ref ElementArray);
+            }
+            VertexBuffer = GL.GenBuffer();
+            TextureCoordinateBuffer = GL.GenBuffer();
+            ElementBuffer = GL.GenBuffer();
+            int bufferSize;
+            // Vertex Array Buffer
+            {
+                // Bind current context to Array Buffer ID
+                GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
+
+                // Send data to buffer
+                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(Points.Length * Vector3.SizeInBytes), Points, BufferUsageHint.StaticDraw);
+
+                // Validate that the buffer is the correct size
+
+                GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                if (Points.Length * Vector3.SizeInBytes != bufferSize)
+                    throw new ApplicationException("Vertex array not uploaded correctly");
+
+                // Clear the buffer Binding
+                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            }
+            {
+                // Bind current context to Array Buffer ID
+                GL.BindBuffer(BufferTarget.ArrayBuffer, TextureCoordinateBuffer);
+
+                // Send data to buffer
+                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(TextureCoordinates.Length * 8), TextureCoordinates, BufferUsageHint.StaticDraw);
+
+                // Validate that the buffer is the correct size
+                GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                if (TextureCoordinates.Length * 8 != bufferSize)
+                    throw new ApplicationException("TexCoord array not uploaded correctly");
+
+                // Clear the buffer Binding
+                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            }
+            ElementArraySize = ElementArray.Length;
+
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBuffer);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(ElementArray.Length * sizeof(int)), ElementArray, BufferUsageHint.StaticDraw);
+            GL.GetBufferParameter(BufferTarget.ElementArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+            if (ElementArray.Length * sizeof(int) != bufferSize)
+                throw new ApplicationException("Element array not uploaded correctly");
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+        }
+
+        public void Draw()
+        {
+            GL.PushClientAttrib(ClientAttribMask.ClientVertexArrayBit);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, TextureCoordinateBuffer);
+            // Set the Pointer to the current bound array describing how the data ia stored
+            GL.TexCoordPointer(2, TexCoordPointerType.Float, 8, IntPtr.Zero);
+            // Enable the client state so it will use this array buffer pointer
+            GL.EnableClientState(ArrayCap.TextureCoordArray);
+
+            // Vertex Array Buffer
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer); //Bind Array Buffer
+            // Set the Pointer to the current bound array describing how the data ia stored
+            GL.VertexPointer(3, VertexPointerType.Float, Vector3.SizeInBytes, IntPtr.Zero);
+            // Enable the client state so it will use this array buffer pointer
+            GL.EnableClientState(ArrayCap.VertexArray);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBuffer);
+            GL.DrawElements(PrimitiveType.Triangles, ElementArraySize, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            GL.DrawElements(PrimitiveType.Lines, ElementArraySize, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            // Restore the state
+            GL.PopClientAttrib();
         }
     }
     class ObjectLine
