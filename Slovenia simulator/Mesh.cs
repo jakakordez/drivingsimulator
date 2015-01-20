@@ -13,7 +13,7 @@ using OpenTK.Platform;
 
 namespace Slovenia_simulator
 {
-    class Mesh
+    public class Mesh
     {
         Material[] Materials;
         uint[] ElementArrays;
@@ -21,16 +21,25 @@ namespace Slovenia_simulator
         int VertexBuffer;
         int TextureCoordinateBuffer;
 
-        Vector3[] SortedVertices = new Vector3[0];
-        Vector2[] SortedTextureCoordinates = new Vector2[0];
+        
 
         public Mesh(string filename)
         {
             Materials = new Material[0];
             VertexBuffer = GL.GenBuffer();
             TextureCoordinateBuffer = GL.GenBuffer();
-            loadObjFile(filename);
+            string[] parts = filename.Split('.');
+            switch (parts[parts.Length-1].ToLower())
+            {
+                case "mesh":loadMeshFile(filename);
+                    break;
+                case "obj":loadObjFile(filename, true);
+                    break;
+            }
+            
         }
+
+        public Mesh() { Materials = new Material[0]; }
 
         public void Draw()
         {
@@ -82,14 +91,88 @@ namespace Slovenia_simulator
             
         }
 
-        public void loadObjFile(string name)
+        public void loadMeshFile(string filename)
         {
-            System.Diagnostics.Stopwatch s = new System.Diagnostics.Stopwatch();
-            s.Restart();
-            //Material[] Materials = new Material[0];
+            loadMtlFile(filename.Replace(".mesh", ".mtl"), ref Materials, true);
+            string[] data = File.ReadAllText(filename).Split(';');
+            string[] vertices = data[0].Split(' ');
+            string[] texcoords = data[1].Split(' ');
+            Vector3[] SortedVertices = new Vector3[vertices.Length/3];
+            Vector2[] SortedTextureCoordinates = new Vector2[texcoords.Length/2];
+            for (int i = 0; i < vertices.Length-1; i+=3)
+            {
+                SortedVertices[i / 3] = new Vector3(Misc.toFloat(vertices[i]), Misc.toFloat(vertices[i + 1]), Misc.toFloat(vertices[i + 2]));
+            }
+            for (int i = 0; i < texcoords.Length-1; i+=2)
+            {
+                SortedTextureCoordinates[i / 2] = new Vector2(Misc.toFloat(texcoords[i]), Misc.toFloat(texcoords[i + 1]));
+            }
+            int bufferSize;
+            ElementArrays = new uint[Materials.Length];
+            ElementArraySizes = new int[0];
+            GL.GenBuffers(Materials.Length, ElementArrays);
+            for (int i = 0; i < data.Length-2; i++)
+            {
+                if (data[i + 2] != "")
+                {
+                    string[] indicies = data[i + 2].Split(' ');
+                    int[] currentElements = new int[indicies.Length];
+                    for (int j = 0; j < indicies.Length; j++)
+                    {
+                        currentElements[j] = Misc.toInt(indicies[j]);
+                    }
+                    Misc.Push<int>(currentElements.Length, ref ElementArraySizes);
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementArrays[i]);
+                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(currentElements.Length * sizeof(int)), currentElements, BufferUsageHint.StaticDraw);
+                    GL.GetBufferParameter(BufferTarget.ElementArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                    if (currentElements.Length * sizeof(int) != bufferSize)
+                        throw new ApplicationException("Element array not uploaded correctly");
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+                }
+            }
+           
+            // Vertex Array Buffer
+            {
+                // Bind current context to Array Buffer ID
+                GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
+
+                // Send data to buffer
+                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(SortedVertices.Length * Vector3.SizeInBytes), SortedVertices, BufferUsageHint.StaticDraw);
+
+                // Validate that the buffer is the correct size
+
+                GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                if (SortedVertices.Length * Vector3.SizeInBytes != bufferSize)
+                    throw new ApplicationException("Vertex array not uploaded correctly");
+
+                // Clear the buffer Binding
+                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            }
+            {
+                // Bind current context to Array Buffer ID
+                GL.BindBuffer(BufferTarget.ArrayBuffer, TextureCoordinateBuffer);
+
+                // Send data to buffer
+                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(SortedTextureCoordinates.Length * 8), SortedTextureCoordinates, BufferUsageHint.StaticDraw);
+
+                // Validate that the buffer is the correct size
+                GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                if (SortedTextureCoordinates.Length * 8 != bufferSize)
+                    throw new ApplicationException("TexCoord array not uploaded correctly");
+
+                // Clear the buffer Binding
+                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            }
+            //object[] a = loadObjFile(filename.Replace(".mesh", ".obj"), false);
+        }
+
+        public object[] loadObjFile(string name, bool load)
+        {
             Face[] Faces = new Face[0];
             Vector3[] OriginalVertices = new Vector3[0];
             Vector2[] OriginalTextureCoordinates = new Vector2[0];
+            Vector3[] SortedVertices = new Vector3[0];
+            Vector2[] SortedTextureCoordinates = new Vector2[0];
            
             string[] file = File.ReadAllLines(name);
             int currentMaterial = 0;
@@ -104,7 +187,7 @@ namespace Slovenia_simulator
                             string[] filename = name.Replace('\\', '/').Split('/');
                             string result = "";
                             for (int j = 0; j < filename.Length - 1; j++) result += filename[j] + "/";
-                            loadMtlFile(result + line[1], ref Materials, ref Faces);
+                            loadMtlFile(result + line[1], ref Materials, load);
                             break;
                         case "usemtl":
                             for (int j = 0; j < Materials.Length; j++)
@@ -147,8 +230,9 @@ namespace Slovenia_simulator
             currentMaterial = Faces[0].mtl;
             //Misc.Push<Material>(Materials[currentMaterial].Brush, ref Materials);
             ElementArrays = new uint[Materials.Length];
-            GL.GenBuffers(Materials.Length, ElementArrays);
+            if(load)GL.GenBuffers(Materials.Length, ElementArrays);
             int[] currentElements = new int[0];
+            List<int[]> faces = new List<int[]>(Materials.Length);
             ElementArraySizes = new int[0];
             int set = 0;
             long bufferSize;
@@ -158,12 +242,16 @@ namespace Slovenia_simulator
                 if (Faces.Length-1 == i || currentMaterial != Faces[i+1].mtl)
                 {
                     Misc.Push<int>(currentElements.Length, ref ElementArraySizes);
-                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementArrays[set]);
-                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(currentElements.Length * sizeof(int)), currentElements, BufferUsageHint.StaticDraw);
-                    GL.GetBufferParameter(BufferTarget.ElementArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
-                    if (currentElements.Length * sizeof(int) != bufferSize)
-                        throw new ApplicationException("Element array not uploaded correctly");
-                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+                    if (load)
+                    {
+                        GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementArrays[set]);
+                        GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(currentElements.Length * sizeof(int)), currentElements, BufferUsageHint.StaticDraw);
+                        GL.GetBufferParameter(BufferTarget.ElementArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                        if (currentElements.Length * sizeof(int) != bufferSize)
+                            throw new ApplicationException("Element array not uploaded correctly");
+                        GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+                    }
+                    else faces.Add(currentElements);
                     if (Faces.Length - 1 > i)
                     {
                         set++;
@@ -174,45 +262,46 @@ namespace Slovenia_simulator
                 }
                 
             }
-            System.Diagnostics.Debugger.Log(1, "", " Prva: "+s.ElapsedMilliseconds);
-            s.Restart();
-            // Vertex Array Buffer
+            if (load)
             {
-                // Bind current context to Array Buffer ID
-                GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
+                // Vertex Array Buffer
+                {
+                    // Bind current context to Array Buffer ID
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
 
-                // Send data to buffer
-                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(SortedVertices.Length * Vector3.SizeInBytes), SortedVertices, BufferUsageHint.StaticDraw);
+                    // Send data to buffer
+                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(SortedVertices.Length * Vector3.SizeInBytes), SortedVertices, BufferUsageHint.StaticDraw);
 
-                // Validate that the buffer is the correct size
-                
-                GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
-                if (SortedVertices.Length * Vector3.SizeInBytes != bufferSize)
-                    throw new ApplicationException("Vertex array not uploaded correctly");
+                    // Validate that the buffer is the correct size
 
-                // Clear the buffer Binding
-                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+                    GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                    if (SortedVertices.Length * Vector3.SizeInBytes != bufferSize)
+                        throw new ApplicationException("Vertex array not uploaded correctly");
+
+                    // Clear the buffer Binding
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+                }
+                {
+                    // Bind current context to Array Buffer ID
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, TextureCoordinateBuffer);
+
+                    // Send data to buffer
+                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(SortedTextureCoordinates.Length * 8), SortedTextureCoordinates, BufferUsageHint.StaticDraw);
+
+                    // Validate that the buffer is the correct size
+                    GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+                    if (SortedTextureCoordinates.Length * 8 != bufferSize)
+                        throw new ApplicationException("TexCoord array not uploaded correctly");
+
+                    // Clear the buffer Binding
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+                }
             }
-            {
-                // Bind current context to Array Buffer ID
-                GL.BindBuffer(BufferTarget.ArrayBuffer, TextureCoordinateBuffer);
 
-                // Send data to buffer
-                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(SortedTextureCoordinates.Length * 8), SortedTextureCoordinates, BufferUsageHint.StaticDraw);
-
-                // Validate that the buffer is the correct size
-                GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
-                if (SortedTextureCoordinates.Length * 8 != bufferSize)
-                    throw new ApplicationException("TexCoord array not uploaded correctly");
-
-                // Clear the buffer Binding
-                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            }
-
-            System.Diagnostics.Debugger.Log(1, "", " Druga: "+s.ElapsedMilliseconds);
+            return new object[] { SortedVertices, SortedTextureCoordinates, faces};
         }
 
-        public void loadMtlFile(string filename, ref Material[] materials, ref Face[] faces)
+        public void loadMtlFile(string filename, ref Material[] materials, bool load)
         {
             string[] file = File.ReadAllLines(filename);
             Material currentMaterial = null;
@@ -239,7 +328,8 @@ namespace Slovenia_simulator
                              string[] flnm = filename.Replace('\\', '/').Split('/');
                              string result = "";
                              for (int j = 0; j < flnm.Length - 1; j++) result += flnm[j] + "/";
-                             currentMaterial.Texture = (int)Misc.LoadTexture(result + line[1], 1);
+                             if(load) currentMaterial.Texture = (int)Misc.LoadTexture(result + line[1], 1);
+                             currentMaterial.TexturePath = result + line[1];
                          }
                         break;
                 }

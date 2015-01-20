@@ -137,7 +137,7 @@ namespace Slovenia_simulator
     public class Material
     {
         public Color4 Brush;
-        public string Name;
+        public string Name, TexturePath;
         public int Texture;
         public Material(string name)
         {

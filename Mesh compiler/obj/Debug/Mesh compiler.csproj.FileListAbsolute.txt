@@ -1,0 +1,15 @@
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\Mesh compiler.exe.config
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\Mesh compiler.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\Mesh compiler.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\obj\Debug\Mesh compiler.csprojResolveAssemblyReference.cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\obj\Debug\Mesh_compiler.Form1.resources
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\obj\Debug\Mesh_compiler.Properties.Resources.resources
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\obj\Debug\Mesh compiler.csproj.GenerateResource.Cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\obj\Debug\Mesh compiler.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\obj\Debug\Mesh compiler.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\OpenTK.dll
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\OpenTK.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\OpenTK.xml
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\Slovenia simulator.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\BulletSharp.dll
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\Slovenia simulator.pdb

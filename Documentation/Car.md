@@ -31,7 +31,7 @@
 - **SteeringIncrement** [*float*] - Basic steering increment
 - **SteeringClamp** [*float*] - Steering limit
 
-# Vehicle physics
+### Vehicle physics
 
 - **WheelFriction** [*float*]
 - **SuspensionStiffness** [*float*]
