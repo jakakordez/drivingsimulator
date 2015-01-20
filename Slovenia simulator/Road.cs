@@ -106,7 +106,7 @@ namespace Slovenia_simulator
                     GL.TexCoord2(new Vector2(1, 1));
                     GL.Vertex3(drivingLanes[i].Points[j + 5]);
                 }*/
-                if (LaneTexture != 0) GL.BindTexture(TextureTarget.Texture2D, LaneTexture);
+                if (LaneTexture != 0) { GL.BindTexture(TextureTarget.Texture2D, LaneTexture); GL.Color4(Color4.White); }
                 else GL.Color4(Color4.Black);
                 drivingLanes[i].Draw();
                 //GL.End();
@@ -285,7 +285,7 @@ namespace Slovenia_simulator
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBuffer);
             GL.DrawElements(PrimitiveType.Triangles, ElementArraySize, DrawElementsType.UnsignedInt, IntPtr.Zero);
             GL.DrawElements(PrimitiveType.Lines, ElementArraySize, DrawElementsType.UnsignedInt, IntPtr.Zero);
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            //GL.BindTexture(TextureTarget.Texture2D, 0);
             // Restore the state
             GL.PopClientAttrib();
         }

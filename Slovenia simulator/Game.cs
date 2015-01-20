@@ -22,6 +22,7 @@ namespace Slovenia_simulator
         Font serif = new Font(FontFamily.GenericSerif, 24);
         Maps.Map currentMap;
         int grass;
+        Mesh test;
         public Game()
             : base(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, new GraphicsMode(), "Driving simulator")
         {
@@ -50,6 +51,7 @@ namespace Slovenia_simulator
             grass = Misc.LoadTexture("data/maps/Mapa/textures/grass.png", 1);
             p = new Physics(ref MeshCollection);
             System.Diagnostics.Debugger.Log(1, "Timing", "\nFizika: " + stw.ElapsedMilliseconds);
+            test = new Mesh("tex.obj");
         }
 
         protected override void OnResize(EventArgs e)
@@ -118,12 +120,12 @@ namespace Slovenia_simulator
             GL.Vertex3(new Vector3(5000f, 0, -5000f));
             GL.End();
             
-          
-           /* p.Player.Draw(lookat, ref MeshCollection);
+            test.Draw();
+            p.Player.Draw(lookat, ref MeshCollection);
             for (int i = 0; i < p.Vehicles.Length; i++)
             {
                 p.Vehicles[i].Draw(lookat, ref MeshCollection);
-            }*/
+            }
 
             SwapBuffers();
         }

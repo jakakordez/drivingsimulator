@@ -29,11 +29,11 @@ namespace Slovenia_simulator.Vehicles
             string[] file = File.ReadAllLines("data/vehicles/car/" + path + "/data.conf");
             DataParser.ParseData(file, this);
            
-            //bodyMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/body.obj");
-            //wheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/wheel.obj");
-            //cabinMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/cabin.obj");
-            //steeringWheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/steeringwheel.obj");
-            //needleMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/needle.obj");
+            bodyMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/body.obj");
+            wheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/wheel.obj");
+            cabinMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/cabin.obj");
+            steeringWheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/steeringwheel.obj");
+            needleMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/needle.obj");
             /*for (int i = 0; i < bodyMesh.materials.Length; i++)
             {
               if (bodyMesh.materials[i].Name == "bodyColor") bodyMesh.materials[i].Brush = colors[color];

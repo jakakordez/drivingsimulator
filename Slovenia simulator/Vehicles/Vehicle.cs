@@ -12,7 +12,7 @@ namespace Slovenia_simulator
     public enum PlayerView { Exterior, Cabin, Camera, Debug}
     class Vehicle
     {
-        public PlayerView viewMode = PlayerView.Cabin;
+        public PlayerView viewMode = PlayerView.Exterior;
         public Vector3 DebugLocation;
         public float Mass, MaxEngineForce, MaxBrakeForce, MaximumSpeed;
         public float engineForce, brakeForce, steeringValue;

@@ -21,6 +21,9 @@ namespace Slovenia_simulator
         int VertexBuffer;
         int TextureCoordinateBuffer;
 
+        Vector3[] SortedVertices = new Vector3[0];
+        Vector2[] SortedTextureCoordinates = new Vector2[0];
+
         public Mesh(string filename)
         {
             Materials = new Material[0];
@@ -31,8 +34,7 @@ namespace Slovenia_simulator
 
         public void Draw()
         {
-            
-            
+
             for (int i = 0; i < ElementArraySizes.Length; i++)
             {
                
@@ -40,7 +42,7 @@ namespace Slovenia_simulator
                 {
                     GL.Color4(Color.White);
                     GL.BindTexture(TextureTarget.Texture2D, Materials[i].Texture);
-                    GL.TexCoord2(new Vector2(0.5f, 0.5f));
+                   // GL.TexCoord2(new Vector2(0f, 0f));
                 }
                 else GL.Color4(Materials[i].Brush);
                 GL.PushClientAttrib(ClientAttribMask.ClientVertexArrayBit);
@@ -61,6 +63,20 @@ namespace Slovenia_simulator
                 GL.BindTexture(TextureTarget.Texture2D, 0);
                 // Restore the state
                 GL.PopClientAttrib();
+                //GL.Begin(PrimitiveType.Triangles);
+                /*for (int j = 0; j < SortedVertices.Length; j++)
+                {
+                    GL.TexCoord2(SortedTextureCoordinates[j]);
+                    GL.Vertex3(SortedVertices[j]);
+                }*/
+                
+                /*GL.TexCoord2(new Vector2(0, 0));
+                GL.Vertex3(new Vector3(0, 0, 0));
+                GL.TexCoord2(new Vector2(1, 0));
+                GL.Vertex3(new Vector3(1, 0, 0));//SortedVertices[1]);
+                GL.TexCoord2(new Vector2(1, 1));
+                GL.Vertex3(new Vector3(1, 1, 0));
+                GL.End();*/
             }
 
             
@@ -74,8 +90,7 @@ namespace Slovenia_simulator
             Face[] Faces = new Face[0];
             Vector3[] OriginalVertices = new Vector3[0];
             Vector2[] OriginalTextureCoordinates = new Vector2[0];
-            Vector3[] SortedVertices = new Vector3[0];
-            Vector2[] SortedTextureCoordinates = new Vector2[0];
+           
             string[] file = File.ReadAllLines(name);
             int currentMaterial = 0;
             for (int i = 0; i < file.Length; i++)
@@ -224,7 +239,7 @@ namespace Slovenia_simulator
                              string[] flnm = filename.Replace('\\', '/').Split('/');
                              string result = "";
                              for (int j = 0; j < flnm.Length - 1; j++) result += flnm[j] + "/";
-                             currentMaterial.Texture = (int)Misc.LoadTexture(result + line[1], 8);
+                             currentMaterial.Texture = (int)Misc.LoadTexture(result + line[1], 1);
                          }
                         break;
                 }
