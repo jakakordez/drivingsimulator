@@ -56,6 +56,7 @@ namespace Slovenia_simulator
             GL.BindTexture(TextureTarget.Texture2D, id);
 
             Bitmap bmp = new Bitmap(filename);
+            bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
             BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)(bmp_data.Width / scale), (int)(bmp_data.Height / scale), 0,

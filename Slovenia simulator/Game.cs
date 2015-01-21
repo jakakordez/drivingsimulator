@@ -32,8 +32,6 @@ namespace Slovenia_simulator
         {
             base.OnLoad(e);
             WindowState = OpenTK.WindowState.Fullscreen;
-            System.Diagnostics.Stopwatch stw = new System.Diagnostics.Stopwatch();
-            stw.Restart();
             GL.Enable(EnableCap.DepthTest);
             GL.ClearColor(Color.CornflowerBlue);
 
@@ -44,14 +42,10 @@ namespace Slovenia_simulator
             //GL.Enable(EnableCap.Lighting);
             System.Windows.Forms.Cursor.Hide();
             MeshCollection = new MeshCollector();
-            System.Diagnostics.Debugger.Log(1, "Timing", "\nZačetek: " + stw.ElapsedMilliseconds);
             camera = new Camera(this.Height, this.Width);
             currentMap = new Maps.Map("Mapa", ref MeshCollection);
-            System.Diagnostics.Debugger.Log(1, "Timing", "\nMapa: " + stw.ElapsedMilliseconds);
             grass = Misc.LoadTexture("data/maps/Mapa/textures/grass.png", 1);
             p = new Physics(ref MeshCollection);
-            System.Diagnostics.Debugger.Log(1, "Timing", "\nFizika: " + stw.ElapsedMilliseconds);
-            test = new Mesh("tex.obj");
         }
 
         protected override void OnResize(EventArgs e)
@@ -64,14 +58,12 @@ namespace Slovenia_simulator
             GL.LoadMatrix(ref perspective);
             base.OnResize(e);
         }
-        int ups;
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             DebugMove(Keyboard, ref p.Player.DebugLocation);
             p.Update((float)e.Time, Keyboard);
                 
             if (Keyboard[OpenTK.Input.Key.Escape] || Keyboard[OpenTK.Input.Key.Q]) Exit();
-            ups++;
             base.OnUpdateFrame(e);
         }
 
@@ -97,9 +89,8 @@ namespace Slovenia_simulator
             if (frameTime >= 1)
             {
                 frameTime = 0;
-                Title = "Driving simulator, FPS = " + fps.ToString()+" UPS="+ups.ToString();
+                Title = "Driving simulator, FPS = " + fps.ToString();
                 fps = 0;
-                ups = 0;
             }
             Matrix4 lookat = camera.GenerateLookAt((Vehicle)p.Player);
             GL.MatrixMode(MatrixMode.Modelview);
@@ -120,7 +111,6 @@ namespace Slovenia_simulator
             GL.Vertex3(new Vector3(5000f, 0, -5000f));
             GL.End();
             
-            test.Draw();
             p.Player.Draw(lookat, ref MeshCollection);
             for (int i = 0; i < p.Vehicles.Length; i++)
             {

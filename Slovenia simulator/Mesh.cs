@@ -72,23 +72,7 @@ namespace Slovenia_simulator
                 GL.BindTexture(TextureTarget.Texture2D, 0);
                 // Restore the state
                 GL.PopClientAttrib();
-                //GL.Begin(PrimitiveType.Triangles);
-                /*for (int j = 0; j < SortedVertices.Length; j++)
-                {
-                    GL.TexCoord2(SortedTextureCoordinates[j]);
-                    GL.Vertex3(SortedVertices[j]);
-                }*/
-                
-                /*GL.TexCoord2(new Vector2(0, 0));
-                GL.Vertex3(new Vector3(0, 0, 0));
-                GL.TexCoord2(new Vector2(1, 0));
-                GL.Vertex3(new Vector3(1, 0, 0));//SortedVertices[1]);
-                GL.TexCoord2(new Vector2(1, 1));
-                GL.Vertex3(new Vector3(1, 1, 0));
-                GL.End();*/
             }
-
-            
         }
 
         public void loadMeshFile(string filename)
@@ -210,9 +194,6 @@ namespace Slovenia_simulator
                                 if (line[j].Contains('/'))
                                 {
                                     string[] fac = line[j].Split('/');
-                                    //if (Misc.toInt(line[j].Split('/')[1]) >= 4601) System.Diagnostics.Debugger.Break();
-                                    //Misc.Push<int>(Misc.toInt(fac[0]) - 1, ref f.vertices);
-                                    //Misc.Push<int>(Misc.toInt(fac[1]) - 1, ref f.textureCoordinates);
                                     int v = Misc.Push<Vector3>(OriginalVertices[Misc.toInt(fac[0]) - 1], ref SortedVertices);
                                     int t = Misc.Push<Vector2>(OriginalTextureCoordinates[Misc.toInt(fac[1]) - 1], ref SortedTextureCoordinates);
                                     Misc.Push<int>(v, ref f.vertices);
