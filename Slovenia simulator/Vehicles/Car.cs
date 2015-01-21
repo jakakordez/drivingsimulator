@@ -22,7 +22,7 @@ namespace Slovenia_simulator.Vehicles
         public Vector2 SteeringWheelAngle, FrontWheelLocation, RearWheelLocation;
         int wheelMesh, steeringWheelMesh, needleMesh;
 
-        public Car(string path, int color, ref MeshCollector meshCollection)
+        public Car(string path, int color, ref MeshCollector meshCollection, VehicleController controller, PlayerView view):base(controller, view)
         {
             DriverEyeLocation = new Vector3();
             ExteriorEyeLocation = new Vector3();
@@ -124,15 +124,13 @@ namespace Slovenia_simulator.Vehicles
                     GL.LoadMatrix(ref steering);
                     Meshes.DrawMesh(needleMesh);
                     break;
-                default:
-                    break;
             }
             
         }
 
-        public override void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
+        public override void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k, Vector2 target)
         {
-            if(k != null) manageKeyboard(k);
+            base.Update(elaspedTime, k, target);
 
             raycastVehicle.ApplyEngineForce(engineForce*gear, 2);
             raycastVehicle.SetBrake(brakeForce, 2);
@@ -142,8 +140,7 @@ namespace Slovenia_simulator.Vehicles
             raycastVehicle.SetSteeringValue(steeringValue, 0);
             raycastVehicle.SetSteeringValue(steeringValue, 1);
         }
-
-        private void manageKeyboard(OpenTK.Input.KeyboardDevice k)
+        public override void HandleInput(OpenTK.Input.KeyboardDevice k)
         {
             float maxSteering = SteeringClamp * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
             float incSteering = SteeringIncrement * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
@@ -187,6 +184,16 @@ namespace Slovenia_simulator.Vehicles
             if (k[OpenTK.Input.Key.Right]) DebugLocation.X -= 0.01f;
             if (k[OpenTK.Input.Key.PageUp])DebugLocation.Y += 0.01f;
             if (k[OpenTK.Input.Key.PageDown]) DebugLocation.Y -= 0.01f;
+        }
+
+        public override void HandleAI(Vector2 target)
+        {
+            engineForce = MaxEngineForce / 2;
+            Vector2 pos = raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz;
+            float angle = (float)Math.Atan((target.Y - pos.Y) / (target.X - pos.X));
+            float curAngle = raycastVehicle.ChassisWorldTransform.ExtractRotation().Y+MathHelper.PiOver2;
+            if (angle > curAngle) steeringValue = SteeringClamp;
+            else steeringValue = -SteeringClamp;
         }
     }
 }

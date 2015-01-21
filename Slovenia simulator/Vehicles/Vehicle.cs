@@ -10,9 +10,11 @@ using Slovenia_simulator.Vehicles;
 namespace Slovenia_simulator
 {
     public enum PlayerView { Exterior, Cabin, Camera, Debug}
+    public enum VehicleController { Player, AI, Network, Passive}
     class Vehicle
     {
-        public PlayerView viewMode = PlayerView.Exterior;
+        public PlayerView viewMode;
+        public VehicleController Controller;
         public Vector3 DebugLocation;
         public float Mass, MaxEngineForce, MaxBrakeForce, MaximumSpeed;
         public float engineForce, brakeForce, steeringValue;
@@ -34,6 +36,12 @@ namespace Slovenia_simulator
 
         public RaycastVehicle raycastVehicle;
 
+        public Vehicle(VehicleController controller, PlayerView view)
+        {
+            viewMode = view;
+            Controller = controller;
+        }
+
         public void Init() { }
 
         public static Vector3 ParseVector(string value)
@@ -51,7 +59,25 @@ namespace Slovenia_simulator
 
         public virtual void Draw(Matrix4 LookAt, ref MeshCollector Meshes) { }
 
-        public virtual void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k) { }
+        public virtual void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k, Vector2 target) {
+            switch (Controller)
+            {
+                case VehicleController.Player:
+                    if(k != null) HandleInput(k);
+                    break;
+                case VehicleController.AI:
+                    HandleAI(target);
+                    break;
+                case VehicleController.Network:
+                    break;
+                case VehicleController.Passive:
+                    break;
+            }
+        }
+
+        public virtual void HandleInput(OpenTK.Input.KeyboardDevice k) { }
+
+        public virtual void HandleAI(Vector2 target) { }
     }
     
 }

@@ -110,12 +110,16 @@ namespace Slovenia_simulator
             GL.TexCoord2(new Vector2(10000, 0));
             GL.Vertex3(new Vector3(5000f, 0, -5000f));
             GL.End();
-            
             p.Player.Draw(lookat, ref MeshCollection);
             for (int i = 0; i < p.Vehicles.Length; i++)
             {
                 p.Vehicles[i].Draw(lookat, ref MeshCollection);
             }
+            float y = (float)Math.Asin(p.Vehicles[0].raycastVehicle.ChassisWorldTransform.ExtractRotation().Y);
+            lookat = Matrix4.CreateRotationY(y) * lookat;
+            GL.LoadMatrix(ref lookat);
+            MeshCollection.DrawMesh(0);
+            
 
             SwapBuffers();
         }
