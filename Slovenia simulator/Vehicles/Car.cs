@@ -144,7 +144,7 @@ namespace Slovenia_simulator.Vehicles
         {
             float maxSteering = SteeringClamp * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
             float incSteering = SteeringIncrement * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
-            if (k[OpenTK.Input.Key.Pause]) System.Diagnostics.Debugger.Break();
+            if (k[OpenTK.Input.Key.End]) System.Diagnostics.Debugger.Break();
             if (!k[OpenTK.Input.Key.A] && !k[OpenTK.Input.Key.D] && steeringValue > -SteeringIncrement * 3 && steeringValue < SteeringIncrement * 3) steeringValue = 0;
             if (k[OpenTK.Input.Key.A])
             {
@@ -190,10 +190,24 @@ namespace Slovenia_simulator.Vehicles
         {
             engineForce = MaxEngineForce / 2;
             Vector2 pos = raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz;
-            float angle = (float)Math.Atan((target.Y - pos.Y) / (target.X - pos.X));
-            float curAngle = raycastVehicle.ChassisWorldTransform.ExtractRotation().Y+MathHelper.PiOver2;
-            if (angle > curAngle) steeringValue = SteeringClamp;
-            else steeringValue = -SteeringClamp;
+            float angle = Misc.getVectorAngle(pos - target)-MathHelper.PiOver2;
+            Misc.normalizeAngle(angle);
+            float curAngle = ((float)Math.Asin(raycastVehicle.ChassisWorldTransform.ExtractRotation().Y)*2)+MathHelper.Pi;
+            Misc.normalizeAngle(curAngle);
+            curAngle -= angle;
+            Misc.normalizeAngle(curAngle);
+            if (curAngle > -0.05f && curAngle < 0.05f) { 
+                steeringValue = 0; 
+            }
+            
+            else if (curAngle > 0.05f && curAngle < MathHelper.PiOver2)
+            {
+                steeringValue = SteeringClamp / 2;
+            }
+            else if(curAngle < -0.05f)
+            {
+                steeringValue = -SteeringClamp / 2;
+            }
         }
     }
 }

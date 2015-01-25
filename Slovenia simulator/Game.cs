@@ -115,8 +115,16 @@ namespace Slovenia_simulator
             {
                 p.Vehicles[i].Draw(lookat, ref MeshCollection);
             }
-            float y = (float)Math.Asin(p.Vehicles[0].raycastVehicle.ChassisWorldTransform.ExtractRotation().Y);
-            lookat = Matrix4.CreateRotationY(y) * lookat;
+            float a = Misc.getVectorAngle(new Vector2(1, 1));
+            a=Misc.getVectorAngle(new Vector2(-1, 1));
+            a=Misc.getVectorAngle(new Vector2(1, -1));
+            a=Misc.getVectorAngle(new Vector2(-1, -1));
+            Vector3 y = p.Vehicles[0].raycastVehicle.ChassisWorldTransform.ExtractRotation().Xyz;
+            Vector3 target = p.Vehicles[0].raycastVehicle.ChassisWorldTransform.ExtractTranslation();
+            Vector3 pos = p.Player.raycastVehicle.ChassisWorldTransform.ExtractTranslation();
+            //float angle = Misc.getVectorAngle(pos.Xz - target.Xz);
+            lookat = Matrix4.CreateRotationY((float)Math.Asin(y.Y)*2) * lookat;
+            //lookat = Matrix4.CreateRotationY(angle) * lookat;
             GL.LoadMatrix(ref lookat);
             MeshCollection.DrawMesh(0);
             
