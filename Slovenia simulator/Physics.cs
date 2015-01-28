@@ -27,7 +27,7 @@ namespace Slovenia_simulator
             World.Gravity = new Vector3(0, -10, 0);
 
             LocalCreateRigidBody(0,  Matrix4.CreateTranslation(-50*Vector3.UnitY), new BoxShape(5000, 50, 5000));
-            addCar("BMW/M3-E92", Matrix4.CreateRotationY(MathHelper.Pi*1) * Matrix4.CreateTranslation(new Vector3(10, 1, 20)), VehicleController.Player, ref meshCollection);//
+            addCar("BMW/M3-E92", Matrix4.CreateRotationY(MathHelper.Pi*0) * Matrix4.CreateTranslation(new Vector3(10, 1, 20)), VehicleController.Player, ref meshCollection);//
             for (int i = 0; i < 1; i++)
             {
                 addCar("BMW/M3-E92", Matrix4.CreateTranslation(new Vector3(10, 1, i*10)), VehicleController.AI, ref meshCollection);
@@ -44,7 +44,7 @@ namespace Slovenia_simulator
         public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
         {
             World.StepSimulation(elaspedTime);
-            Player.Update(elaspedTime, k, Vector2.Zero);
+            Player.Update(elaspedTime, new Controller(k), Vector2.Zero);
             for (int i = 0; i < Vehicles.Length; i++)
             {
                 Vehicles[i].Update(elaspedTime, null, Player.raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz);

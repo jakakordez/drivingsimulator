@@ -41,6 +41,10 @@ namespace Slovenia_simulator
                      e = Matrix4.CreateTranslation(vehicle.DebugLocation);
                     t = Matrix4.CreateTranslation(vehicle.DebugLocation + new Vector3(0, 0, 2)) * Matrix4.CreateRotationX((y*MathHelper.Pi)-(MathHelper.Pi/2)) * Matrix4.CreateRotationY((-x*MathHelper.Pi)+(MathHelper.Pi/2));
                     break;
+                case PlayerView.Rear:
+                    e = Matrix4.CreateTranslation(vehicle.ExteriorEyeLocation*new Vector3(-1, 1, -1.5f));
+                    t = Matrix4.CreateTranslation(new Vector3(0, 1.2f, -2));
+                    break;
             }
             e *= Matrix4.CreateFromQuaternion(vehicle.raycastVehicle.RigidBody.Orientation);
             t *= Matrix4.CreateFromQuaternion(vehicle.raycastVehicle.RigidBody.Orientation);

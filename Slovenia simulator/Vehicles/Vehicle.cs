@@ -9,7 +9,7 @@ using Slovenia_simulator.Vehicles;
 
 namespace Slovenia_simulator
 {
-    public enum PlayerView { Exterior, Cabin, Camera, Debug}
+    public enum PlayerView { Exterior, Cabin, Camera, Debug, Rear}
     public enum VehicleController { Player, AI, Network, Passive}
     class Vehicle
     {
@@ -59,14 +59,14 @@ namespace Slovenia_simulator
 
         public virtual void Draw(Matrix4 LookAt, ref MeshCollector Meshes) { }
 
-        public virtual void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k, Vector2 target) {
+        public virtual void Update(float elaspedTime, Controller k, Vector2 target) {
             switch (Controller)
             {
                 case VehicleController.Player:
                     if(k != null) HandleInput(k);
                     break;
                 case VehicleController.AI:
-                    HandleAI(target);
+                    HandleInput(HandleAI(target));
                     break;
                 case VehicleController.Network:
                     break;
@@ -75,9 +75,9 @@ namespace Slovenia_simulator
             }
         }
 
-        public virtual void HandleInput(OpenTK.Input.KeyboardDevice k) { }
+        public virtual void HandleInput(Controller k) { }
 
-        public virtual void HandleAI(Vector2 target) { }
+        public virtual Controller HandleAI(Vector2 target) { return new Controller(); }
     }
     
 }

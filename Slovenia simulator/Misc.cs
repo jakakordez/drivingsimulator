@@ -93,6 +93,7 @@ namespace Slovenia_simulator
         { 
             angle%=MathHelper.Pi*2;
             if (angle < 0) angle += MathHelper.Pi * 2;
+            if (angle > (3.145f*2)) angle = 0;
             return angle;
         }
 

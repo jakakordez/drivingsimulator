@@ -95,7 +95,9 @@ namespace Slovenia_simulator.Vehicles
             GL.LoadMatrix(ref modelLookAt);
             switch (viewMode)
             {
-                case PlayerView.Exterior:case PlayerView.Camera:
+                case PlayerView.Exterior:
+                case PlayerView.Camera:
+                case PlayerView.Rear:
                     Meshes.DrawMesh(bodyMesh);
                     Matrix4 rotation = Matrix4.CreateRotationX(raycastVehicle.GetWheelInfo(1).Rotation);
                     Matrix4 wheel = Matrix4.CreateRotationY(-(float)MathHelper.PiOver2)*rotation;
@@ -128,7 +130,7 @@ namespace Slovenia_simulator.Vehicles
             
         }
 
-        public override void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k, Vector2 target)
+        public override void Update(float elaspedTime, Controller k, Vector2 target)
         {
             base.Update(elaspedTime, k, target);
 
@@ -140,20 +142,20 @@ namespace Slovenia_simulator.Vehicles
             raycastVehicle.SetSteeringValue(steeringValue, 0);
             raycastVehicle.SetSteeringValue(steeringValue, 1);
         }
-        public override void HandleInput(OpenTK.Input.KeyboardDevice k)
+        public override void HandleInput(Controller k)
         {
             float maxSteering = SteeringClamp * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
             float incSteering = SteeringIncrement * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
-            if (k[OpenTK.Input.Key.End]) System.Diagnostics.Debugger.Break();
-            if (!k[OpenTK.Input.Key.A] && !k[OpenTK.Input.Key.D] && steeringValue > -SteeringIncrement * 3 && steeringValue < SteeringIncrement * 3) steeringValue = 0;
-            if (k[OpenTK.Input.Key.A])
+           // if (k[OpenTK.Input.Key.End]) System.Diagnostics.Debugger.Break();
+            if (!k.Left && !k.Right && steeringValue > -SteeringIncrement * 3 && steeringValue < SteeringIncrement * 3) steeringValue = 0;
+            if (k.Left)
             {
                 steeringValue += incSteering;
                 if (steeringValue > maxSteering) steeringValue = maxSteering;
             }
             else if (steeringValue > 3 * SteeringIncrement) steeringValue -= 3 * SteeringIncrement;
 
-            if (k[OpenTK.Input.Key.D])
+            if (k.Right)
             {
                 steeringValue -= incSteering;
                 if (steeringValue < -maxSteering)
@@ -161,53 +163,48 @@ namespace Slovenia_simulator.Vehicles
             }
             else if (steeringValue < 3 * -SteeringIncrement) steeringValue += 3 * SteeringIncrement;
 
-            if (k[OpenTK.Input.Key.W] && engineForce < MaxEngineForce) engineForce += 50f;
+            if (k.Accelerate && engineForce < MaxEngineForce) engineForce += 50f;
             else if (engineForce > 0) engineForce -= 25f;
 
-            if (k[OpenTK.Input.Key.S] && brakeForce < MaxBrakeForce)
+            if (k.Brake && brakeForce < MaxBrakeForce)
             {
                 if (engineForce > 0) engineForce -= 50;
                 brakeForce += 200f;
             }
             else if (brakeForce > 0) brakeForce -= 1f;
-            if (k[OpenTK.Input.Key.F] && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = 1;
-            if (k[OpenTK.Input.Key.R] && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = -0.5f;
+            if (k.Forward && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = 1;
+            if (k.Reverse && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = -0.5f;
 
-            if (k[OpenTK.Input.Key.Number1]) viewMode = PlayerView.Cabin;
-            if (k[OpenTK.Input.Key.Number2]) viewMode = PlayerView.Exterior;
-            if (k[OpenTK.Input.Key.Number3]) viewMode = PlayerView.Camera;
-            if (k[OpenTK.Input.Key.Number0]) viewMode = PlayerView.Debug;
+            if (k.CabinView) viewMode = PlayerView.Cabin;
+            if (k.ExteriorView) viewMode = PlayerView.Exterior;
+            if (k.RearView) viewMode = PlayerView.Rear;
+            //if (k[OpenTK.Input.Key.Number3]) viewMode = PlayerView.Camera;
+            //if (k[OpenTK.Input.Key.Number0]) viewMode = PlayerView.Debug;
 
-            if (k[OpenTK.Input.Key.Up]) DebugLocation.Z += 0.01f;
+            /*if (k[OpenTK.Input.Key.Up]) DebugLocation.Z += 0.01f;
             if (k[OpenTK.Input.Key.Down]) DebugLocation.Z -= 0.01f;
             if (k[OpenTK.Input.Key.Left]) DebugLocation.X += 0.01f;
             if (k[OpenTK.Input.Key.Right]) DebugLocation.X -= 0.01f;
             if (k[OpenTK.Input.Key.PageUp])DebugLocation.Y += 0.01f;
-            if (k[OpenTK.Input.Key.PageDown]) DebugLocation.Y -= 0.01f;
+            if (k[OpenTK.Input.Key.PageDown]) DebugLocation.Y -= 0.01f;*/
         }
 
-        public override void HandleAI(Vector2 target)
+        public override Controller HandleAI(Vector2 target)
         {
-            engineForce = MaxEngineForce / 2;
+            Controller result = new Slovenia_simulator.Controller();
+            engineForce = MaxEngineForce / 4;
+            //result.Accelerate = true;
             Vector2 pos = raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz;
-            float angle = Misc.getVectorAngle(pos - target)-MathHelper.PiOver2;
-            Misc.normalizeAngle(angle);
-            float curAngle = ((float)Math.Asin(raycastVehicle.ChassisWorldTransform.ExtractRotation().Y)*2)+MathHelper.Pi;
-            Misc.normalizeAngle(curAngle);
-            curAngle -= angle;
-            Misc.normalizeAngle(curAngle);
-            if (curAngle > -0.05f && curAngle < 0.05f) { 
-                steeringValue = 0; 
-            }
-            
-            else if (curAngle > 0.05f && curAngle < MathHelper.PiOver2)
-            {
-                steeringValue = SteeringClamp / 2;
-            }
-            else if(curAngle < -0.05f)
-            {
-                steeringValue = -SteeringClamp / 2;
-            }
+            float angle = Misc.getVectorAngle(pos-target)+MathHelper.PiOver2;
+            angle = Misc.normalizeAngle(angle);
+            float curAngle = ((float)Math.Asin(raycastVehicle.ChassisWorldTransform.ExtractRotation().Y) * -2);
+            curAngle = Misc.normalizeAngle(curAngle);
+            curAngle = MathHelper.Pi - Math.Abs(Math.Abs(angle-curAngle) - MathHelper.Pi);
+
+            if (curAngle > 0.3f) result.Right = true;
+            else if (curAngle > 0.1f) result.Left = true;
+            else steeringValue = 0;
+            return result;
         }
     }
 }
