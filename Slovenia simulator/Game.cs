@@ -22,8 +22,6 @@ namespace Slovenia_simulator
         Font serif = new Font(FontFamily.GenericSerif, 24);
         Maps.Map currentMap;
         int grass;
-        Mesh test;
-        List<float> koti = new List<float>();
         public Game()
             : base(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, new GraphicsMode(), "Driving simulator")
         {
@@ -94,7 +92,7 @@ namespace Slovenia_simulator
                 Title = "Driving simulator, FPS = " + fps.ToString();
                 fps = 0;
             }
-            Matrix4 lookat = camera.GenerateLookAt((Vehicle)p.Vehicles[0]);
+            Matrix4 lookat = camera.GenerateLookAt((Vehicle)p.Player);
             GL.MatrixMode(MatrixMode.Modelview);
             if (this.Focused) camera.Update(Mouse, Height / 2, Width / 2);
             currentMap.Draw(ref MeshCollection, lookat);
@@ -117,30 +115,8 @@ namespace Slovenia_simulator
             {
                 p.Vehicles[i].Draw(lookat, ref MeshCollection);
             }
-           
-           // Vector3 y = p.Vehicles[0].raycastVehicle.ChassisWorldTransform.ExtractRotation().Xyz;
-            Vector3 y = p.Player.raycastVehicle.ChassisWorldTransform.ExtractRotation().Xyz;
-            if (koti.Count == 0 || koti[koti.Count-1] != y.Y) koti.Add(y.Y);
-            Vector3 target = p.Vehicles[0].raycastVehicle.ChassisWorldTransform.ExtractTranslation();
-            Vector3 pos = p.Player.raycastVehicle.ChassisWorldTransform.ExtractTranslation();
-            //float angle = Misc.getVectorAngle(pos.Xz - target.Xz);
-            //lookat = Matrix4.CreateRotationY((float)Math.Asin(y.Y)*2) * lookat;
-            //lookat = Matrix4.CreateRotationY((float)y.Y) * lookat;
-            //lookat = Matrix4.CreateRotationY(angle) * lookat;
-            //GL.LoadMatrix(ref lookat);
-            //MeshCollection.DrawMesh(0);
-            
 
             SwapBuffers();
-        }
-        string ge()
-        {
-            string result = "";
-            for (int i = 0; i < koti.Count; i++)
-            {
-                result += koti[i] + ";";
-            }
-            return result;
         }
 
         protected override void OnUnload(EventArgs e)

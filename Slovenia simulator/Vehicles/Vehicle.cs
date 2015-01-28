@@ -35,6 +35,7 @@ namespace Slovenia_simulator
         public float SteeringIncrement, SteeringClamp;
 
         public RaycastVehicle raycastVehicle;
+        public Controller prevState = new Controller();
 
         public Vehicle(VehicleController controller, PlayerView view)
         {
@@ -66,7 +67,7 @@ namespace Slovenia_simulator
                     if(k != null) HandleInput(k);
                     break;
                 case VehicleController.AI:
-                    HandleInput(HandleAI(target));
+                    //HandleInput(HandleAI(target));
                     break;
                 case VehicleController.Network:
                     break;

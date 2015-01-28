@@ -9,7 +9,7 @@ namespace Slovenia_simulator
 {
     class Controller
     {
-        public bool Accelerate, Brake, Left, Right;
+        public bool Accelerate, Brake, Left, Right, CruiseControl, CControlInc, CControlDec;
         public bool Forward, Reverse;
         public bool ExteriorView, CabinView, RearView;
 
@@ -20,6 +20,10 @@ namespace Slovenia_simulator
             Brake = device[Key.S];
             Left = device[Key.A];
             Right = device[Key.D];
+
+            CruiseControl = device[Key.C];
+            CControlInc = device[Key.KeypadPlus];
+            CControlDec = device[Key.KeypadMinus];
 
             Forward = device[Key.F];
             Reverse = device[Key.R];

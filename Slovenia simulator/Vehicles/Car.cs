@@ -16,7 +16,7 @@ namespace Slovenia_simulator.Vehicles
     {
 
         public float WheelRadius, WheelWidth, WheelFriction, SuspensionStiffness, SuspensionDamping, SuspensionCompression, RollInfluence, SuspensionHeight, SuspensionRestLength;
-        float gear = 1;
+        float gear = 1, CruiseControl = 0;
         Color4[] colors;
         public Vector3 SteeringWheelLocation, NeedleLocation, NeedleAngle;
         public Vector2 SteeringWheelAngle, FrontWheelLocation, RearWheelLocation;
@@ -127,7 +127,6 @@ namespace Slovenia_simulator.Vehicles
                     Meshes.DrawMesh(needleMesh);
                     break;
             }
-            
         }
 
         public override void Update(float elaspedTime, Controller k, Vector2 target)
@@ -144,9 +143,18 @@ namespace Slovenia_simulator.Vehicles
         }
         public override void HandleInput(Controller k)
         {
+            
             float maxSteering = SteeringClamp * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
             float incSteering = SteeringIncrement * (1 - (raycastVehicle.CurrentSpeedKmHour / MaximumSpeed));
-           // if (k[OpenTK.Input.Key.End]) System.Diagnostics.Debugger.Break();
+            if (k.Brake || k.Accelerate) CruiseControl = 0;
+            else if (k.CruiseControl && !prevState.CruiseControl)
+            {
+                if (CruiseControl == 0) CruiseControl = 10;
+                else CruiseControl = 0;
+            }
+            if (CruiseControl > 0 && k.CControlInc && !prevState.CControlInc) CruiseControl += 10;
+            if (CruiseControl > 0 && k.CControlDec && !prevState.CControlDec) CruiseControl -= 10;
+            // if (k[OpenTK.Input.Key.End]) System.Diagnostics.Debugger.Break();
             if (!k.Left && !k.Right && steeringValue > -SteeringIncrement * 3 && steeringValue < SteeringIncrement * 3) steeringValue = 0;
             if (k.Left)
             {
@@ -162,6 +170,8 @@ namespace Slovenia_simulator.Vehicles
                     steeringValue = -maxSteering;
             }
             else if (steeringValue < 3 * -SteeringIncrement) steeringValue += 3 * SteeringIncrement;
+
+            if (CruiseControl > 0 && raycastVehicle.CurrentSpeedKmHour < CruiseControl) k.Accelerate = true;
 
             if (k.Accelerate && engineForce < MaxEngineForce) engineForce += 50f;
             else if (engineForce > 0) engineForce -= 25f;
@@ -181,20 +191,19 @@ namespace Slovenia_simulator.Vehicles
             //if (k[OpenTK.Input.Key.Number3]) viewMode = PlayerView.Camera;
             //if (k[OpenTK.Input.Key.Number0]) viewMode = PlayerView.Debug;
 
-            /*if (k[OpenTK.Input.Key.Up]) DebugLocation.Z += 0.01f;
-            if (k[OpenTK.Input.Key.Down]) DebugLocation.Z -= 0.01f;
-            if (k[OpenTK.Input.Key.Left]) DebugLocation.X += 0.01f;
-            if (k[OpenTK.Input.Key.Right]) DebugLocation.X -= 0.01f;
-            if (k[OpenTK.Input.Key.PageUp])DebugLocation.Y += 0.01f;
-            if (k[OpenTK.Input.Key.PageDown]) DebugLocation.Y -= 0.01f;*/
+            prevState = k;
         }
 
         public override Controller HandleAI(Vector2 target)
         {
             Controller result = new Slovenia_simulator.Controller();
-            engineForce = MaxEngineForce / 4;
-            //result.Accelerate = true;
+            
             Vector2 pos = raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz;
+            float dis = (pos - target).Length;
+            if (dis > 30) result.Accelerate = true;
+            if (dis < 25) 
+                result.Brake = true;
+            
             float angle = Misc.getVectorAngle(pos-target)+MathHelper.PiOver2;
             angle = Misc.normalizeAngle(angle);
             float curAngle = ((float)Math.Asin(raycastVehicle.ChassisWorldTransform.ExtractRotation().Y) * -2);
