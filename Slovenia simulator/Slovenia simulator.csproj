@@ -69,7 +69,7 @@
     <Compile Include="Meshes\MeshCollector.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="Meshes\Model.cs" />
-    <Compile Include="Physics.cs" />
+    <Compile Include="World.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Maps\Road.cs" />

@@ -130,14 +130,16 @@ namespace Slovenia_simulator.Vehicles
             }
         }
 
-        public override void Update(float elaspedTime, Controller k, Vector2 target, Map currentMap)
+        public override void Update(float elaspedTime, Controller k, Map currentMap)
         {
-            base.Update(elaspedTime, k, target, currentMap);
+            base.Update(elaspedTime, k, currentMap);
 
             raycastVehicle.ApplyEngineForce(engineForce*gear, 2);
             raycastVehicle.SetBrake(brakeForce, 2);
             raycastVehicle.ApplyEngineForce(engineForce*gear, 3);
             raycastVehicle.SetBrake(brakeForce, 3);
+            raycastVehicle.SetBrake(brakeForce, 0);
+            raycastVehicle.SetBrake(brakeForce, 1);
 
             raycastVehicle.SetSteeringValue(steeringValue, 0);
             raycastVehicle.SetSteeringValue(steeringValue, 1);
@@ -178,10 +180,10 @@ namespace Slovenia_simulator.Vehicles
 
             if (k.Brake && brakeForce < MaxBrakeForce)
             {
-                if (engineForce > 0) engineForce -= 50;
-                brakeForce += 200f;
+                engineForce *= 0.5f;
+                brakeForce = MaxBrakeForce;
             }
-            else if (brakeForce > 0) brakeForce -= 1f;
+            else brakeForce = 0;
             if (k.Forward && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = 1;
             if (k.Reverse && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = -0.5f;
 
@@ -194,13 +196,13 @@ namespace Slovenia_simulator.Vehicles
             prevState = k;
         }
 
-        public override Controller HandleAI(Vector2 target, Map CurrentMap)
+        public override Controller HandleAI(Map CurrentMap)
         {
             Controller result = new Slovenia_simulator.Controller();
             result.CruiseControl = true;
             Vector2 pos = raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz;
 
-            target = CurrentMap.Roads[road].RPaths[0].Points[point].Xz;
+            Vector2 target = CurrentMap.Roads[road].RPaths[0].Points[point].Xz;
 
             float angle = Misc.getVectorAngle(pos-target)+MathHelper.PiOver2;
             angle = Misc.normalizeAngle(angle);
