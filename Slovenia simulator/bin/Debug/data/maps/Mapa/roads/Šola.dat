@@ -1,5 +1,5 @@
 Name = Šola
-RoadType = 1
+RoadType = 2
 Segments = 4
 Traffic = False
 Limit = 50
@@ -8,5 +8,9 @@ SidewalkWidth = 1
 LaneHeight = 0.02
 SidewalkHeight = 0.1
 SplitWidth = 1
+LaneTexturePath = data/maps/Mapa/textures/road.jpg
+
 
 Line = 246:96.4;165.6:72.4;
+
+

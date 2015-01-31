@@ -13,18 +13,11 @@ namespace Slovenia_simulator.Maps
         public int Mesh;
         Matrix4 Transform;
         int[] Roads;
-        CrossroadPath[] Paths;
+        Path[] Paths;
 
         public void FromFile(string path, ref MeshCollector meshes, Road[] roads)
         {
 
         }
-    }
-
-    public class CrossroadPath
-    {
-        public Vector2[] points;
-        int[] MainRoads;
-        int RoadA, RoadB;
     }
 }

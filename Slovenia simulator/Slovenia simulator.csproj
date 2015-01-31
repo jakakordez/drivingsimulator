@@ -63,11 +63,12 @@
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\Map_old.cs" />
     <Compile Include="Maps\ObjectLine.cs" />
+    <Compile Include="Maps\Path.cs" />
     <Compile Include="Menu.cs" />
-    <Compile Include="Mesh.cs" />
-    <Compile Include="MeshCollector.cs" />
+    <Compile Include="Meshes\Mesh.cs" />
+    <Compile Include="Meshes\MeshCollector.cs" />
     <Compile Include="Misc.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="Meshes\Model.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,9 +82,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Meshes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

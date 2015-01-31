@@ -227,6 +227,8 @@ namespace Map_editor
                                 case "LaneHeight": r.LaneHeight = toFloat(line[1]); break;
                                 case "SidewalkHeight": r.SidewalkHeight = toFloat(line[1]); break;
                                 case "SplitWidth": r.SplitWidth = toFloat(line[1]); break;
+                                case "LaneTexturePath": r.LaneTexturePath = line[1]; break;
+                                case "SidewalkTexturePath": r.SidewalkTexturePath = line[1]; break;
                                 case "Line":
                                     string[] points = line[1].Split(';');
                                     for (int j = 0; j < points.Length; j++)

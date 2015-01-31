@@ -41,13 +41,13 @@ namespace Slovenia_simulator
             //ground.UserObject = "Ground";
         }
 
-        public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
+        public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k, Map currentMap)
         {
             World.StepSimulation(elaspedTime);
-            Player.Update(elaspedTime, new Controller(k), Vector2.Zero);
+            Player.Update(elaspedTime, new Controller(k), Vector2.Zero, currentMap);
             for (int i = 0; i < Vehicles.Length; i++)
             {
-                Vehicles[i].Update(elaspedTime, null, Player.raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz);
+                Vehicles[i].Update(elaspedTime, null, Player.raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz, currentMap);
             }
         }
 

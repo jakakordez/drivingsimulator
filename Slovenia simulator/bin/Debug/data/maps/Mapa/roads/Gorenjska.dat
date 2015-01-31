@@ -12,3 +12,5 @@ LaneTexturePath = data/maps/Mapa/textures/road.jpg
 SidewalkTexturePath = data/maps/Mapa/textures/asphalt.jpg
 
 Line = -0.6:9.8;42.4:64;73:157.6;85.4:242.6;
+
+

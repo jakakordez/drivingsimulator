@@ -11,8 +11,6 @@ namespace Slovenia_simulator.Maps
 {
     class Lane
     {
-        public long Length { get { return Points.Length; } }
-        public Vector3[] Points;
         public int VertexBuffer, TextureCoordinateBuffer, ElementBuffer, ElementArraySize;
 
         public void GenerateLane(Vector2[] roadLine, int Segments, float Offset, float Width, float Height)
@@ -22,7 +20,7 @@ namespace Slovenia_simulator.Maps
             Vector2[] pointsR = new Vector2[roadCurve.Length * 2];
             Vector2[] TextureCoordinates = new Vector2[0];
             int[] ElementArray = new int[0];
-            Points = new Vector3[0];
+            Vector3[] Points = new Vector3[0];
             float kot = 0;
             Width /= 2;
             for (int i = 0; i < roadCurve.Length; i++)

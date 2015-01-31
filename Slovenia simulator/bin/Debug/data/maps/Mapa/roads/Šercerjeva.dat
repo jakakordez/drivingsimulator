@@ -8,5 +8,9 @@ SidewalkWidth = 1
 LaneHeight = 0.02
 SidewalkHeight = 0.1
 SplitWidth = 1
+LaneTexturePath = data/maps/Mapa/textures/road.jpg
+
 
 Line = 235:117;254:123;260.6:168;272:210;302.2:235;307.6:242;
+
+

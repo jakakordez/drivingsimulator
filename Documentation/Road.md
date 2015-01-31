@@ -19,9 +19,9 @@
 ##Road types
 
 1. one lane
-2. one lane, one way
-3. two lanes
-4. two lanes, one way
+2. two lanes
+3. two lanes, one way
+4. two lanes, one way with sidewalk
 5. two lanes with sidewalk
 6. two lanes with sidewalk on one side
 7. four lanes

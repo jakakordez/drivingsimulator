@@ -1,12 +1,16 @@
 Name = Jalnova
-RoadType = 1
+RoadType = 2
 Segments = 8
 Traffic = False
 Limit = 50
-LaneWidth = 5
+LaneWidth = 2.5
 SidewalkWidth = 1
 LaneHeight = 0.02
 SidewalkHeight = 0.1
 SplitWidth = 1
 
+
+
 Line = 204.6:154.8;204:205;211.6:190.8;186.6:221.6;
+
+

@@ -7,18 +7,18 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.IO;
 
-namespace Slovenia_simulator.Maps
+namespace Slovenia_simulator
 {
     class Map
     {
-        Road[] Roads;
+        public Maps.Road[] Roads;
         public Map(string mapName, ref MeshCollector meshes)
         {
             string[] roadsFile = Directory.GetFiles("data/maps/"+mapName+"/roads/");
-            Roads = new Road[roadsFile.Length];
+            Roads = new Maps.Road[roadsFile.Length];
             for (int i = 0; i < roadsFile.Length; i++)
             {
-                Roads[i] = new Road();
+                Roads[i] = new Maps.Road();
                 Roads[i].FromFile(roadsFile[i], ref meshes);
             }
         }

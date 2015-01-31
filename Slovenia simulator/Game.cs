@@ -20,7 +20,7 @@ namespace Slovenia_simulator
         TextRenderer renderer;
         MeshCollector MeshCollection;
         Font serif = new Font(FontFamily.GenericSerif, 24);
-        Maps.Map currentMap;
+        Map currentMap;
         int grass;
         public Game()
             : base(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, new GraphicsMode(), "Driving simulator")
@@ -42,7 +42,7 @@ namespace Slovenia_simulator
             System.Windows.Forms.Cursor.Hide();
             MeshCollection = new MeshCollector();
             camera = new Camera(this.Height, this.Width);
-            currentMap = new Maps.Map("Mapa", ref MeshCollection);
+            currentMap = new Map("Mapa", ref MeshCollection);
             grass = Misc.LoadTexture("data/maps/Mapa/textures/grass.png", 1);
             p = new Physics(ref MeshCollection);
         }
@@ -61,7 +61,7 @@ namespace Slovenia_simulator
         {
             if (Keyboard[OpenTK.Input.Key.Delete]) System.Diagnostics.Debugger.Break();
             DebugMove(Keyboard, ref p.Player.DebugLocation);
-            p.Update((float)e.Time, Keyboard);
+            p.Update((float)e.Time, Keyboard, currentMap);
                 
             if (Keyboard[OpenTK.Input.Key.Escape] || Keyboard[OpenTK.Input.Key.Q]) Exit();
             base.OnUpdateFrame(e);
