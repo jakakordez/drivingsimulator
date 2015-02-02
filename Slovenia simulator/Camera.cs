@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenTK;
+using System.Windows.Forms;
 
 namespace Slovenia_simulator
 {
@@ -22,6 +23,11 @@ namespace Slovenia_simulator
             y = (float)mouse.Y/H;
         }
 
+        public static void ResetView()
+        {
+            Cursor.Position = new System.Drawing.Point(Screen.PrimaryScreen.Bounds.Size.Width / 2, Screen.PrimaryScreen.Bounds.Size.Height / 2);
+        }
+
         public Matrix4 GenerateLookAt(Vehicle vehicle)
         {
             Matrix4 e = new Matrix4(), t = new Matrix4();
@@ -32,18 +38,14 @@ namespace Slovenia_simulator
                     t = Matrix4.CreateTranslation(vehicle.DriverEyeLocation + new Vector3(0, 0, 2)) * Matrix4.CreateRotationX((y * vehicle.DriverViewAngle.X) - (vehicle.DriverViewAngle.X / 2)) * Matrix4.CreateRotationY((-x * vehicle.DriverViewAngle.Y) + (vehicle.DriverViewAngle.Y / 2));
                     break;
                 case PlayerView.Exterior:
-                    e = Matrix4.CreateTranslation(vehicle.ExteriorEyeLocation);
-                    t = Matrix4.CreateTranslation(new Vector3(0, 1.2f, -2));
+                    t = Matrix4.Identity;
+                    e = Matrix4.CreateTranslation(0, vehicle.ExteriorEyeDistance, 0)*Matrix4.CreateRotationX((y * MathHelper.PiOver4)+MathHelper.PiOver4) * Matrix4.CreateRotationY((-x * MathHelper.TwoPi));
                     break;
                 case PlayerView.Camera:
                     return Matrix4.LookAt(new Vector3(4, 0.1f, 2), vehicle.body.CenterOfMassPosition, Vector3.UnitY);
                 case PlayerView.Debug:
                      e = Matrix4.CreateTranslation(vehicle.DebugLocation);
-                    t = Matrix4.CreateTranslation(vehicle.DebugLocation + new Vector3(0, 0, 2)) * Matrix4.CreateRotationX((y*MathHelper.Pi)-(MathHelper.Pi/2)) * Matrix4.CreateRotationY((-x*MathHelper.Pi)+(MathHelper.Pi/2));
-                    break;
-                case PlayerView.Rear:
-                    e = Matrix4.CreateTranslation(vehicle.ExteriorEyeLocation*new Vector3(-1, 1, -1.5f));
-                    t = Matrix4.CreateTranslation(new Vector3(0, 1.2f, -2));
+                    t = Matrix4.CreateTranslation(vehicle.DebugLocation + new Vector3(0, 0, 2)) * Matrix4.CreateRotationX((y*MathHelper.Pi)-(MathHelper.Pi/2)) * Matrix4.CreateRotationY((-x*MathHelper.Pi)+MathHelper.PiOver2);
                     break;
             }
             e *= Matrix4.CreateFromQuaternion(vehicle.raycastVehicle.RigidBody.Orientation);

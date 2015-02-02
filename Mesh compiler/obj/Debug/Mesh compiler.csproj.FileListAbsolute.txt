@@ -13,3 +13,5 @@ C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh comp
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\Slovenia simulator.exe
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\BulletSharp.dll
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\Slovenia simulator.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\QuickFont.dll
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Mesh compiler\bin\Debug\QuickFont.pdb

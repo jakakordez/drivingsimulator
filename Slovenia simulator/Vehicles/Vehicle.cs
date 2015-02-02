@@ -9,7 +9,7 @@ using Slovenia_simulator.Vehicles;
 
 namespace Slovenia_simulator
 {
-    public enum PlayerView { Exterior, Cabin, Camera, Debug, Rear}
+    public enum PlayerView { Exterior, Cabin, Camera, Debug}
     public enum VehicleController { Player, AI, Network, Passive}
     class Vehicle
     {
@@ -18,10 +18,11 @@ namespace Slovenia_simulator
         public Vector3 DebugLocation;
         public float Mass, MaxEngineForce, MaxBrakeForce, MaximumSpeed;
         public float engineForce, brakeForce, steeringValue;
+        public float ExteriorEyeDistance;
         public CollisionShape collisionShape;
         public RigidBody body;
         public int bodyMesh, cabinMesh;
-        public Vector3 Dimensions, DriverEyeLocation, ExteriorEyeLocation;
+        public Vector3 Dimensions, DriverEyeLocation;
         public Vector2 DriverViewAngle;
 
         public const int rightIndex = 0;
@@ -70,8 +71,6 @@ namespace Slovenia_simulator
                     HandleInput(HandleAI(currentMap));
                     break;
                 case VehicleController.Network:
-                    break;
-                case VehicleController.Passive:
                     break;
             }
         }

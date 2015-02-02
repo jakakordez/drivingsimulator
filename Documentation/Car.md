@@ -14,7 +14,7 @@
 - **DriverViewAngle** - Driver view angle limit (2 values)
 - **SteeringWheelLocation** - Steering wheel location relative to vehicle center (3 values)
 - **SteeringWheelAngle** - Steering wheel initial rotation (2 values)
-- **ExteriorEyeLocation** - Exterior camera location relative to vehicle center (3 values)
+- **ExteriorEyeDistance** [*float*] - Distance from center of vehicle to exterior camera
 - **NeedleLocation** - Speedometer needle location (3 values)
 - **NeedleAngle** - Speedometer needle X, scale and Z rotation
 

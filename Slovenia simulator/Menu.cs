@@ -13,7 +13,6 @@ namespace Slovenia_simulator
 {
     class Menu:GameWindow
     {
-        TextRenderer renderer;
         public Menu()
             : base(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, new GraphicsMode(), "Driving simulator")
         {
@@ -29,7 +28,7 @@ namespace Slovenia_simulator
             GL.Enable(EnableCap.DepthTest);
             GL.ClearColor(Color.CornflowerBlue);
 
-            renderer = new TextRenderer(100, 50);
+            //renderer = new TextRenderer(100, 50);
             System.Windows.Forms.Cursor.Hide();
         }
 

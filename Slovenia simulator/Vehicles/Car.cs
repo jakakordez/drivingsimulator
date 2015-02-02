@@ -22,11 +22,11 @@ namespace Slovenia_simulator.Vehicles
         public Vector2 SteeringWheelAngle, FrontWheelLocation, RearWheelLocation;
         int wheelMesh, steeringWheelMesh, needleMesh;
         int road = 0, point = 0;
+        bool EngineRunning;
 
         public Car(string path, int color, ref MeshCollector meshCollection, VehicleController controller, PlayerView view):base(controller, view)
         {
             DriverEyeLocation = new Vector3();
-            ExteriorEyeLocation = new Vector3();
             string[] file = File.ReadAllLines("data/vehicles/car/" + path + "/data.conf");
             DataParser.ParseData(file, this);
            
@@ -45,9 +45,8 @@ namespace Slovenia_simulator.Vehicles
             }*/
             CollisionShape chassisShape = new BoxShape(Dimensions.Y / 2, Dimensions.Z / 2, Dimensions.X / 2);
             collisionShape = new CompoundShape();
-
             //localTrans effectively shifts the center of mass with respect to the chassis
-            Matrix4 localTrans = Matrix4.CreateTranslation(2*Vector3.UnitY);
+            Matrix4 localTrans = Matrix4.CreateTranslation(0*Vector3.UnitY);
             ((CompoundShape)collisionShape).AddChildShape(localTrans, chassisShape);
         }
 
@@ -98,7 +97,7 @@ namespace Slovenia_simulator.Vehicles
             {
                 case PlayerView.Exterior:
                 case PlayerView.Camera:
-                case PlayerView.Rear:
+                case PlayerView.Debug:
                     Meshes.DrawMesh(bodyMesh);
                     Matrix4 rotation = Matrix4.CreateRotationX(raycastVehicle.GetWheelInfo(1).Rotation);
                     Matrix4 wheel = Matrix4.CreateRotationY(-(float)MathHelper.PiOver2)*rotation;
@@ -117,7 +116,7 @@ namespace Slovenia_simulator.Vehicles
                     GL.LoadMatrix(ref wheel);
                     Meshes.DrawMesh(wheelMesh);
                     break;
-                case PlayerView.Debug:
+                
                 case PlayerView.Cabin:
                     Meshes.DrawMesh(cabinMesh);
                     Matrix4 steering = Matrix4.CreateRotationZ(SteeringWheelAngle.X * steeringValue) * Matrix4.CreateRotationX(SteeringWheelAngle.Y) * Matrix4.CreateTranslation(SteeringWheelLocation) * modelLookAt;
@@ -176,7 +175,7 @@ namespace Slovenia_simulator.Vehicles
             if (CruiseControl > 0 && raycastVehicle.CurrentSpeedKmHour < CruiseControl) k.Accelerate = true;
 
             if (k.Accelerate && engineForce < MaxEngineForce) engineForce += 50f;
-            else if (engineForce > 0) engineForce -= 25f;
+            else if (engineForce > 0) engineForce*=0.5f;
 
             if (k.Brake && brakeForce < MaxBrakeForce)
             {
@@ -189,9 +188,6 @@ namespace Slovenia_simulator.Vehicles
 
             if (k.CabinView) viewMode = PlayerView.Cabin;
             if (k.ExteriorView) viewMode = PlayerView.Exterior;
-            if (k.RearView) viewMode = PlayerView.Rear;
-            //if (k[OpenTK.Input.Key.Number3]) viewMode = PlayerView.Camera;
-            //if (k[OpenTK.Input.Key.Number0]) viewMode = PlayerView.Debug;
 
             prevState = k;
         }
@@ -214,7 +210,7 @@ namespace Slovenia_simulator.Vehicles
             else if (curAngle > 0.1f) result.Left = true;
             else steeringValue = 0;
             float dis = (pos - target).Length;
-            if (dis < 2 && CurrentMap.Roads[road].RPaths[0].Points.Length - 1 > point) point++;
+            if (dis < 10 && CurrentMap.Roads[road].RPaths[0].Points.Length - 1 > point) point++;
            
             return result;
         }

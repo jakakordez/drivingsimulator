@@ -11,7 +11,7 @@ namespace Slovenia_simulator
     {
         public bool Accelerate, Brake, Left, Right, CruiseControl, CControlInc, CControlDec;
         public bool Forward, Reverse;
-        public bool ExteriorView, CabinView, RearView;
+        public bool ExteriorView, CabinView;
 
         public Controller() { }
         public Controller(KeyboardDevice device)
@@ -30,8 +30,8 @@ namespace Slovenia_simulator
 
             CabinView = device[Key.Number1];
             ExteriorView = device[Key.Number2];
-            
-            RearView = device[Key.Number3];
+
+            if (CabinView || ExteriorView) Camera.ResetView();
         }
     }
 }

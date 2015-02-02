@@ -8,37 +8,37 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Threading;
+using QuickFont;
 
 namespace Slovenia_simulator
 {
     class Game:GameWindow
     {
-        int fps;
+        int frames, fps;
         float frameTime;
         Camera camera;
         World world;
-        TextRenderer renderer;
-        Font serif = new Font(FontFamily.GenericSerif, 24);
-        
+        Font serif = new Font(FontFamily.GenericSansSerif, 24);
+        QFont myFont;
         public Game()
             : base(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, new GraphicsMode(), "Driving simulator")
         {
+            WindowState = OpenTK.WindowState.Fullscreen;
             VSync = VSyncMode.On;
         }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            WindowState = OpenTK.WindowState.Fullscreen;
+            myFont = new QFont(serif);
+            myFont.Options.CharacterSpacing = 0.2f;
             GL.Enable(EnableCap.DepthTest);
             GL.ClearColor(Color.CornflowerBlue);
-
             GL.Enable(EnableCap.ColorMaterial);
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Light0);
-            renderer = new TextRenderer(100, 50);
+
             //GL.Enable(EnableCap.Lighting);
             System.Windows.Forms.Cursor.Hide();
-           
             camera = new Camera(this.Height, this.Width);
             
             world = new World();
@@ -66,34 +66,38 @@ namespace Slovenia_simulator
 
         public void DebugMove(OpenTK.Input.KeyboardDevice k, ref Vector3 n)
         {
-            if (k[OpenTK.Input.Key.Keypad8]) n.Z += 0.001f;
-            if (k[OpenTK.Input.Key.Keypad2]) n.Z -= 0.001f;
-            if (k[OpenTK.Input.Key.Keypad4]) n.X += 0.001f;
-            if (k[OpenTK.Input.Key.Keypad6]) n.X -= 0.001f;
-            if (k[OpenTK.Input.Key.Keypad7]) n.Y += 0.001f;
-            if (k[OpenTK.Input.Key.Keypad1]) n.Y -= 0.001f;
+            if (k[OpenTK.Input.Key.Number0]) world.Player.viewMode = PlayerView.Debug;
+            if (k[OpenTK.Input.Key.Keypad8]) n.Z += 0.005f;
+            if (k[OpenTK.Input.Key.Keypad2]) n.Z -= 0.005f;
+            if (k[OpenTK.Input.Key.Keypad4]) n.X += 0.005f;
+            if (k[OpenTK.Input.Key.Keypad6]) n.X -= 0.005f;
+            if (k[OpenTK.Input.Key.Keypad7]) n.Y += 0.005f;
+            if (k[OpenTK.Input.Key.Keypad1]) n.Y -= 0.005f;
         }
         
         OpenTK.Vector3 position = new Vector3(5, 8, 10);
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            //renderer.Clear(Color.Black);
-            //renderer.DrawString("Hello, world", serif, Brushes.Blue, new PointF(1.0f, 1.0f));
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit );
-
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            QFont.Begin();
+            myFont.Print("FPS: " + fps, new Vector2(20, 20));
+            myFont.Print("Speed: " + Math.Round(world.Player.raycastVehicle.CurrentSpeedKmHour, 1)+" kph", new Vector2(20, 50));
+            QFont.End();
+            
             frameTime += (float)e.Time;
-            fps++;
+            frames++;
             if (frameTime >= 1)
             {
                 frameTime = 0;
-                Title = "Driving simulator, FPS = " + fps.ToString();
-                fps = 0;
+                fps = frames;
+                frames = 0;
             }
+            
             Matrix4 lookat = camera.GenerateLookAt((Vehicle)world.Player);
             GL.MatrixMode(MatrixMode.Modelview);
             if (this.Focused) camera.Update(Mouse, Height / 2, Width / 2);
             world.Draw(lookat);
-
+            
             SwapBuffers();
         }
 
