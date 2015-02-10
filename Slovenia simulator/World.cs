@@ -53,10 +53,10 @@ namespace Slovenia_simulator
         public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
         {
             DynamicsWorld.StepSimulation(elaspedTime);
-            Player.Update(elaspedTime, new Controller(k), CurrentMap);
+            Player.Update(elaspedTime, new Controller(k), CurrentMap, Player);
             for (int i = 0; i < Vehicles.Length; i++)
             {
-                Vehicles[i].Update(elaspedTime, null, CurrentMap);
+                Vehicles[i].Update(elaspedTime, null, CurrentMap, Player);
             }
         }
 

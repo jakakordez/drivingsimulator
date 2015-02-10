@@ -32,5 +32,10 @@ namespace Slovenia_simulator.Maps
                 Points[(Invert)?Segments-i:i] = new Vector3(roadCurve[i].X + x, Height, roadCurve[i].Y + y);
             }
         }
+
+        public Path(Vector3[] Points)
+        {
+            this.Points = Points;
+        }
     }
 }

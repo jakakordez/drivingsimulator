@@ -61,14 +61,14 @@ namespace Slovenia_simulator
 
         public virtual void Draw(Matrix4 LookAt, ref MeshCollector Meshes) { }
 
-        public virtual void Update(float elaspedTime, Controller k, Map currentMap) {
+        public virtual void Update(float elaspedTime, Controller k, Map currentMap, Vehicle target) {
             switch (Controller)
             {
                 case VehicleController.Player:
                     if(k != null) HandleInput(k);
                     break;
                 case VehicleController.AI:
-                    HandleInput(HandleAI(currentMap));
+                    HandleInput(HandleAI(currentMap, target));
                     break;
                 case VehicleController.Network:
                     break;
@@ -77,7 +77,7 @@ namespace Slovenia_simulator
 
         public virtual void HandleInput(Controller k) { }
 
-        public virtual Controller HandleAI(Map CurrentMap) { return new Controller(); }
+        public virtual Controller HandleAI(Map CurrentMap, Vehicle target) { return new Controller(); }
     }
     
 }

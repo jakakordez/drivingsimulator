@@ -23,8 +23,8 @@ namespace Slovenia_simulator.Maps
         public void FromFile(string path, ref MeshCollector meshes)
         {
             //if (components[6] != "") Misc.Push<ObjectLine>(new ObjectLine(meshes.LoadMesh("./data/maps/Mapa/models/" + components[6] + "/body.obj"), pointCollection, Segments, Width + 0.3f), ref Lines);*/
-            string[] file = System.IO.File.ReadAllLines(path);
-            DataParser.ParseData(file, this);
+            //string[] file = System.IO.File.ReadAllLines(path);
+            DataParser.ParseData(path, this);
             auxiliaryLanes = new Lane[0];
             Lines = new ObjectLine[0];
             if (LaneTexturePath != null) LaneTexture = Misc.LoadTexture(LaneTexturePath, 1);
@@ -72,8 +72,8 @@ namespace Slovenia_simulator.Maps
                     auxiliaryLanes = new Lane[] { new Lane() };
                     drivingLanes[0].GenerateLane(Line, Segments, 0, LaneWidth * 2, LaneHeight);
                     auxiliaryLanes[0].GenerateLane(Line, Segments, LaneWidth + (SidewalkWidth / 2), SidewalkWidth, SidewalkHeight);
-                    RPaths = new Path[] { new Path(Line, Segments, LaneWidth*0.5f, LaneHeight, false) };
-                    LPaths = new Path[]{ new Path(Line, Segments, LaneWidth*-0.5f, LaneHeight, true) };
+                    RPaths = new Path[] { new Path(Line, Segments, LaneWidth*0.25f, LaneHeight, false) };
+                    LPaths = new Path[]{ new Path(Line, Segments, LaneWidth*-0.25f, LaneHeight, true) };
                     break;
                 case 7: //four lanes
                     drivingLanes = new Lane[]{new Lane()};
@@ -139,14 +139,14 @@ namespace Slovenia_simulator.Maps
             for (int i = 0; i < drivingLanes.Length; i++)
             {
                 if (LaneTexture != 0) { GL.BindTexture(TextureTarget.Texture2D, LaneTexture); GL.Color4(Color4.White); }
-                else GL.Color4(Color4.Black);
+                else { GL.BindTexture(TextureTarget.Texture2D, 0);  GL.Color4(Color4.Black); }
                 drivingLanes[i].Draw();
             }
             
             for (int i = 0; i < auxiliaryLanes.Length; i++)
             {
                 if (SidewalkTexture != 0) GL.BindTexture(TextureTarget.Texture2D, SidewalkTexture);
-                else GL.Color4(Color4.Black);
+                else { GL.BindTexture(TextureTarget.Texture2D, 0); GL.Color4(Color4.Black); }
                 auxiliaryLanes[i].Draw();
             }
             

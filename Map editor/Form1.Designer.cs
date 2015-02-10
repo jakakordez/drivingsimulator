@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Roads", 1, 1);
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Objects", 2, 2);
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Utilities", 3, 3);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Roads", 1, 1);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Objects", 2, 2);
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Utilities", 3, 3);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.Map = new System.Windows.Forms.Panel();
@@ -89,22 +89,22 @@
             this.treeView1.ImageList = this.imageList1;
             this.treeView1.Location = new System.Drawing.Point(12, 87);
             this.treeView1.Name = "treeView1";
-            treeNode4.ImageIndex = 1;
-            treeNode4.Name = "Node0";
-            treeNode4.SelectedImageIndex = 1;
-            treeNode4.Text = "Roads";
-            treeNode5.ImageIndex = 2;
-            treeNode5.Name = "Node1";
-            treeNode5.SelectedImageIndex = 2;
-            treeNode5.Text = "Objects";
-            treeNode6.ImageIndex = 3;
-            treeNode6.Name = "Node2";
-            treeNode6.SelectedImageIndex = 3;
-            treeNode6.Text = "Utilities";
+            treeNode1.ImageIndex = 1;
+            treeNode1.Name = "Node0";
+            treeNode1.SelectedImageIndex = 1;
+            treeNode1.Text = "Roads";
+            treeNode2.ImageIndex = 2;
+            treeNode2.Name = "Node1";
+            treeNode2.SelectedImageIndex = 2;
+            treeNode2.Text = "Objects";
+            treeNode3.ImageIndex = 3;
+            treeNode3.Name = "Node2";
+            treeNode3.SelectedImageIndex = 3;
+            treeNode3.Text = "Utilities";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5,
-            treeNode6});
+            treeNode1,
+            treeNode2,
+            treeNode3});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.Size = new System.Drawing.Size(155, 413);
             this.treeView1.TabIndex = 1;
@@ -149,7 +149,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 4;
-            this.button2.Text = "button2";
+            this.button2.Text = "Draw";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 

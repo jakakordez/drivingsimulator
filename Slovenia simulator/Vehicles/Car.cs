@@ -21,14 +21,13 @@ namespace Slovenia_simulator.Vehicles
         public Vector3 SteeringWheelLocation, NeedleLocation, NeedleAngle;
         public Vector2 SteeringWheelAngle, FrontWheelLocation, RearWheelLocation;
         int wheelMesh, steeringWheelMesh, needleMesh;
-        int road = 0, point = 0;
+        int road = 10, point = 0;
         bool EngineRunning;
 
         public Car(string path, int color, ref MeshCollector meshCollection, VehicleController controller, PlayerView view):base(controller, view)
         {
             DriverEyeLocation = new Vector3();
-            string[] file = File.ReadAllLines("data/vehicles/car/" + path + "/data.conf");
-            DataParser.ParseData(file, this);
+            DataParser.ParseData("data/vehicles/car/" + path + "/config.json", this);
            
             bodyMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/body.mesh");
             wheelMesh = meshCollection.LoadMesh("data/vehicles/car/" + path + "/wheel.mesh");
@@ -129,9 +128,9 @@ namespace Slovenia_simulator.Vehicles
             }
         }
 
-        public override void Update(float elaspedTime, Controller k, Map currentMap)
+        public override void Update(float elaspedTime, Controller k, Map currentMap, Vehicle target)
         {
-            base.Update(elaspedTime, k, currentMap);
+            base.Update(elaspedTime, k, currentMap, target);
 
             raycastVehicle.ApplyEngineForce(engineForce*gear, 2);
             raycastVehicle.SetBrake(brakeForce, 2);
@@ -183,6 +182,8 @@ namespace Slovenia_simulator.Vehicles
                 brakeForce = MaxBrakeForce;
             }
             else brakeForce = 0;
+            if (k.EngineStart && !prevState.EngineStart) EngineRunning = !EngineRunning;
+            if (!EngineRunning) gear = 0;
             if (k.Forward && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = 1;
             if (k.Reverse && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = -0.5f;
 
@@ -191,26 +192,26 @@ namespace Slovenia_simulator.Vehicles
 
             prevState = k;
         }
-
-        public override Controller HandleAI(Map CurrentMap)
+        public override Controller HandleAI(Map CurrentMap, Vehicle tar)
         {
             Controller result = new Slovenia_simulator.Controller();
-            result.CruiseControl = true;
-            Vector2 pos = raycastVehicle.ChassisWorldTransform.ExtractTranslation().Xz;
+            //result.CruiseControl = true;
+            CruiseControl = 20;
+            //result.Brake = true;
+            Vector2 pos = body.CenterOfMassPosition.Xz;
 
             Vector2 target = CurrentMap.Roads[road].RPaths[0].Points[point].Xz;
+            //Vector2 target = tar.body.CenterOfMassPosition.Xz;
 
             float angle = Misc.getVectorAngle(pos-target)+MathHelper.PiOver2;
             angle = Misc.normalizeAngle(angle);
             float curAngle = ((float)Math.Asin(raycastVehicle.ChassisWorldTransform.ExtractRotation().Y) * -2);
             curAngle = Misc.normalizeAngle(curAngle);
-            curAngle = MathHelper.Pi - Math.Abs(Math.Abs(angle-curAngle) - MathHelper.Pi);
-
-            if (curAngle > 0.3f) result.Right = true;
-            else if (curAngle > 0.1f) result.Left = true;
-            else steeringValue = 0;
+            curAngle = Misc.normalizeAngle(angle - curAngle);
+            if (curAngle >Math.PI && curAngle < MathHelper.TwoPi-0.01f) result.Left = true;
+            else if(curAngle > 0.01f) result.Right = true;
             float dis = (pos - target).Length;
-            if (dis < 10 && CurrentMap.Roads[road].RPaths[0].Points.Length - 1 > point) point++;
+            if (dis < Dimensions.X/2 && CurrentMap.Roads[road].RPaths[0].Points.Length - 1 > point) point++;
            
             return result;
         }

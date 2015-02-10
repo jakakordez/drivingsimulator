@@ -15,7 +15,7 @@ namespace Slovenia_simulator.Maps
         int[] Roads;
         Path[] Paths;
 
-        public void FromFile(string path, ref MeshCollector meshes, Road[] roads)
+        public void FromFile(string path, ref MeshCollector meshes, Road[] roads, Vector3 Position, Vector3 Rotation)
         {
 
         }

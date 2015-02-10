@@ -14,5 +14,5 @@ C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia 
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\obj\Debug\Slovenia simulator.pdb
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\OpenTK.pdb
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\OpenTK.xml
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\QuickFont.dll
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\QuickFont.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\Newtonsoft.Json.dll

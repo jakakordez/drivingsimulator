@@ -1,0 +1,16 @@
+{
+	"Name": "Gorenjska",
+	"RoadType": 5,
+	"Segments": 60,
+	"Traffic": false,
+	"Limit": 50,
+	"LaneWidth": 3.5,
+	"SidewalkWidth": 1,
+	"LaneHeight": 0.05,
+	"SidewalkHeight": 0.1,
+	"SplitWidth": 1,
+	"LaneTexturePath": "data/maps/Mapa/textures/road.jpg",
+	"SidewalkTexturePath": "data/maps/Mapa/textures/asphalt.jpg",
+    
+	"Line": [{"X":-0.6, "Y":9.8}, {"X":42.4, "Y":64}, {"X":73, "Y":157.6}, {"X":85.4, "Y":242.6}]
+}

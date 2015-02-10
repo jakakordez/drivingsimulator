@@ -2,27 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using OpenTK;
+using Newtonsoft.Json;
 
 namespace Slovenia_simulator
 {
     class DataParser
     {
-        public static void ParseData(string[] file, object obj)
+        public static void ParseData(string path, object obj)
         {
-            for (int i = 0; i < file.Length; i++)
+            
+            switch (path.Split('.')[1])
             {
-                if (file[i] != "" && file[i][0] != '#' && file[i].Contains('='))
-                {
-                    string[] line = file[i].Replace(" ", "").Split('=');
-                    if (obj.GetType().GetField(line[0]) != null)
+                case "dat":
+                    string[] file = File.ReadAllLines(path);
+                    for (int i = 0; i < file.Length; i++)
                     {
-                        Type t = obj.GetType().GetField(line[0]).FieldType;
-                        obj.GetType().GetField(line[0]).SetValue(obj, parseValue(line[1], t));
+                        if (file[i] != "" && file[i][0] != '#' && file[i].Contains('='))
+                        {
+                            string[] line = file[i].Replace(" ", "").Split('=');
+                            if (obj.GetType().GetField(line[0]) != null)
+                            {
+
+                                Type t = obj.GetType().GetField(line[0]).FieldType;
+                                obj.GetType().GetField(line[0]).SetValue(obj, parseValue(line[1], t));
+                            }
+                        }
                     }
-                }
+                    break;
+                case "json":
+                    string json = File.ReadAllText(path);
+                    JsonConvert.PopulateObject(json, obj);
+                    break;
             }
+            
         }
 
         private static object parseValue(string v, Type t)

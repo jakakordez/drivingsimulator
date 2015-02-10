@@ -1,0 +1,43 @@
+{	
+	"colors":
+		[ {"name":"Black", "color":"#000000"},
+			{"name":"Night_blue_metallic", "color": "#1C2534"},
+			{"name":"Platinum_gray_metallic", "color": "#4C4E4D"},
+			{"name":"Pure_white", "color": "#DBDFDD"},
+			{"name":"Silk_blue_metallic", "color": "#97AEC6"},
+			{"name":"Tornado_red", "color": "#8E302C"},
+			{"name":"Tungsten_silver_metallic", "color": "#ACABA6"}
+		],
+
+	"Mass": 1605,
+	"MaximumSpeed": 180,
+	"Dimensions": { "X": 4.6, "Y": 1.8, "Z": 1.3 },
+
+	"FrontWheelLocation": {"X":1.5, "Y":0.66},
+	"RearWheelLocation": {"X":1.33, "Y":0.66},
+    
+	"DriverEyeLocation": {"X":0.38, "Y":0.28, "Z":0.15},
+	"DriverViewAngle": {"X":1, "Y":1.6},
+	"SteeringWheelLocation": {"X":0.38, "Y":0.08, "Z":0.45},
+	"SteeringWheelAngle": {"X":-8, "Y":0.4},
+	"ExteriorEyeDistance": 5,
+	"NeedleLocation": {"X":0.32, "Y":0.11, "Z":0.78},
+	"NeedleAngle": {"X":-0.4, "Y":60, "Z":0.1},
+    
+	"WheelRadius": 0.33,
+	"WheelWidth": 0.3,
+	"SuspensionHeight": -0.3,
+	"SuspensionRestLength": 0.2,
+    
+	"MaxEngineForce": 2000,
+	"MaxBrakeForce": 200,
+    
+	"SteeringIncrement":0.01,
+	"SteeringClamp":0.5,
+    
+	"WheelFriction":5000,
+	"SuspensionStiffness":40,
+	"SuspensionDamping":15.6,
+	"SuspensionCompression":80.8,
+	"RollInfluence":0.1
+}
