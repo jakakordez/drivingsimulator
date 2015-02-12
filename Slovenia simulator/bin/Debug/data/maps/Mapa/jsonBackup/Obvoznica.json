@@ -1,0 +1,1 @@
+{"Line":[{"X":302.2,"Y":0.6},{"X":347.6,"Y":63.2},{"X":428.6,"Y":179.6}],"Node":"TreeNode: Obvoznica","LaneWidth":3.5,"SidewalkWidth":1.0,"LaneHeight":0.02,"SidewalkHeight":0.1,"SplitWidth":1.0,"RoadType":2,"Limit":50,"Segments":10,"LeftObject":null,"RightObject":null,"Traffic":false,"LaneTexturePath":null,"SidewalkTexturePath":null,"Name":"Obvoznica"}

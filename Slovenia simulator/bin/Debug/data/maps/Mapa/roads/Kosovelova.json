@@ -1,0 +1,34 @@
+{
+  "Line": [
+    {
+      "X": 183.0,
+      "Y": 174.0
+    },
+    {
+      "X": 180.6,
+      "Y": 149.0
+    },
+    {
+      "X": 192.0,
+      "Y": 144.0
+    },
+    {
+      "X": 203.0,
+      "Y": 133.0
+    },
+    {
+      "X": 218.0,
+      "Y": 116.0
+    }
+  ],
+  "LaneWidth": 2.5,
+  "SidewalkWidth": 1.0,
+  "LaneHeight": 0.02,
+  "SidewalkHeight": 0.1,
+  "SplitWidth": 1.0,
+  "RoadType": 2,
+  "Limit": 50,
+  "Segments": 10,
+  "Traffic": false,
+  "Name": "Kosovelova"
+}

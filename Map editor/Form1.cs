@@ -201,6 +201,7 @@ namespace Map_editor
         string MapPath = "";
         private void button4_Click(object sender, EventArgs e)
         {
+            
             if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 MapPath = folderBrowserDialog1.SelectedPath;
@@ -209,42 +210,57 @@ namespace Map_editor
                     TreeNode n = new TreeNode("", 1, 0);
                     Road r = new Road(n);
                     n.Tag = r;
-                    string[] file = File.ReadAllLines(f);
-                    for (int i = 0; i < file.Length; i++)
+                    if (f.Split('.')[1] == "json")
                     {
-                        if (file[i] != "" && file[i][0] != '#' && file[i].Contains('='))
+                        Newtonsoft.Json.JsonConvert.PopulateObject(File.ReadAllText(f), r);
+                        for (int i = 0; i < r.Line.Length; i++)
                         {
-                            string[] line = file[i].Replace(" ", "").Split('=');
-                            switch (line[0])
+                            TreeNode tr = new TreeNode("Point", 4, 0);
+                            ReferencePoint point = new ReferencePoint(new Point((int)(r.Line[i].X * 5), (int)(r.Line[i].Y * 5)));
+                            tr.Tag = point;
+                            point.MouseUp += r_MouseUp;
+                            Map.Controls.Add(point);
+                            n.Nodes.Add(tr);
+                        }
+                    }
+                    else { 
+                        string[] file = File.ReadAllLines(f);
+                        for (int i = 0; i < file.Length; i++)
+                        {
+                            if (file[i] != "" && file[i][0] != '#' && file[i].Contains('='))
                             {
-                                case "Name": r.Name = line[1]; break;
-                                case "RoadType": r.RoadType = (RoadTypes)toInt(line[1]); break;
-                                case "Segments": r.Segments = toInt(line[1]); break;
-                                case "Traffic": r.Traffic = toBool(line[1]); break;
-                                case "Limit": r.Limit = toInt(line[1]); break;
-                                case "LaneWidth": r.LaneWidth = toFloat(line[1]); break;
-                                case "SidewalkWidth": r.SidewalkWidth = toFloat(line[1]); break;
-                                case "LaneHeight": r.LaneHeight = toFloat(line[1]); break;
-                                case "SidewalkHeight": r.SidewalkHeight = toFloat(line[1]); break;
-                                case "SplitWidth": r.SplitWidth = toFloat(line[1]); break;
-                                case "LaneTexturePath": r.LaneTexturePath = line[1]; break;
-                                case "SidewalkTexturePath": r.SidewalkTexturePath = line[1]; break;
-                                case "Line":
-                                    string[] points = line[1].Split(';');
-                                    for (int j = 0; j < points.Length; j++)
-                                    {
-                                        if (points[j].Contains(':'))
+                                string[] line = file[i].Replace(" ", "").Split('=');
+                                switch (line[0])
+                                {
+                                    case "Name": r.Name = line[1]; break;
+                                    case "RoadType": r.RoadType = (RoadTypes)toInt(line[1]); break;
+                                    case "Segments": r.Segments = toInt(line[1]); break;
+                                    case "Traffic": r.Traffic = toBool(line[1]); break;
+                                    case "Limit": r.Limit = toInt(line[1]); break;
+                                    case "LaneWidth": r.LaneWidth = toFloat(line[1]); break;
+                                    case "SidewalkWidth": r.SidewalkWidth = toFloat(line[1]); break;
+                                    case "LaneHeight": r.LaneHeight = toFloat(line[1]); break;
+                                    case "SidewalkHeight": r.SidewalkHeight = toFloat(line[1]); break;
+                                    case "SplitWidth": r.SplitWidth = toFloat(line[1]); break;
+                                    case "LaneTexturePath": r.LaneTexturePath = line[1]; break;
+                                    case "SidewalkTexturePath": r.SidewalkTexturePath = line[1]; break;
+                                    case "Line":
+                                        string[] points = line[1].Split(';');
+                                        for (int j = 0; j < points.Length; j++)
                                         {
-                                            TreeNode tr = new TreeNode("Point", 4, 0);
-                                            string[] tocka = points[j].Split(':');
-                                            ReferencePoint point = new ReferencePoint(new Point((int)(toFloat(tocka[0]) * 5), (int)(toFloat(tocka[1]) * 5)));
-                                            tr.Tag = point;
-                                            point.MouseUp += r_MouseUp;
-                                            Map.Controls.Add(point);
-                                            n.Nodes.Add(tr);
+                                            if (points[j].Contains(':'))
+                                            {
+                                                TreeNode tr = new TreeNode("Point", 4, 0);
+                                                string[] tocka = points[j].Split(':');
+                                                ReferencePoint point = new ReferencePoint(new Point((int)(toFloat(tocka[0]) * 5), (int)(toFloat(tocka[1]) * 5)));
+                                                tr.Tag = point;
+                                                point.MouseUp += r_MouseUp;
+                                                Map.Controls.Add(point);
+                                                n.Nodes.Add(tr);
+                                            }
                                         }
-                                    }
-                                    break;
+                                        break;
+                                }
                             }
                         }
                     }

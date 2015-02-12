@@ -35,6 +35,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\..\Desktop\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\Slovenia simulator\bin\Debug\OpenTK.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />

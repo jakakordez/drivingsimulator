@@ -1,0 +1,26 @@
+{
+  "Line": [
+    {
+      "X": 268.2,
+      "Y": 74.4
+    },
+    {
+      "X": 321.2,
+      "Y": 148.8
+    },
+    {
+      "X": 337.6,
+      "Y": 172.0
+    }
+  ],
+  "LaneWidth": 2.5,
+  "SidewalkWidth": 1.0,
+  "LaneHeight": 0.02,
+  "SidewalkHeight": 0.1,
+  "SplitWidth": 1.0,
+  "RoadType": 2,
+  "Limit": 50,
+  "Segments": 10,
+  "Traffic": false,
+  "Name": "Bevkova2"
+}

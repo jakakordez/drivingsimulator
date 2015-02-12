@@ -1,0 +1,1 @@
+{"Line":[{"X":246.0,"Y":96.4},{"X":165.6,"Y":72.4}],"Node":"TreeNode: Šola","LaneWidth":3.0,"SidewalkWidth":1.0,"LaneHeight":0.02,"SidewalkHeight":0.1,"SplitWidth":1.0,"RoadType":2,"Limit":50,"Segments":4,"LeftObject":null,"RightObject":null,"Traffic":false,"LaneTexturePath":"data/maps/Mapa/textures/road.jpg","SidewalkTexturePath":null,"Name":"Šola"}

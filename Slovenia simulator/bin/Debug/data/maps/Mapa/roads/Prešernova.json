@@ -1,0 +1,27 @@
+{
+  "Line": [
+    {
+      "X": 13.6,
+      "Y": 118.4
+    },
+    {
+      "X": 59.4,
+      "Y": 208.0
+    },
+    {
+      "X": 59.0,
+      "Y": 213.0
+    }
+  ],
+  "LaneWidth": 3.0,
+  "SidewalkWidth": 1.0,
+  "LaneHeight": 0.02,
+  "SidewalkHeight": 0.1,
+  "SplitWidth": 1.0,
+  "RoadType": 5,
+  "Limit": 50,
+  "Segments": 5,
+  "Traffic": false,
+  "LaneTexturePath": "data/maps/Mapa/textures/road.jpg",
+  "Name": "Prešernova"
+}

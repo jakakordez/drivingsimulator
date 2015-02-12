@@ -18,3 +18,7 @@ C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map edito
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map editor\obj\Debug\Map editor.csproj.GenerateResource.Cache
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map editor\obj\Debug\Map editor.exe
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map editor\obj\Debug\Map editor.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map editor\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map editor\bin\Debug\OpenTK.dll
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map editor\bin\Debug\OpenTK.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Map editor\bin\Debug\OpenTK.xml

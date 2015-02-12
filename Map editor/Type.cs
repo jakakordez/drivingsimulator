@@ -10,6 +10,7 @@ namespace Map_editor
     public class Type
     {
         string name;
+        [Newtonsoft.Json.JsonIgnore]
         public TreeNode Node;
         public string Name { get { return name; } set { name = value; Node.Text = value; } }
         public Type(TreeNode node)

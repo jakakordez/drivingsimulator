@@ -1,0 +1,30 @@
+{
+  "Line": [
+    {
+      "X": 204.6,
+      "Y": 154.8
+    },
+    {
+      "X": 204.0,
+      "Y": 205.0
+    },
+    {
+      "X": 211.6,
+      "Y": 190.8
+    },
+    {
+      "X": 186.6,
+      "Y": 221.6
+    }
+  ],
+  "LaneWidth": 2.5,
+  "SidewalkWidth": 1.0,
+  "LaneHeight": 0.02,
+  "SidewalkHeight": 0.1,
+  "SplitWidth": 1.0,
+  "RoadType": 2,
+  "Limit": 50,
+  "Segments": 8,
+  "Traffic": false,
+  "Name": "Jalnova"
+}

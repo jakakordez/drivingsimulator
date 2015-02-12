@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Map_editor
 {
+    public class Vector2
+    {
+        public float X, Y;
+        public Vector2(float X, float Y) { this.X = X; this.Y = Y; }
+    }
     public enum RoadTypes
     {
         one_lane                              =1 ,
@@ -49,14 +55,18 @@ namespace Map_editor
 
         public string SidewalkTexturePath { get { return sideWalkTexturePath; } set { sideWalkTexturePath = value; } }
 
+        public Vector2[] Line;
+
         public Road(TreeNode t):base(t)
         {
             Name = t.Text;
+            
         }
 
         public void ExportToFile(string folderPath)
         {
-            string[] file = new string[16];
+
+            /*string[] file = new string[16];
             file[0] = "Name = "+Name;
             file[1] = "RoadType = " + (int)RoadType;
             file[2] = "Segments = " + Segments;
@@ -68,18 +78,30 @@ namespace Map_editor
             file[8] = "SidewalkHeight = " + Form1.toString(SidewalkHeight);
             file[9] = "SplitWidth = " + Form1.toString(SplitWidth);
             if(laneTexturePath != "")file[10] = "LaneTexturePath = " + laneTexturePath;
-            if(sideWalkTexturePath != "")file[11] = "SidewalkTexturePath = " + sideWalkTexturePath;
-            
+            if(sideWalkTexturePath != "")file[11] = "SidewalkTexturePath = " + sideWalkTexturePath;*/
+            Line = new Vector2[Node.Nodes.Count];
+            for (int i = 0; i < Node.Nodes.Count; i++)
+            {
+                ReferencePoint refe = Node.Nodes[i].Tag as ReferencePoint;
+                Line[i] = new Vector2(refe.X / 5f, refe.Y / 5f);
+            }
+            string file = JsonConvert.SerializeObject(this, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            });
+            /*
             string Points = "";
             foreach (TreeNode tr in Node.Nodes)
             {
                 ReferencePoint refe = tr.Tag as ReferencePoint;
                 Points += (refe.X / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + (refe.Y / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture)+";";
             }
-            file[13] = "Line = "+Points;
-            string filename = Name.Replace(' ', '_').Replace(".", "") + ".dat";
+            file[13] = "Line = "+Points;*/
+            string filename = Name.Replace(' ', '_').Replace(".", "") + ".json";
             if (!Directory.Exists(folderPath + "/roads/")) Directory.CreateDirectory(folderPath + "/roads");
-            File.WriteAllLines(folderPath + "/roads/" +filename, file);
+            File.WriteAllText(folderPath + "/roads/" +filename, file);
         }
     }
 }
