@@ -1,5 +1,8 @@
 #Roads
 
+Roads are stored in separate file, located in the *data/maps/mapName/roads* directory.
+File is named with road name and json extension.
+
 ##Attributes
 
 - **Name** [*string*] - Road name

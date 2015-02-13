@@ -1,5 +1,8 @@
 #Cars
 
+Car definitions are stored in *data/vehicles/car/manufacturer/model* directory.
+Attributes described below are stored in a *config.json* file formatted with JSON.
+
 ##Attributes
 
 ### Measures

@@ -37,10 +37,11 @@ namespace Slovenia_simulator
             GL.Enable(EnableCap.ColorMaterial);
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Light0);
-
             //GL.Enable(EnableCap.Lighting);
             System.Windows.Forms.Cursor.Hide();
             camera = new Camera(this.Height, this.Width);
+
+            string a = GL.GetString(StringName.Renderer);
             
             world = new World();
         }
