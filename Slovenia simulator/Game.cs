@@ -32,6 +32,7 @@ namespace Slovenia_simulator
             myFont = new QFont(serif);
             myFont.Options.CharacterSpacing = 0.2f;
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.DepthClamp);
             GL.ClearColor(Color.CornflowerBlue);
             GL.Enable(EnableCap.ColorMaterial);
             GL.Enable(EnableCap.Texture2D);

@@ -11,7 +11,7 @@
   ],
   "LaneWidth": 3.0,
   "SidewalkWidth": 1.0,
-  "LaneHeight": 0.02,
+  "LaneHeight": 0.03,
   "SidewalkHeight": 0.1,
   "SplitWidth": 1.0,
   "RoadType": 5,
@@ -19,5 +19,6 @@
   "Segments": 5,
   "Traffic": false,
   "LaneTexturePath": "data/maps/Mapa/textures/road.jpg",
+  "SidewalkTexturePath": "data/maps/Mapa/textures/asphalt.jpg",
   "Name": "Cankarjeva"
 }

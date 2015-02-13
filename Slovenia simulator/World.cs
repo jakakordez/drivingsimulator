@@ -62,8 +62,6 @@ namespace Slovenia_simulator
 
         public void Draw(Matrix4 lookat)
         {
-            
-            CurrentMap.Draw(ref MeshCollection, lookat);
             GL.LoadMatrix(ref lookat);
 
             GL.Color4(Color.White);
@@ -83,6 +81,7 @@ namespace Slovenia_simulator
             {
                 Vehicles[i].Draw(lookat, ref MeshCollection);
             }
+            CurrentMap.Draw(ref MeshCollection, lookat);
         }
 
         public void addCar(string path, Matrix4 startTransform, VehicleController controller, ref MeshCollector meshCollection)

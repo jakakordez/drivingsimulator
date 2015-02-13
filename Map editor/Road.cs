@@ -65,20 +65,6 @@ namespace Map_editor
 
         public void ExportToFile(string folderPath)
         {
-
-            /*string[] file = new string[16];
-            file[0] = "Name = "+Name;
-            file[1] = "RoadType = " + (int)RoadType;
-            file[2] = "Segments = " + Segments;
-            file[3] = "Traffic = " + Traffic;
-            file[4] = "Limit = " + Limit;
-            file[5] = "LaneWidth = " + Form1.toString(LaneWidth);
-            file[6] = "SidewalkWidth = " + Form1.toString(SidewalkWidth);
-            file[7] = "LaneHeight = " + Form1.toString(LaneHeight);
-            file[8] = "SidewalkHeight = " + Form1.toString(SidewalkHeight);
-            file[9] = "SplitWidth = " + Form1.toString(SplitWidth);
-            if(laneTexturePath != "")file[10] = "LaneTexturePath = " + laneTexturePath;
-            if(sideWalkTexturePath != "")file[11] = "SidewalkTexturePath = " + sideWalkTexturePath;*/
             Line = new Vector2[Node.Nodes.Count];
             for (int i = 0; i < Node.Nodes.Count; i++)
             {
@@ -91,14 +77,7 @@ namespace Map_editor
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore
             });
-            /*
-            string Points = "";
-            foreach (TreeNode tr in Node.Nodes)
-            {
-                ReferencePoint refe = tr.Tag as ReferencePoint;
-                Points += (refe.X / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + (refe.Y / 5f).ToString(System.Globalization.CultureInfo.InvariantCulture)+";";
-            }
-            file[13] = "Line = "+Points;*/
+
             string filename = Name.Replace(' ', '_').Replace(".", "") + ".json";
             if (!Directory.Exists(folderPath + "/roads/")) Directory.CreateDirectory(folderPath + "/roads");
             File.WriteAllText(folderPath + "/roads/" +filename, file);

@@ -223,47 +223,6 @@ namespace Map_editor
                             n.Nodes.Add(tr);
                         }
                     }
-                    else { 
-                        string[] file = File.ReadAllLines(f);
-                        for (int i = 0; i < file.Length; i++)
-                        {
-                            if (file[i] != "" && file[i][0] != '#' && file[i].Contains('='))
-                            {
-                                string[] line = file[i].Replace(" ", "").Split('=');
-                                switch (line[0])
-                                {
-                                    case "Name": r.Name = line[1]; break;
-                                    case "RoadType": r.RoadType = (RoadTypes)toInt(line[1]); break;
-                                    case "Segments": r.Segments = toInt(line[1]); break;
-                                    case "Traffic": r.Traffic = toBool(line[1]); break;
-                                    case "Limit": r.Limit = toInt(line[1]); break;
-                                    case "LaneWidth": r.LaneWidth = toFloat(line[1]); break;
-                                    case "SidewalkWidth": r.SidewalkWidth = toFloat(line[1]); break;
-                                    case "LaneHeight": r.LaneHeight = toFloat(line[1]); break;
-                                    case "SidewalkHeight": r.SidewalkHeight = toFloat(line[1]); break;
-                                    case "SplitWidth": r.SplitWidth = toFloat(line[1]); break;
-                                    case "LaneTexturePath": r.LaneTexturePath = line[1]; break;
-                                    case "SidewalkTexturePath": r.SidewalkTexturePath = line[1]; break;
-                                    case "Line":
-                                        string[] points = line[1].Split(';');
-                                        for (int j = 0; j < points.Length; j++)
-                                        {
-                                            if (points[j].Contains(':'))
-                                            {
-                                                TreeNode tr = new TreeNode("Point", 4, 0);
-                                                string[] tocka = points[j].Split(':');
-                                                ReferencePoint point = new ReferencePoint(new Point((int)(toFloat(tocka[0]) * 5), (int)(toFloat(tocka[1]) * 5)));
-                                                tr.Tag = point;
-                                                point.MouseUp += r_MouseUp;
-                                                Map.Controls.Add(point);
-                                                n.Nodes.Add(tr);
-                                            }
-                                        }
-                                        break;
-                                }
-                            }
-                        }
-                    }
                     treeView1.Nodes[0].Nodes.Add(n);
 	            }
                 Draw();
