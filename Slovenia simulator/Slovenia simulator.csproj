@@ -70,6 +70,7 @@
     <Compile Include="Maps\Map_old.cs" />
     <Compile Include="Maps\ObjectLine.cs" />
     <Compile Include="Maps\Path.cs" />
+    <Compile Include="Maps\Skybox.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Meshes\Mesh.cs" />
     <Compile Include="Meshes\MeshCollector.cs" />

@@ -81,7 +81,7 @@ namespace Slovenia_simulator
             {
                 Vehicles[i].Draw(lookat, ref MeshCollection);
             }
-            CurrentMap.Draw(ref MeshCollection, lookat);
+            CurrentMap.Draw(ref MeshCollection, lookat, Player.body.CenterOfMassPosition);
         }
 
         public void addCar(string path, Matrix4 startTransform, VehicleController controller, ref MeshCollector meshCollection)

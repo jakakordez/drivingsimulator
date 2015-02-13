@@ -38,11 +38,10 @@ namespace Slovenia_simulator
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Light0);
             //GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.AlphaTest);
             System.Windows.Forms.Cursor.Hide();
             camera = new Camera(this.Height, this.Width);
 
-            string a = GL.GetString(StringName.Renderer);
-            
             world = new World();
         }
 
@@ -51,7 +50,7 @@ namespace Slovenia_simulator
             GL.Viewport(0, 0, Width, Height);
 
             float aspect_ratio = Width / (float)Height;
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(85), aspect_ratio, 0.01f, 100);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(85), aspect_ratio, 0.01f, 1800);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
             base.OnResize(e);
