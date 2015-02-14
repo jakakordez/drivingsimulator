@@ -33,15 +33,16 @@ namespace Slovenia_simulator
             myFont.Options.CharacterSpacing = 0.2f;
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.DepthClamp);
-            GL.ClearColor(Color.CornflowerBlue);
+            GL.ClearColor(Color.Transparent);
             GL.Enable(EnableCap.ColorMaterial);
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.Light0);
             //GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.AlphaTest);
             System.Windows.Forms.Cursor.Hide();
             camera = new Camera(this.Height, this.Width);
-
+            myFont.Options.Colour = Color4.Red;
             world = new World();
         }
 
@@ -50,7 +51,7 @@ namespace Slovenia_simulator
             GL.Viewport(0, 0, Width, Height);
 
             float aspect_ratio = Width / (float)Height;
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(85), aspect_ratio, 0.01f, 1800);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(85), aspect_ratio, 0.1f, 1800);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
             base.OnResize(e);

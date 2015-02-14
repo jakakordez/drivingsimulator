@@ -1,9 +1,0 @@
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Release\Driving simulator.exe.config
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Release\Driving simulator.exe
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Release\Driving simulator.pdb
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Release\BulletSharp.dll
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Release\OpenTK.dll
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Release\OpenTK.pdb
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\bin\Release\OpenTK.xml
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\obj\Release\Driving simulator.exe
-C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Driving simulator\Driving simulator\obj\Release\Driving simulator.pdb

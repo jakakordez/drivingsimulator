@@ -47,6 +47,7 @@ namespace Slovenia_simulator.Vehicles
             //localTrans effectively shifts the center of mass with respect to the chassis
             Matrix4 localTrans = Matrix4.CreateTranslation(0*Vector3.UnitY);
             ((CompoundShape)collisionShape).AddChildShape(localTrans, chassisShape);
+            
         }
 
         public void Init(VehicleRaycaster vehicleRayCaster)
@@ -141,6 +142,7 @@ namespace Slovenia_simulator.Vehicles
 
             raycastVehicle.SetSteeringValue(steeringValue, 0);
             raycastVehicle.SetSteeringValue(steeringValue, 1);
+
         }
         public override void HandleInput(Controller k)
         {

@@ -13,8 +13,8 @@
 	"MaximumSpeed": 180,
 	"Dimensions": { "X": 4.6, "Y": 1.8, "Z": 1.3 },
 
-	"FrontWheelLocation": {"X":1.5, "Y":0.66},
-	"RearWheelLocation": {"X":1.33, "Y":0.66},
+	"FrontWheelLocation": {"X":1.53, "Y":0.66},
+	"RearWheelLocation": {"X":1.3, "Y":0.66},
     
 	"DriverEyeLocation": {"X":0.38, "Y":0.28, "Z":0.15},
 	"DriverViewAngle": {"X":1, "Y":1.6},
@@ -26,8 +26,8 @@
     
 	"WheelRadius": 0.33,
 	"WheelWidth": 0.3,
-	"SuspensionHeight": -0.3,
-	"SuspensionRestLength": 0.2,
+	"SuspensionHeight": -0.2,
+	"SuspensionRestLength": 0.3,
     
 	"MaxEngineForce": 2000,
 	"MaxBrakeForce": 200,
@@ -35,9 +35,9 @@
 	"SteeringIncrement":0.01,
 	"SteeringClamp":0.5,
     
-	"WheelFriction":5000,
+	"WheelFriction":2000,
 	"SuspensionStiffness":40,
-	"SuspensionDamping":15.6,
-	"SuspensionCompression":80.8,
+	"SuspensionDamping":2.3,
+	"SuspensionCompression":4.4,
 	"RollInfluence":0.1
 }
