@@ -39,6 +39,16 @@ namespace Slovenia_simulator.Maps
             GL.TexCoord2(new Vector2(1, 0.5f));
             GL.Vertex3(new Vector3(-distance, distance-1, -distance));
 
+            // BOTTOM
+            GL.TexCoord2(new Vector2(0f, 0.5f));
+            GL.Vertex3(new Vector3(-distance, -distance + 1, distance));
+            GL.TexCoord2(new Vector2(0f, 0.25f));
+            GL.Vertex3(new Vector3(distance, -distance + 1, distance));
+            GL.TexCoord2(new Vector2(0.33f, 0.25f));
+            GL.Vertex3(new Vector3(distance, -distance + 1, -distance));
+            GL.TexCoord2(new Vector2(0.33f, 0.5f));
+            GL.Vertex3(new Vector3(-distance, -distance + 1, -distance));
+
             // FRONT
             GL.TexCoord2(new Vector2(0.33f, 0.5f));
             GL.Vertex3(new Vector3(-distance, -distance, distance));

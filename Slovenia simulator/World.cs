@@ -7,6 +7,7 @@ using System.Drawing;
 using BulletSharp;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System.IO;
 
 namespace Slovenia_simulator
 {
@@ -35,21 +36,36 @@ namespace Slovenia_simulator
             DynamicsWorld = new DiscreteDynamicsWorld(dispatcher, broadphase, null, collisionConf);
             DynamicsWorld.Gravity = new Vector3(0, -10, 0);
 
-            LocalCreateRigidBody(0,  Matrix4.CreateTranslation(-50*Vector3.UnitY), new BoxShape(5000, 50, 5000));
+            //LocalCreateRigidBody(0,  Matrix4.CreateTranslation(-50*Vector3.UnitY), new BoxShape(5000, 50, 5000));
             addCar("BMW/M3-E92", Matrix4.CreateRotationX(MathHelper.Pi*0) * Matrix4.CreateTranslation(new Vector3(10, 10, 20)), VehicleController.Player, ref MeshCollection);//
             for (int i = 0; i < 1; i++)
             {
                 addCar("BMW/M3-E92", Matrix4.CreateTranslation(new Vector3(10, 1, i*10)), VehicleController.AI, ref MeshCollection);
             }
-            //a = System.IO.File.OpenRead("data/maps/map1/h.raw");
-            //HeightfieldTerrainShape t = new HeightfieldTerrainShape(128, 128, a, 1, -100, 100, 1, PhyScalarType.PhyFloat, false);
-            //LocalCreateRigidBody(0, Matrix4.CreateTranslation(new Vector3(-64, -20, -64)), t);
-            //LocalCreateRigidBody(0, Matrix4.CreateTranslation(new Vector3(15, 0, 0)), new BoxShape(5, 5, 5));
-            //map = new Maps.Map();
-            //RigidBody ground = LocalCreateRigidBody(0, map.tr, map.groundShape);
-            //ground.UserObject = "Ground";
-        }
+            //System.IO.FileStream a = System.IO.File.OpenRead("data/maps/map1/h.raw");
 
+            PhyScalarType scalarType = PhyScalarType.PhyUChar;
+            FileStream file = new FileStream("data/maps/map1/h.raw", FileMode.Open, FileAccess.Read);
+
+            // Use float data
+           /* byte[] terr = new byte[128 * 128 * 4];
+            MemoryStream file = new MemoryStream(terr);
+            BinaryWriter writer = new BinaryWriter(file);
+            for (int i = 0; i < 128; i++)
+                for (int j = 0; j < 128; j++)
+                    writer.Write((float)0);
+                   // writer.Write((float)((50 / 2) + 4 * Math.Sin(j * 0.5f) * Math.Cos(i)));
+            writer.Flush();
+            file.Position = 0;*/
+
+            HeightfieldTerrainShape t = new HeightfieldTerrainShape(128, 128, file, 1, -1, 1, 1, scalarType, false);
+            ground = LocalCreateRigidBody(0, Matrix4.CreateTranslation(new Vector3(0, -10, 0)), t);
+
+           /* LocalCreateRigidBody(0, Matrix4.CreateTranslation(new Vector3(15, 0, 0)), new BoxShape(5, 5, 5));
+            RigidBody ground = LocalCreateRigidBody(0, Matrix4.Identity, t);
+            ground.UserObject = "Ground";*/
+        }
+        RigidBody ground;
         public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
         {
             DynamicsWorld.StepSimulation(elaspedTime);
@@ -63,18 +79,20 @@ namespace Slovenia_simulator
         public void Draw(Matrix4 lookat)
         {
             GL.LoadMatrix(ref lookat);
-
+            Matrix4 t = ground.CenterOfMassTransform * lookat;
+            GL.LoadMatrix(ref t);
             GL.Color4(Color.White);
             GL.BindTexture(TextureTarget.Texture2D, grass);
             GL.Begin(PrimitiveType.Quads);
             GL.TexCoord2(new Vector2(0, 0));
-            GL.Vertex3(new Vector3(-5000f, 0, -5000f));
+            float d = 64f;//5000f;
+            GL.Vertex3(new Vector3(-d, 0, -d));
             GL.TexCoord2(new Vector2(0, 10000));
-            GL.Vertex3(new Vector3(-5000f, 0, 5000f));
+            GL.Vertex3(new Vector3(-d, 0, d));
             GL.TexCoord2(new Vector2(10000, 10000));
-            GL.Vertex3(new Vector3(5000f, 0, 5000f));
+            GL.Vertex3(new Vector3(d, 0, d));
             GL.TexCoord2(new Vector2(10000, 0));
-            GL.Vertex3(new Vector3(5000f, 0, -5000f));
+            GL.Vertex3(new Vector3(d, 0, -d));
             GL.End();
             Player.Draw(lookat, ref MeshCollection);
             for (int i = 0; i < Vehicles.Length; i++)

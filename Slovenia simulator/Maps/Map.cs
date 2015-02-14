@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.IO;
+using BulletSharp;
 
 namespace Slovenia_simulator
 {
@@ -23,6 +24,8 @@ namespace Slovenia_simulator
                 Roads[i] = new Maps.Road();
                 Roads[i].FromFile(roadsFile[i], ref meshes);
             }
+
+            
         }
 
         public void Draw(ref MeshCollector MeshCollection, Matrix4 modelLookAt, Vector3 playerLocation)

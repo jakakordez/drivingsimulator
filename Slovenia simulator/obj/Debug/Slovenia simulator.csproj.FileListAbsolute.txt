@@ -7,3 +7,4 @@ C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia 
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\bin\Debug\QuickFont.pdb
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\obj\Debug\Slovenia simulator.exe
 C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\obj\Debug\Slovenia simulator.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Slovenia simulator\obj\Debug\Slovenia simulator.csprojResolveAssemblyReference.cache
