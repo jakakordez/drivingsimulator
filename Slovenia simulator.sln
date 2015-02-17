@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map editor", "Map editor\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mesh compiler", "Mesh compiler\Mesh compiler.csproj", "{1CC5E144-8720-472F-A403-A8CEA4FC3462}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrain compiler", "Terrain compiler\Terrain compiler.csproj", "{17A9F327-5D80-43F8-AEEA-895ABF399A44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{1CC5E144-8720-472F-A403-A8CEA4FC3462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CC5E144-8720-472F-A403-A8CEA4FC3462}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CC5E144-8720-472F-A403-A8CEA4FC3462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17A9F327-5D80-43F8-AEEA-895ABF399A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A9F327-5D80-43F8-AEEA-895ABF399A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A9F327-5D80-43F8-AEEA-895ABF399A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A9F327-5D80-43F8-AEEA-895ABF399A44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,5 +42,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{32E156AF-2934-4ECC-85EE-26EA71C20D57} = {A8D913F6-B816-47C6-BF01-BAF27A767BA6}
 		{1CC5E144-8720-472F-A403-A8CEA4FC3462} = {A8D913F6-B816-47C6-BF01-BAF27A767BA6}
+		{17A9F327-5D80-43F8-AEEA-895ABF399A44} = {A8D913F6-B816-47C6-BF01-BAF27A767BA6}
 	EndGlobalSection
 EndGlobal

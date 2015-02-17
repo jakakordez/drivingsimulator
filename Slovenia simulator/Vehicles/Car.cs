@@ -186,8 +186,8 @@ namespace Slovenia_simulator.Vehicles
             else brakeForce = 0;
             if (k.EngineStart && !prevState.EngineStart) EngineRunning = !EngineRunning;
             if (!EngineRunning) gear = 0;
-            if (k.Forward && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = 1;
-            if (k.Reverse && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 1f) gear = -0.5f;
+            if (k.Forward && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 3f) gear = 1;
+            if (k.Reverse && System.Math.Abs(raycastVehicle.CurrentSpeedKmHour) < 3f) gear = -0.5f;
 
             if (k.CabinView) viewMode = PlayerView.Cabin;
             if (k.ExteriorView) viewMode = PlayerView.Exterior;

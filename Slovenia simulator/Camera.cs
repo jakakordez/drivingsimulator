@@ -10,14 +10,14 @@ namespace Slovenia_simulator
 {
     class Camera
     {
-        public Camera(int h, int w){
-            H = h;
-            W = w;
+        public Camera(){
+            H = Screen.PrimaryScreen.Bounds.Size.Height;
+            W = Screen.PrimaryScreen.Bounds.Size.Width;
         }
         public float x, y;
         int H, W;
 
-        public void Update(OpenTK.Input.MouseDevice mouse, int h, int w)
+        public void Update(OpenTK.Input.MouseDevice mouse)
         {
             x = (float)mouse.X/W;
             y = (float)mouse.Y/H;

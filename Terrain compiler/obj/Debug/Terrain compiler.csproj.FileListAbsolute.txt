@@ -1,0 +1,10 @@
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\bin\Debug\Terrain compiler.exe.config
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\bin\Debug\Terrain compiler.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\bin\Debug\Terrain compiler.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\obj\Debug\Terrain compiler.csprojResolveAssemblyReference.cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\obj\Debug\Terrain_compiler.Form1.resources
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\obj\Debug\Terrain_compiler.Properties.Resources.resources
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\obj\Debug\Terrain compiler.csproj.GenerateResource.Cache
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\obj\Debug\Terrain compiler.exe
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\obj\Debug\Terrain compiler.pdb
+C:\Users\Jaka\Documents\Visual Studio 2013\Projects\Slovenia simulator\Terrain compiler\obj\Debug\Terrain_compiler.Import_settings.resources

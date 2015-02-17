@@ -7,10 +7,10 @@ using System.Drawing;
 using BulletSharp;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System.IO;
 
 namespace Slovenia_simulator
 {
+    public delegate RigidBody RigidBodyCreation(float mass, Matrix4 startTransform, CollisionShape shape);
     class World
     {
         public DiscreteDynamicsWorld DynamicsWorld { get; set; }
@@ -22,11 +22,12 @@ namespace Slovenia_simulator
         Map CurrentMap;
         MeshCollector MeshCollection;
         int grass;
+        Camera camera;
+        List<RigidBody> ball = new List<RigidBody>();
         public World()
         {
             MeshCollection = new MeshCollector();
-            CurrentMap = new Map("Mapa", ref MeshCollection);
-            grass = Misc.LoadTexture("data/maps/Mapa/textures/grass.png", 1);
+            
 
             // collision configuration contains default setup for memory, collision setup
             collisionConf = new DefaultCollisionConfiguration();
@@ -35,39 +36,29 @@ namespace Slovenia_simulator
             broadphase = new DbvtBroadphase();
             DynamicsWorld = new DiscreteDynamicsWorld(dispatcher, broadphase, null, collisionConf);
             DynamicsWorld.Gravity = new Vector3(0, -10, 0);
-
+            CurrentMap = new Map("Mapa", ref MeshCollection, new RigidBodyCreation(LocalCreateRigidBody));
+            grass = Misc.LoadTexture("data/maps/Mapa/textures/grass.png", 1);
             //LocalCreateRigidBody(0,  Matrix4.CreateTranslation(-50*Vector3.UnitY), new BoxShape(5000, 50, 5000));
-            addCar("BMW/M3-E92", Matrix4.CreateRotationX(MathHelper.Pi*0) * Matrix4.CreateTranslation(new Vector3(10, 10, 20)), VehicleController.Player, ref MeshCollection);//
-            for (int i = 0; i < 1; i++)
+            addCar("BMW/M3-E92", Matrix4.CreateRotationY(MathHelper.Pi * 0.5f) * Matrix4.CreateTranslation(new Vector3(0, 1, 0)), VehicleController.Player, ref MeshCollection);//712
+            /*for (int i = 0; i < 1; i++)
             {
                 addCar("BMW/M3-E92", Matrix4.CreateTranslation(new Vector3(10, 1, i*10)), VehicleController.AI, ref MeshCollection);
-            }
-            //System.IO.FileStream a = System.IO.File.OpenRead("data/maps/map1/h.raw");
-
-            PhyScalarType scalarType = PhyScalarType.PhyUChar;
-            FileStream file = new FileStream("data/maps/map1/h.raw", FileMode.Open, FileAccess.Read);
-
-            // Use float data
-           /* byte[] terr = new byte[128 * 128 * 4];
-            MemoryStream file = new MemoryStream(terr);
-            BinaryWriter writer = new BinaryWriter(file);
-            for (int i = 0; i < 128; i++)
-                for (int j = 0; j < 128; j++)
-                    writer.Write((float)0);
-                   // writer.Write((float)((50 / 2) + 4 * Math.Sin(j * 0.5f) * Math.Cos(i)));
-            writer.Flush();
-            file.Position = 0;*/
-
-            HeightfieldTerrainShape t = new HeightfieldTerrainShape(128, 128, file, 1, -1, 1, 1, scalarType, false);
-            ground = LocalCreateRigidBody(0, Matrix4.CreateTranslation(new Vector3(0, -10, 0)), t);
-
-           /* LocalCreateRigidBody(0, Matrix4.CreateTranslation(new Vector3(15, 0, 0)), new BoxShape(5, 5, 5));
-            RigidBody ground = LocalCreateRigidBody(0, Matrix4.Identity, t);
-            ground.UserObject = "Ground";*/
+            }*/
+            DynamicsWorld.DebugDrawer = new DebugDrawer() { DebugMode = DebugDrawModes.DrawWireframe };
+            camera = new Camera();
         }
-        RigidBody ground;
+
+        void Addball()
+        {
+            SphereShape s = new SphereShape(0.5f);
+            RigidBody r = LocalCreateRigidBody(5, Matrix4.CreateTranslation(new Vector3(0, 5, 0)), s);
+            ball.Add(r);
+        }
+        bool e;
         public void Update(float elaspedTime, OpenTK.Input.KeyboardDevice k)
         {
+            if (k[OpenTK.Input.Key.Enter] && !e) Addball();
+            e = k[OpenTK.Input.Key.Enter];
             DynamicsWorld.StepSimulation(elaspedTime);
             Player.Update(elaspedTime, new Controller(k), CurrentMap, Player);
             for (int i = 0; i < Vehicles.Length; i++)
@@ -76,12 +67,16 @@ namespace Slovenia_simulator
             }
         }
 
-        public void Draw(Matrix4 lookat)
+        public void Draw(bool Focused, OpenTK.Input.MouseDevice mouse)
         {
-            GL.LoadMatrix(ref lookat);
-            Matrix4 t = ground.CenterOfMassTransform * lookat;
-            GL.LoadMatrix(ref t);
-            GL.Color4(Color.White);
+            Matrix4 WorldMatrix = camera.GenerateLookAt((Vehicle)Player);
+            GL.MatrixMode(MatrixMode.Modelview);
+            if (Focused) camera.Update(mouse);
+
+            /*GL.LoadMatrix(ref lookat);
+            Matrix4 t = CurrentMap.CurrentTerrain.ground.CenterOfMassTransform * lookat;
+            GL.LoadMatrix(ref t);*/
+            /*GL.Color4(Color.White);
             GL.BindTexture(TextureTarget.Texture2D, grass);
             GL.Begin(PrimitiveType.Quads);
             GL.TexCoord2(new Vector2(0, 0));
@@ -93,13 +88,35 @@ namespace Slovenia_simulator
             GL.Vertex3(new Vector3(d, 0, d));
             GL.TexCoord2(new Vector2(10000, 0));
             GL.Vertex3(new Vector3(d, 0, -d));
+            GL.End();*/
+            //GL.LoadMatrix(ref WorldMatrix);
+            
+            /*GL.Begin(PrimitiveType.Lines);
+            GL.Color4(OpenTK.Graphics.Color4.Red);
+            DynamicsWorld.DebugDrawObject(Matrix4.Identity, CurrentMap.CurrentTerrain.ground.CollisionShape, OpenTK.Graphics.Color4.Red);
+            GL.End();*/
+            CurrentMap.Draw(ref MeshCollection, WorldMatrix, Player.body.CenterOfMassPosition);
+            GL.Begin(PrimitiveType.Triangles);
+            GL.Color4(OpenTK.Graphics.Color4.Red);
+            for (int i = 0; i < ball.Count; i++)
+            {
+                Vector3 pos = ball[i].CenterOfMassPosition;
+                GL.Vertex3(pos + new Vector3(0, 0.5f, 0));
+                GL.Vertex3(pos + new Vector3(0, 0.5f, 0.5f));
+                GL.Vertex3(pos + new Vector3(0, -0.5f, 0));
+
+                GL.Vertex3(pos + new Vector3(0.5f, 0.5f, 0));
+                GL.Vertex3(pos + new Vector3(0, 0.5f, 0.5f));
+                GL.Vertex3(pos + new Vector3(0, 0.5f, 0));
+            }
             GL.End();
-            Player.Draw(lookat, ref MeshCollection);
+            
+            Player.Draw(WorldMatrix, ref MeshCollection);
             for (int i = 0; i < Vehicles.Length; i++)
             {
-                Vehicles[i].Draw(lookat, ref MeshCollection);
+                Vehicles[i].Draw(WorldMatrix, ref MeshCollection);
             }
-            CurrentMap.Draw(ref MeshCollection, lookat, Player.body.CenterOfMassPosition);
+            GL.LoadMatrix(ref WorldMatrix);
         }
 
         public void addCar(string path, Matrix4 startTransform, VehicleController controller, ref MeshCollector meshCollection)

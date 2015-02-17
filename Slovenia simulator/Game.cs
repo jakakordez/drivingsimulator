@@ -16,7 +16,7 @@ namespace Slovenia_simulator
     {
         int frames, fps;
         float frameTime;
-        Camera camera;
+        
         World world;
         Font serif = new Font(FontFamily.GenericSansSerif, 24);
         QFont myFont;
@@ -41,7 +41,7 @@ namespace Slovenia_simulator
             GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.AlphaTest);
             System.Windows.Forms.Cursor.Hide();
-            camera = new Camera(this.Height, this.Width);
+            
             myFont.Options.Colour = Color4.Red;
             world = new World();
         }
@@ -95,10 +95,7 @@ namespace Slovenia_simulator
                 frames = 0;
             }
             
-            Matrix4 lookat = camera.GenerateLookAt((Vehicle)world.Player);
-            GL.MatrixMode(MatrixMode.Modelview);
-            if (this.Focused) camera.Update(Mouse, Height / 2, Width / 2);
-            world.Draw(lookat);
+            world.Draw(this.Focused, Mouse);
             
             SwapBuffers();
         }

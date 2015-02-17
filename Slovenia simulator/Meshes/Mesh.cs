@@ -21,8 +21,6 @@ namespace Slovenia_simulator
         int VertexBuffer;
         int TextureCoordinateBuffer;
 
-        
-
         public Mesh(string filename)
         {
             Materials = new Material[0];
