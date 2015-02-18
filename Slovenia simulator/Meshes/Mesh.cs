@@ -44,14 +44,18 @@ namespace Slovenia_simulator
 
             for (int i = 0; i < ElementArraySizes.Length; i++)
             {
-               
+
                 if (Materials[i].Texture != 0)
                 {
                     GL.Color4(Color.White);
                     GL.BindTexture(TextureTarget.Texture2D, Materials[i].Texture);
-                   // GL.TexCoord2(new Vector2(0f, 0f));
+                    // GL.TexCoord2(new Vector2(0f, 0f));
                 }
-                else GL.Color4(Materials[i].Brush);
+                else
+                {
+                    GL.Color4(Materials[i].Brush);
+                    GL.BindTexture(TextureTarget.Texture2D, 0);
+                }
                 GL.PushClientAttrib(ClientAttribMask.ClientVertexArrayBit);
                 GL.BindBuffer(BufferTarget.ArrayBuffer, TextureCoordinateBuffer);
                 // Set the Pointer to the current bound array describing how the data ia stored

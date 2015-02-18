@@ -97,7 +97,7 @@ namespace Slovenia_simulator.Vehicles
             {
                 case PlayerView.Exterior:
                 case PlayerView.Camera:
-                case PlayerView.Debug:
+               
                     Meshes.DrawMesh(bodyMesh);
                     Matrix4 rotation = Matrix4.CreateRotationX(raycastVehicle.GetWheelInfo(1).Rotation);
                     Matrix4 wheel = Matrix4.CreateRotationY(-(float)MathHelper.PiOver2)*rotation;
@@ -116,7 +116,7 @@ namespace Slovenia_simulator.Vehicles
                     GL.LoadMatrix(ref wheel);
                     Meshes.DrawMesh(wheelMesh);
                     break;
-                
+                case PlayerView.Debug:
                 case PlayerView.Cabin:
                     Meshes.DrawMesh(cabinMesh);
                     Matrix4 steering = Matrix4.CreateRotationZ(SteeringWheelAngle.X * steeringValue) * Matrix4.CreateRotationX(SteeringWheelAngle.Y) * Matrix4.CreateTranslation(SteeringWheelLocation) * modelLookAt;
