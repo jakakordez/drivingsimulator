@@ -59,7 +59,7 @@ namespace Slovenia_simulator
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             if (Keyboard[OpenTK.Input.Key.Delete]) System.Diagnostics.Debugger.Break();
-            DebugMove(Keyboard, ref world.Player.DebugLocation);
+            DebugMove(Keyboard, ref (world.Player as Vehicles.Car).NeedleLocation);
             world.Update((float)e.Time, Keyboard);
                 
             if (Keyboard[OpenTK.Input.Key.Escape] || Keyboard[OpenTK.Input.Key.Q]) Exit();
@@ -83,7 +83,7 @@ namespace Slovenia_simulator
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             QFont.Begin();
             myFont.Print("FPS: " + fps, new Vector2(20, 20));
-            myFont.Print("Speed: " + Math.Round(world.Player.raycastVehicle.CurrentSpeedKmHour, 1)+" kph", new Vector2(20, 50));
+            myFont.Print("Speed: " + Math.Round(world.Player.raycastVehicle.CurrentSpeedKmHour, 0)+" kph", new Vector2(20, 50));
             QFont.End();
             
             frameTime += (float)e.Time;

@@ -38,7 +38,6 @@ namespace Slovenia_simulator
             DynamicsWorld.Gravity = new Vector3(0, -10, 0);
             CurrentMap = new Map("Mapa", ref MeshCollection, new RigidBodyCreation(LocalCreateRigidBody));
             grass = Misc.LoadTexture("data/maps/Mapa/textures/grass.png", 1);
-            //LocalCreateRigidBody(0,  Matrix4.CreateTranslation(-50*Vector3.UnitY), new BoxShape(5000, 50, 5000));
             addCar("BMW/X5", Matrix4.CreateRotationY(MathHelper.Pi * 0.5f) * Matrix4.CreateTranslation(new Vector3(0, 1, 0)), VehicleController.Player, ref MeshCollection);//712
             /*for (int i = 0; i < 1; i++)
             {

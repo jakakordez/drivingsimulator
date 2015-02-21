@@ -9,35 +9,35 @@
 			{"name":"Tungsten_silver_metallic", "color": "#ACABA6"}
 		],
 
-	"Mass": 1605,
+	"Mass": 1200,
 	"MaximumSpeed": 180,
 	"Dimensions": { "X": 4.6, "Y": 2.1, "Z": 1.4 },
 
 	"FrontWheelLocation": {"X":1.48, "Y":0.7},
 	"RearWheelLocation": {"X":1.35, "Y":0.7},
     
-	"DriverEyeLocation": {"X":0.43, "Y":0.41, "Z":0.054},
-	"DriverViewAngle": {"X":1, "Y":1.6},
-	"SteeringWheelLocation": {"X":0.38, "Y":0.08, "Z":0.45},
+	"DriverEyeLocation": {"X":0.4, "Y":0.41, "Z":0.054},
+	"DriverViewAngle": {"X":1, "Y":2},
+	"SteeringWheelLocation": {"X":0.4, "Y":0.1, "Z":0.5},
 	"SteeringWheelAngle": {"X":-8, "Y":0.4},
 	"ExteriorEyeDistance": 5,
-	"NeedleLocation": {"X":0.32, "Y":0.11, "Z":0.78},
+	"NeedleLocation": {"X":0.335, "Y":0.17, "Z":0.715},
 	"NeedleAngle": {"X":-0.4, "Y":60, "Z":0.1},
     
 	"WheelRadius": 0.41,
 	"WheelWidth": 0.31,
 	"SuspensionHeight": -0.2,
-	"SuspensionRestLength": 0.5,
+	"SuspensionRestLength": 0.4,
     
 	"MaxEngineForce": 2000,
 	"MaxBrakeForce": 200,
     
 	"SteeringIncrement":0.01,
-	"SteeringClamp":0.5,
+	"SteeringClamp":0.6,
     
 	"WheelFriction":2000,
-	"SuspensionStiffness":40,
-	"SuspensionDamping":2.3,
-	"SuspensionCompression":4.4,
+	"SuspensionStiffness":800,
+	"SuspensionDamping":20.3,
+	"SuspensionCompression":4000.4,
 	"RollInfluence":0.1
 }

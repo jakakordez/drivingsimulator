@@ -122,7 +122,7 @@ namespace Slovenia_simulator.Vehicles
                     Matrix4 steering = Matrix4.CreateRotationZ(SteeringWheelAngle.X * steeringValue) * Matrix4.CreateRotationX(SteeringWheelAngle.Y) * Matrix4.CreateTranslation(SteeringWheelLocation) * modelLookAt;
                     GL.LoadMatrix(ref steering);
                     Meshes.DrawMesh(steeringWheelMesh);
-                    steering = Matrix4.CreateRotationZ(NeedleAngle.X + (raycastVehicle.CurrentSpeedKmHour / NeedleAngle.Y)) * Matrix4.CreateRotationX(NeedleAngle.Z) * Matrix4.CreateTranslation(NeedleLocation) * modelLookAt;
+                    steering = Matrix4.CreateRotationZ(NeedleAngle.X + Math.Abs(raycastVehicle.CurrentSpeedKmHour / NeedleAngle.Y)) * Matrix4.CreateRotationX(NeedleAngle.Z) * Matrix4.CreateTranslation(NeedleLocation) * modelLookAt;
                     GL.LoadMatrix(ref steering);
                     Meshes.DrawMesh(needleMesh);
                     break;
